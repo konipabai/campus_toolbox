@@ -5,15 +5,15 @@ export class Classroom {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({type:'varchar', length:255, nullable: false})
-    classroom_building: string; // 教室在哪栋楼
+    @Column({ type: 'varchar', length: 255, nullable: false })
+    account: string;            // 账号
 
-    @Column({type:'int', nullable: false})
-    building_floors: number;    // 教室所在那栋楼的总层数
+    @Column({ type: 'varchar', length: 255, nullable: false })
+    reason: string;             // 申请理由
 
-    @Column({type:'int', nullable: false})
-    classroom_floor: number;    // 教室在第几层楼
+    @Column({ type: 'varchar', length: 255, nullable: false })
+    time_frame: string;         // 申请的时间范围
 
-    @Column({type:'varchar', length:255, nullable: false})
-    classroom_number: string;     // 教室号
+    @Column({ type: 'varchar', length: 255, nullable: false })
+    classroom_number: string;   // 申请的教室号
 }

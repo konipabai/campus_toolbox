@@ -1,20 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ClassroomService } from './classroom.service';
 import { CreateClassroomDto } from './dto/create-classroom.dto';
 import { UpdateClassroomDto } from './dto/update-classroom.dto';
 
 @Controller('classroom')
 export class ClassroomController {
-  constructor(private readonly classroomService: ClassroomService) {}
+  constructor(private readonly classroomService: ClassroomService) { }
+
+  @Get()
+  findClassroom(@Query() query: { building: string, floor: number }) {
+    return this.classroomService.findClassroom(query);
+  }
 
   @Post()
   create(@Body() createClassroomDto: CreateClassroomDto) {
     return this.classroomService.create(createClassroomDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.classroomService.findAll();
   }
 
   @Get(':id')
