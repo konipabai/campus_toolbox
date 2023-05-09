@@ -13,24 +13,33 @@ export class ClassroomService {
     @InjectRepository(Classroom) private readonly classroom: Repository<Classroom>,
   ) { }
 
-  findClassroom(query: { building: string, floor: number }): classroom_type[] {
-    let data = []
+  async findClassroom(query: { building: string, floor: number }): Promise<classroom_type[]> {
+    let classroom_data: classroom_type[] = []
     if (query.building != null && query.floor != null) {
-      data = classroom.filter((item) => {
+      classroom_data = classroom.filter((item) => {
         return (item.classroom_building == query.building && item.classroom_floor == query.floor)
       })
     } else if (query.building != null) {
-      data = classroom.filter((item) => {
+      classroom_data = classroom.filter((item) => {
         return item.classroom_building == query.building
       })
     } else if (query.floor != null) {
-      data = classroom.filter((item) => {
+      classroom_data = classroom.filter((item) => {
         return item.classroom_floor == query.floor
       })
     } else {
-      data = classroom
+      classroom_data = classroom
     }
-    return data
+    const reserve_classroom: CreateClassroomDto[] = await this.classroom.find()
+    classroom_data.map((classroom_item: classroom_type) => {
+      classroom_item.reservation_orders = []
+      reserve_classroom.map((reserve_item: CreateClassroomDto) => {
+        if ((reserve_item.classroom_number == classroom_item.classroom_number) && (reserve_item.state == "true")) {
+          classroom_item.reservation_orders.push([reserve_item.reason, reserve_item.time_frame])
+        }
+      })
+    })
+    return classroom_data
   }
 
   create(createClassroomDto: CreateClassroomDto) {
