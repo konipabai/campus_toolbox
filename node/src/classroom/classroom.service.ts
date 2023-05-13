@@ -15,15 +15,15 @@ export class ClassroomService {
 
   async findClassroom(query: { building: string, floor: number }): Promise<classroom_type[]> {
     let classroom_data: classroom_type[] = []
-    if (query.building != null && query.floor != null) {
+    if (query.building != "" && query.floor != 0) {
       classroom_data = classroom.filter((item) => {
         return (item.classroom_building == query.building && item.classroom_floor == query.floor)
       })
-    } else if (query.building != null) {
+    } else if (query.building != "") {
       classroom_data = classroom.filter((item) => {
         return item.classroom_building == query.building
       })
-    } else if (query.floor != null) {
+    } else if (query.floor != 0) {
       classroom_data = classroom.filter((item) => {
         return item.classroom_floor == query.floor
       })
