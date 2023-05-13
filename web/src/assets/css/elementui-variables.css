@@ -1,0 +1,19 @@
+:root {
+  --bg-color: #2B579A;
+  --title-bg-color: #4d76b9;
+  --text-color: #D7DADD;
+
+  --element-width-full: 100%;
+  --element-height-full: 100%;
+  --element-height-full-viewport-height: 100vh;
+  --element-active-color: #002050;
+  --element-hover-color: #124078;
+
+  --icon-width: 18px;
+  --icon-height: 18px;
+  --icon-margin-right: 10px;
+
+  --title-font-size: 25px;
+  --title-font-weight: 800;
+
+}

@@ -8,7 +8,7 @@ import box from "./layout/box.vue";
 
 <style lang="less">
 html, body, #app {
-  height: 100%;
-  width: 100%;
+  height: var(--element-height-full);
+  width: var(--element-width-full);
 }
 </style>
