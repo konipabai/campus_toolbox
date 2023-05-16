@@ -200,5 +200,8 @@ const handleClose = (key: string, keyPath: string[]) => {
       background-color: var(--element-hover-color) !important;
     }
   }
+  :deep(.el-sub-menu__title:hover) {
+    background-color: var(--element-hover-color) !important;
+  }
 }
 </style>
