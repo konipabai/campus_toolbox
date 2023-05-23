@@ -191,8 +191,9 @@ const handleClose = (key: string, keyPath: string[]) => {
     height: var(--icon-height);
     margin-right: var(--icon-margin-right);
   }
+}
 
-  .el-menu-item {
+.el-menu-item {
     &.is-active:not(.el-menu-vertical-0) {
       background-color: var(--element-active-color) !important;
     }
@@ -200,8 +201,8 @@ const handleClose = (key: string, keyPath: string[]) => {
       background-color: var(--element-hover-color) !important;
     }
   }
-  :deep(.el-sub-menu__title:hover) {
+
+:deep(.el-sub-menu__title:hover) {
     background-color: var(--element-hover-color) !important;
   }
-}
 </style>
