@@ -7,13 +7,13 @@
       text-color="var(--text-color)"
       active-text-color="var(--text-color)"
       :unique-opened="true"
-      :collapse="isCollapse"
+      :collapse="menuControl.isCollapse"
       @open="handleOpen"
       @close="handleClose"
     >
       <el-menu-item
         index="0"
-        @click="isCollapse = !isCollapse"
+        @click="menuChang()"
         class="el-menu-vertical-0"
       >
         <img src="../../assets/icon/logo.svg" class="el-menu-vertical-0-icon" />
@@ -149,8 +149,13 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
+import { menuControlStore } from "../../store/menuControlStore";
 
-const isCollapse = ref(false);
+const menuControl = menuControlStore()
+const menuChang = () => {
+  menuControl.changeState()
+}
+
 const handleOpen = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
