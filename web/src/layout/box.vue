@@ -9,7 +9,7 @@
           <page_header />
         </el-header>
         <el-main>
-          Main
+          <router-view />
           <!-- <Button @click="date()">aaa</Button> -->
         </el-main>
       </el-container>
