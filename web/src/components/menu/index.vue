@@ -187,7 +187,7 @@ const handleClose = (key: string, keyPath: string[]) => {
       background-color: var(--bg-color) !important;
     }
     &:hover {
-      background-color: var(--title-bg-color) !important;
+      background-color: var(--title-hover-bg-color) !important;
     }
   }
 

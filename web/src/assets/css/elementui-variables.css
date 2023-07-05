@@ -1,6 +1,6 @@
 :root {
   --bg-color: #2B579A;
-  --title-bg-color: #4d76b9;
+  --title-hover-bg-color: #3967ab;
   --text-color: #D7DADD;
 
   --element-width-full: 100%;
@@ -10,6 +10,7 @@
   --element-hover-color: #124078;
 
   --button-hover-color: #d2d2d2;
+  --button-active-color: #b1b1b1;
   --button-color: #808080;
 
   --icon-width: 18px;
