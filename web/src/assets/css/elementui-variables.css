@@ -1,7 +1,8 @@
 :root {
   --bg-color: #2B579A;
   --title-hover-bg-color: #3967ab;
-  --text-color: #D7DADD;
+  --w-text-color: #D7DADD;
+  --b-text-color: #262626;
 
   --element-width-full: 100%;
   --element-height-full: 100%;
@@ -20,4 +21,5 @@
   --title-font-size: 25px;
   --title-font-weight: 800;
 
+  --text-font-size: 16px;
 }
