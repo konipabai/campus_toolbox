@@ -1,7 +1,6 @@
 <template>
   <el-scrollbar>
-    <el-menu default-active="1" class="el-menu-vertical" background-color="var(--bg-color)"
-      text-color="var(--w-text-color)" active-text-color="var(--w-text-color)" :unique-opened="true"
+    <el-menu default-active="1" class="el-menu-vertical" background-color="var(--bg-color)" :unique-opened="true"
       :collapse="menuControl.isCollapse">
       <el-menu-item index="0" @click="menuChang()" class="el-menu-vertical-0">
         <img src="../../assets/icon/logo.svg" class="el-menu-vertical-0-icon" />
@@ -110,7 +109,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
 import { menuControlStore } from "../../store/menuControlStore";
 
 const menuControl = menuControlStore()
@@ -120,6 +118,14 @@ const menuChang = () => {
 </script>
 
 <style lang="less" scoped>
+:deep(*) {
+  color: var(--w-text-color) !important;
+}
+
+:deep(.el-sub-menu__title:hover) {
+  background-color: var(--element-hover-color) !important;
+}
+
 .el-menu-vertical {
   min-height: var(--element-height-full-viewport-height);
 
@@ -131,7 +137,7 @@ const menuChang = () => {
     &-icon {
       width: 35px;
       height: 35px;
-      margin-right: var(--icon-margin-right);
+      margin-right: 10px;
       margin-left: -8px;
     }
 
@@ -140,34 +146,28 @@ const menuChang = () => {
       font-weight: var(--title-font-weight);
     }
 
-    &.is-active {
-      background-color: var(--bg-color) !important;
-    }
-
     &:hover {
-      background-color: var(--title-hover-bg-color) !important;
+      background-color: var(--title-hover-bg-color);
     }
   }
 
-  &-all-icon {
-    width: var(--icon-width);
-    height: var(--icon-height);
-    margin-right: var(--icon-margin-right);
+  &-all {
+    &-icon {
+      width: 18px;
+      height: 18px;
+      margin-right: 10px;
+    }
   }
 }
 
 .el-menu-item {
 
   &.is-active:not(.el-menu-vertical-0) {
-    background-color: var(--element-active-color) !important;
+    background-color: var(--element-active-color);
   }
 
   &:hover:not(.el-menu-vertical-0) {
-    background-color: var(--element-hover-color) !important;
+    background-color: var(--element-hover-color);
   }
-}
-
-:deep(.el-sub-menu__title:hover) {
-  background-color: var(--element-hover-color) !important;
 }
 </style>
