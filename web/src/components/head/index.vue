@@ -35,6 +35,28 @@
         </el-breadcrumb-item>
       </el-breadcrumb>
     </span>
+    <span class="head-box-span-2">
+      <template v-if="fullScreen == false">
+        <el-tooltip effect="dark" content="全屏" placement="bottom">
+          <img src="../../assets/icon/fullScreen.svg" @click="changeFullScreen()"
+            class="head-box-span-2-img head-box-span-2-all" />
+        </el-tooltip>
+      </template>
+      <template v-else>
+        <el-tooltip effect="dark" content="取消全屏" placement="bottom" class="qwe">
+          <img src="../../assets/icon/cancelFullScreen.svg" @click="changeFullScreen()"
+            class="head-box-span-2-img head-box-span-2-all" />
+        </el-tooltip>
+      </template>
+      <span class="head-box-span-2-all">
+        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
+        <span class="head-box-span-2-text">卡拉米</span>
+      </span>
+      <img src="../../assets/icon/setting.svg" class="head-box-span-2-img head-box-span-2-all" @click="drawer = true" />
+      <el-drawer v-model="drawer" title="系统设置">
+        先随便放点东西占占位置
+      </el-drawer>
+    </span>
   </div>
 </template>
 
@@ -43,6 +65,7 @@ import { Fold, Expand } from "@element-plus/icons-vue";
 import { menuControlStore } from "../../store/menuControlStore";
 import { ArrowRight, ArrowDown } from '@element-plus/icons-vue'
 import router from "../../router";
+import { ref } from "vue";
 
 const menuControl = menuControlStore();
 const menuChang = () => {
@@ -57,9 +80,23 @@ const dropDown = (item: any, items: any) => {
     router.push(item.path + '/' + items.path + '/' + items.children[0].path)
   }
 }
+
+const fullScreen = ref(false)
+const changeFullScreen = () => {
+  fullScreen.value = !fullScreen.value
+  if (fullScreen.value == true) {
+    document.documentElement.requestFullscreen()
+  }
+  else {
+    document.exitFullscreen()
+  }
+}
+
+const drawer = ref(false)
 </script>
 
 <style lang="less" scoped>
+
 .head-box {
   height: var(--element-height-full);
   display: flex;
@@ -97,27 +134,49 @@ const dropDown = (item: any, items: any) => {
       outline: none;
     }
 
-    &-title {
-      color: var(--b-text-color);
-
-      &:hover {
-        font-weight: bold;
-      }
+    &-title:hover {
+      font-weight: bold;
     }
 
     &-icon {
       height: 10px;
     }
   }
+
+  &-span-2 {
+    height: var(--element-height-full);
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+
+    &-all {
+      height: var(--element-height-full);
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+
+      &:hover {
+        background-color: var(--button-hover-color);
+      }
+
+      &:active {
+        background-color: var(--button-active-color);
+      }
+    }
+
+    &-img {
+      height: var(--element-height-full);
+      width: 25px;
+    }
+
+    &-text {
+      padding-left: 10px;
+    }
+  }
 }
 
-:deep(.el-dropdown-menu__item) {
-  color: var(--b-text-color);
-
-  &:hover {
-    font-weight: bold;
-    color: var(--b-text-color) !important;
-    background-color: var(--button-hover-color) !important;
-  }
+:deep(.el-dropdown-menu__item):hover {
+  font-weight: bold;
+  background-color: var(--button-hover-color) !important;
 }
 </style>
