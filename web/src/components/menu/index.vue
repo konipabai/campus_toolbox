@@ -1,7 +1,7 @@
 <template>
   <el-scrollbar>
-    <el-menu default-active="1" class="el-menu-vertical" background-color="var(--bg-color)" :unique-opened="true"
-      :collapse="menuControl.isCollapse">
+    <el-menu :default-active="activeIndex" class="el-menu-vertical" background-color="var(--bg-color)"
+      :unique-opened="true" :collapse="menuControl.isCollapse">
       <el-menu-item index="0" @click="menuChang()" class="el-menu-vertical-0">
         <img src="../../assets/icon/logo.svg" class="el-menu-vertical-0-icon" />
         <template #title>
@@ -110,11 +110,75 @@
 
 <script lang="ts" setup>
 import { menuControlStore } from "../../store/menuControlStore";
+import { watch, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 const menuControl = menuControlStore()
 const menuChang = () => {
   menuControl.changeState()
 }
+
+const activeIndex = ref('0');
+const route = useRoute();
+
+watch(
+  () => route.path, (newPath) => {
+    updateMenuSelection(newPath);
+  }
+);
+const updateMenuSelection = (path: string) => {
+  if (path === '/home') {
+    activeIndex.value = '1';
+  } else if (path.startsWith('/orders')) {
+    if (path.includes('/reservations')) {
+      if (path.includes('/approveOrders')) {
+        activeIndex.value = '2-1-1';
+      } else if (path.includes('/approvalRecords')) {
+        activeIndex.value = '2-1-2';
+      }
+    } else if (path.includes('/maintenance')) {
+      if (path.includes('/approveOrders')) {
+        activeIndex.value = '2-2-1';
+      } else if (path.includes('/approvalRecords')) {
+        activeIndex.value = '2-2-2';
+      }
+    } else if (path.includes('/lf')) {
+      activeIndex.value = '2-3';
+    }
+  } else if (path === '/classroom') {
+    activeIndex.value = '3';
+  } else if (path === '/seat') {
+    activeIndex.value = '4';
+  } else if (path === '/sports') {
+    activeIndex.value = '5';
+  } else if (path === '/records') {
+    activeIndex.value = '6';
+  } else if (path.startsWith('/fault')) {
+    if (path.includes('/apply')) {
+      activeIndex.value = '7-1';
+    } else if (path.includes('/records')) {
+      activeIndex.value = '7-2';
+    }
+  } else if (path.startsWith('/lostFound')) {
+    if (path.includes('/view')) {
+      activeIndex.value = '8-1';
+    } else if (path.includes('/post')) {
+      activeIndex.value = '8-2';
+    } else if (path.includes('/history')) {
+      activeIndex.value = '8-3';
+    }
+  } else if (path.startsWith('/recruitment')) {
+    if (path.includes('/view')) {
+      activeIndex.value = '9-1';
+    } else if (path.includes('/edit')) {
+      activeIndex.value = '9-2';
+    }
+  } else if (path === '/news') {
+    activeIndex.value = '10';
+  }
+};
+
+
 </script>
 
 <style lang="less" scoped>
@@ -126,8 +190,15 @@ const menuChang = () => {
   background-color: var(--element-hover-color) !important;
 }
 
+:deep(.el-menu-vertical > .el-sub-menu.is-active > .el-sub-menu__title) {
+  background-color: var(--element-active-color) !important;
+  border-bottom: 1px solid var(--bg-color);
+  transition: none;
+}
+
 .el-menu-vertical {
   min-height: var(--element-height-full-viewport-height);
+  border-right: 1px solid var(--bg-color);
 
   &:not(.el-menu--collapse) {
     width: 200px;
