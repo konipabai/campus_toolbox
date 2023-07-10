@@ -186,14 +186,15 @@ const updateMenuSelection = (path: string) => {
   color: var(--w-text-color) !important;
 }
 
-:deep(.el-sub-menu__title:hover) {
-  background-color: var(--element-hover-color) !important;
+:deep(.el-menu-vertical > .el-sub-menu.is-active > .el-sub-menu__title.el-tooltip__trigger) {
+  background-color: var(--element-active-color) !important;
+  &:hover {
+    background-color: var(--element-hover-color) !important;
+  }
 }
 
-:deep(.el-menu-vertical > .el-sub-menu.is-active > .el-sub-menu__title) {
-  background-color: var(--element-active-color) !important;
-  border-bottom: 1px solid var(--bg-color);
-  transition: none;
+:deep(.el-sub-menu__title:hover) {
+  background-color: var(--element-hover-color) !important;
 }
 
 .el-menu-vertical {
