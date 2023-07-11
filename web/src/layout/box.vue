@@ -40,11 +40,11 @@ const date = async () => {
 
     &-head {
       padding: 0px !important;
-      border-bottom: 1px solid #E6E6E6;
     }
 
     &-text {
       overflow: hidden;
+      background-color: var(--main-bg-color);
     }
   }
 }
