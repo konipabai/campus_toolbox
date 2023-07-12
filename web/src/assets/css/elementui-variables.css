@@ -4,6 +4,7 @@
   --title-hover-bg-color: #3967ab;
   --w-text-color: #D7DADD;
   --b-text-color: #262626;
+  --disabled-color: #a8abb2;
 
   --element-width-full: 100%;
   --element-height-full: 100%;
@@ -14,6 +15,7 @@
   --button-hover-color: #d2d2d2;
   --button-active-color: #b1b1b1;
   --button-color: #808080;
+  --button-text-color: #ffffff;
 
   --title-font-size: 25px;
   --title-font-weight: 800;
