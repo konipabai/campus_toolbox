@@ -25,9 +25,9 @@
         </el-col>
         <el-col :span="7">
           <el-form-item label="时间段">
-            <el-time-select v-model="startTime" :max-time="endTime" placeholder="开始" start="08:30" step="00:15"
+            <el-time-select v-model="startTime" :max-time="endTime" placeholder="开始" start="08:30" step="00:30"
               end="22:00" />
-            <el-time-select v-model="endTime" :min-time="startTime" placeholder="结束" start="08:30" step="00:15"
+            <el-time-select v-model="endTime" :min-time="startTime" placeholder="结束" start="08:30" step="00:30"
               end="22:00" />
           </el-form-item>
         </el-col>
@@ -36,17 +36,20 @@
         <el-col class="classroom-head-button">
           <el-form-item>
             <el-button type="primary">查询</el-button>
-            <el-button>重置</el-button>
+            <el-button @click="resetForm()">重置</el-button>
           </el-form-item>
         </el-col>
       </el-row>
     </el-card>
     <el-card shadow="hover" class="classroom-main-card">
       <el-table :data="tableData" class="classroom-main-table">
-        <el-table-column prop="building" label="地点" width="180" />
-        <el-table-column prop="floor" label="楼层" width="180" />
-        <el-table-column prop="date" label="日期" width="180" />
-        <el-table-column prop="time" label="时间段" />
+        <el-table-column prop="building" label="地点" min-width="2" />
+        <el-table-column prop="floor" label="楼层" min-width="2" />
+        <el-table-column prop="date" label="日期" min-width="2" />
+        <el-table-column prop="time" label="时间段" min-width="2" />
+        <el-table-column min-width="1">
+          <el-button type="primary">预约</el-button>
+        </el-table-column>
       </el-table>
     </el-card>
   </div>
@@ -62,6 +65,14 @@ const dateValue = ref('')
 const startTime = ref('')
 const endTime = ref('')
 const locale = zhCn
+
+const resetForm = () => {
+  buildingValue.value = ''
+  floorValue.value = ''
+  dateValue.value = ''
+  startTime.value = ''
+  endTime.value = ''
+}
 
 const buildingData = [
   {
