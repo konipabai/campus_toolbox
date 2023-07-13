@@ -45,6 +45,7 @@
       <el-table :data="tableData" class="classroom-main-table">
         <el-table-column prop="building" label="地点" min-width="2" />
         <el-table-column prop="floor" label="楼层" min-width="2" />
+        <el-table-column prop="number" label="教室号" min-width="2" />
         <el-table-column prop="date" label="日期" min-width="2" />
         <el-table-column prop="time" label="时间段" min-width="2" />
         <el-table-column min-width="1">
@@ -109,84 +110,91 @@ const tableData = [
   {
     building: 'ALGOL教学楼',
     floor: '二楼',
+    number: 'A202',
     date: '2023/07/12',
     time: '10:00-10:30'
-  },
-  {
+  },{
     building: 'ALGOL教学楼',
     floor: '二楼',
+    number: 'A202',
     date: '2023/07/12',
     time: '10:00-10:30'
-  },
-  {
+  },{
     building: 'ALGOL教学楼',
     floor: '二楼',
+    number: 'A202',
     date: '2023/07/12',
     time: '10:00-10:30'
-  },
-  {
+  },{
     building: 'ALGOL教学楼',
     floor: '二楼',
+    number: 'A202',
     date: '2023/07/12',
     time: '10:00-10:30'
-  },
-  {
+  },{
     building: 'ALGOL教学楼',
     floor: '二楼',
+    number: 'A202',
     date: '2023/07/12',
     time: '10:00-10:30'
-  },
-  {
+  },{
     building: 'ALGOL教学楼',
     floor: '二楼',
+    number: 'A202',
     date: '2023/07/12',
     time: '10:00-10:30'
-  },
-  {
+  },{
     building: 'ALGOL教学楼',
     floor: '二楼',
+    number: 'A202',
     date: '2023/07/12',
     time: '10:00-10:30'
-  },
-  {
+  },{
     building: 'ALGOL教学楼',
     floor: '二楼',
+    number: 'A202',
     date: '2023/07/12',
     time: '10:00-10:30'
-  },
-  {
+  },{
     building: 'ALGOL教学楼',
     floor: '二楼',
+    number: 'A202',
     date: '2023/07/12',
     time: '10:00-10:30'
-  },
-  {
+  },{
     building: 'ALGOL教学楼',
     floor: '二楼',
+    number: 'A202',
     date: '2023/07/12',
     time: '10:00-10:30'
-  },
-  {
+  },{
     building: 'ALGOL教学楼',
     floor: '二楼',
+    number: 'A202',
     date: '2023/07/12',
     time: '10:00-10:30'
-  },
-  {
+  },{
     building: 'ALGOL教学楼',
     floor: '二楼',
+    number: 'A202',
     date: '2023/07/12',
     time: '10:00-10:30'
-  },
-  {
+  },{
     building: 'ALGOL教学楼',
     floor: '二楼',
+    number: 'A202',
     date: '2023/07/12',
     time: '10:00-10:30'
-  },
-  {
+  },{
     building: 'ALGOL教学楼',
     floor: '二楼',
+    number: 'A202',
+    date: '2023/07/12',
+    time: '10:00-10:30'
+  },{
+    building: 'ALGOL教学楼',
+    floor: '二楼',
+    number: 'A202',
     date: '2023/07/12',
     time: '10:00-10:30'
   }
