@@ -61,9 +61,8 @@
 </template>
 
 <script setup lang="ts">
-import { Fold, Expand } from "@element-plus/icons-vue";
+import { Fold, Expand, ArrowRight, ArrowDown } from "@element-plus/icons-vue";
 import { menuControlStore } from "../../store/menuControlStore";
-import { ArrowRight, ArrowDown } from '@element-plus/icons-vue'
 import router from "../../router";
 import { ref } from "vue";
 

@@ -2,9 +2,14 @@
   <div class="classroom">
     <el-card shadow="hover">
       <el-row>
-        <el-col :span="5">
+        <el-col :span="6">
           <el-form-item label="地点">
             <el-select v-model="buildingValue" placeholder="请选择楼名" clearable>
+              <template #prefix>
+                <el-icon>
+                  <MapLocation />
+                </el-icon>
+              </template>
               <el-option v-for="item in buildingData" :key="item.value" :value="item.value" />
             </el-select>
           </el-form-item>
@@ -12,6 +17,11 @@
         <el-col :span="6">
           <el-form-item label="楼层">
             <el-select v-model="floorValue" placeholder="请选择楼层" clearable>
+              <template #prefix>
+                <el-icon>
+                  <OfficeBuilding />
+                </el-icon>
+              </template>
               <el-option v-for="item in floorData" :key="item.value" :value="item.value" />
             </el-select>
           </el-form-item>
@@ -23,19 +33,23 @@
             </el-config-provider>
           </el-form-item>
         </el-col>
-        <el-col :span="7">
+        <el-col :span="6">
           <el-form-item label="时间段">
-            <el-time-select v-model="startTime" :max-time="endTime" placeholder="开始" start="08:30" step="00:30"
-              end="22:00" />
-            <el-time-select v-model="endTime" :min-time="startTime" placeholder="结束" start="08:30" step="00:30"
-              end="22:00" />
+            <el-select v-model="time" class="m-2" placeholder="请选择时间" clearable>
+              <template #prefix>
+                <el-icon>
+                  <Timer />
+                </el-icon>
+              </template>
+              <el-option v-for="item in timeData" :key="item" :value="item" />
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col class="classroom-head-button">
           <el-form-item>
-            <el-button type="primary">查询</el-button>
+            <el-button type="primary" @click="searchForm()">查询</el-button>
             <el-button @click="resetForm()">重置</el-button>
           </el-form-item>
         </el-col>
@@ -59,20 +73,30 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
+import { Timer, MapLocation, OfficeBuilding } from '@element-plus/icons-vue'
+
 
 const buildingValue = ref('')
 const floorValue = ref('')
 const dateValue = ref('')
-const startTime = ref('')
-const endTime = ref('')
+const time = ref('')
 const locale = zhCn
+
+const searchForm = () => {
+  // console.log('buildingValue', buildingValue.value);
+  // console.log('floorValue', floorValue.value);
+  console.log('dateValue', dateValue.value);
+  console.log('dateValue', dateValue.value.toString().split(" ")[3]);
+  console.log('dateValue', dateValue.value.toString().split(" ")[1]);
+  console.log('dateValue', dateValue.value.toString().split(" ")[2]);
+  console.log('timeValue', time.value);
+}
 
 const resetForm = () => {
   buildingValue.value = ''
   floorValue.value = ''
   dateValue.value = ''
-  startTime.value = ''
-  endTime.value = ''
+  time.value = ''
 }
 
 const buildingData = [
@@ -106,108 +130,136 @@ const floorData = [
     value: '四楼',
   }
 ]
+const timeData = [
+  '第1节 8:30-9:15',
+  '第2节 9:20-10:05',
+  '第3节 10:25-11:10',
+  '第4节 11:15-12:00',
+  '第5节 14:00-14:45',
+  '第6节 14:50-15:35',
+  '第7节 15:55-16:40',
+  '第8节 16:45-17:30',
+  '第9节 18:30-19:15',
+  '第10节 19:20-20:05',
+  '第11节 20:25-21:10',
+  '第12节 21:15-22:00'
+]
 const tableData = [
   {
     building: 'ALGOL教学楼',
     floor: '二楼',
     number: 'A202',
     date: '2023/07/12',
-    time: '10:00-10:30'
-  },{
+    time: '第12节 21:15-22:00'
+  }, {
     building: 'ALGOL教学楼',
     floor: '二楼',
     number: 'A202',
     date: '2023/07/12',
-    time: '10:00-10:30'
-  },{
+    time: '第12节 21:15-22:00'
+  }, {
     building: 'ALGOL教学楼',
     floor: '二楼',
     number: 'A202',
     date: '2023/07/12',
-    time: '10:00-10:30'
-  },{
+    time: '第12节 21:15-22:00'
+  }, {
     building: 'ALGOL教学楼',
     floor: '二楼',
     number: 'A202',
     date: '2023/07/12',
-    time: '10:00-10:30'
-  },{
+    time: '第12节 21:15-22:00'
+  }, {
     building: 'ALGOL教学楼',
     floor: '二楼',
     number: 'A202',
     date: '2023/07/12',
-    time: '10:00-10:30'
-  },{
+    time: '第12节 21:15-22:00'
+  }, {
     building: 'ALGOL教学楼',
     floor: '二楼',
     number: 'A202',
     date: '2023/07/12',
-    time: '10:00-10:30'
-  },{
+    time: '第12节 21:15-22:00'
+  }, {
     building: 'ALGOL教学楼',
     floor: '二楼',
     number: 'A202',
     date: '2023/07/12',
-    time: '10:00-10:30'
-  },{
+    time: '第12节 21:15-22:00'
+  }, {
     building: 'ALGOL教学楼',
     floor: '二楼',
     number: 'A202',
     date: '2023/07/12',
-    time: '10:00-10:30'
-  },{
+    time: '第12节 21:15-22:00'
+  }, {
     building: 'ALGOL教学楼',
     floor: '二楼',
     number: 'A202',
     date: '2023/07/12',
-    time: '10:00-10:30'
-  },{
+    time: '第12节 21:15-22:00'
+  }, {
     building: 'ALGOL教学楼',
     floor: '二楼',
     number: 'A202',
     date: '2023/07/12',
-    time: '10:00-10:30'
-  },{
+    time: '第12节 21:15-22:00'
+  }, {
     building: 'ALGOL教学楼',
     floor: '二楼',
     number: 'A202',
     date: '2023/07/12',
-    time: '10:00-10:30'
-  },{
+    time: '第12节 21:15-22:00'
+  }, {
     building: 'ALGOL教学楼',
     floor: '二楼',
     number: 'A202',
     date: '2023/07/12',
-    time: '10:00-10:30'
-  },{
+    time: '第12节 21:15-22:00'
+  }, {
     building: 'ALGOL教学楼',
     floor: '二楼',
     number: 'A202',
     date: '2023/07/12',
-    time: '10:00-10:30'
-  },{
+    time: '第12节 21:15-22:00'
+  }, {
     building: 'ALGOL教学楼',
     floor: '二楼',
     number: 'A202',
     date: '2023/07/12',
-    time: '10:00-10:30'
-  },{
+    time: '第12节 21:15-22:00'
+  }, {
     building: 'ALGOL教学楼',
     floor: '二楼',
     number: 'A202',
     date: '2023/07/12',
-    time: '10:00-10:30'
+    time: '第12节 21:15-22:00'
+  }, {
+    building: 'ALGOL教学楼',
+    floor: '二楼',
+    number: 'A202',
+    date: '2023/07/12',
+    time: '第12节 21:15-22:00'
+  }, {
+    building: 'ALGOL教学楼',
+    floor: '二楼',
+    number: 'A202',
+    date: '2023/07/12',
+    time: '第12节 21:15-22:00'
+  }, {
+    building: 'ALGOL教学楼',
+    floor: '二楼',
+    number: 'A202',
+    date: '2023/07/12',
+    time: '第12节 21:15-22:00'
   }
 ]
 </script>
 
 <style lang="less" scoped>
-:deep(.el-input--prefix > .el-input__wrapper) {
-  width: 98px;
-}
-
 :deep(.el-input__wrapper) {
-  width: 160px;
+  width: 190px;
 }
 
 :deep(.el-button.el-button--primary) {
@@ -226,6 +278,11 @@ const tableData = [
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.el-select-dropdown__item.selected {
+  background-color: var(--select-color);
+  font-weight: normal;
 }
 
 .classroom {
