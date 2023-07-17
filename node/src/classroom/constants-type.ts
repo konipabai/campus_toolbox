@@ -1,6 +1,7 @@
-export interface classroom_type {
-    classroom_building: string;
-    classroom_floor: number;
-    classroom_number: string;
-    reservation_orders: string[][];
+export interface classroomType {
+    classroomBuilding: string;
+    classroomFloor: string;
+    classroomNumber: string;
+    date: string;
+    time: string[];
 }

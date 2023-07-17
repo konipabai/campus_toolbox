@@ -8,7 +8,7 @@ export class ClassroomController {
   constructor(private readonly classroomService: ClassroomService) { }
 
   @Get()
-  findClassroom(@Query() query: { building: string, floor: number }) {
+  findClassroom(@Query() query: { building: string, floor: string, date: string, time: string }) {
     return this.classroomService.findClassroom(query);
   }
 

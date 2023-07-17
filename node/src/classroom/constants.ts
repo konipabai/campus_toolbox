@@ -1,118 +1,214 @@
-import { classroom_type } from "./constants-type"
+import { classroomType } from "./constants-type"
 
-export const classroom: classroom_type[] = [
+export const classroom: classroomType[] = [
     {
-        classroom_building: "ALGOL教学楼",
-        classroom_floor: 1,
-        classroom_number: "A101",
-        reservation_orders: []
+        classroomBuilding: "ALGOL 教学楼",
+        classroomFloor: "一楼",
+        classroomNumber: "A101",
+        date: "",
+        time: []
     },
     {
-        classroom_building: "ALGOL教学楼",
-        classroom_floor: 1,
-        classroom_number: "A102",
-        reservation_orders: []
+        classroomBuilding: "ALGOL 教学楼",
+        classroomFloor: "一楼",
+        classroomNumber: "A102",
+        date: "",
+        time: []
     },
     {
-        classroom_building: "ALGOL教学楼",
-        classroom_floor: 1,
-        classroom_number: "A103",
-        reservation_orders: []
+        classroomBuilding: "ALGOL 教学楼",
+        classroomFloor: "一楼",
+        classroomNumber: "A103",
+        date: "",
+        time: []
     },
     {
-        classroom_building: "ALGOL教学楼",
-        classroom_floor: 1,
-        classroom_number: "A104",
-        reservation_orders: []
+        classroomBuilding: "ALGOL 教学楼",
+        classroomFloor: "一楼",
+        classroomNumber: "A104",
+        date: "",
+        time: []
     },
     {
-        classroom_building: "ALGOL教学楼",
-        classroom_floor: 1,
-        classroom_number: "A105",
-        reservation_orders: []
+        classroomBuilding: "ALGOL 教学楼",
+        classroomFloor: "一楼",
+        classroomNumber: "A105",
+        date: "",
+        time: []
     },
     {
-        classroom_building: "ALGOL教学楼",
-        classroom_floor: 1,
-        classroom_number: "A106",
-        reservation_orders: []
+        classroomBuilding: "ALGOL 教学楼",
+        classroomFloor: "一楼",
+        classroomNumber: "A106",
+        date: "",
+        time: []
     },
     {
-        classroom_building: "ALGOL教学楼",
-        classroom_floor: 1,
-        classroom_number: "A107",
-        reservation_orders: []
+        classroomBuilding: "ALGOL 教学楼",
+        classroomFloor: "一楼",
+        classroomNumber: "A107",
+        date: "",
+        time: []
     },
     {
-        classroom_building: "ALGOL教学楼",
-        classroom_floor: 2,
-        classroom_number: "A201",
-        reservation_orders: []
+        classroomBuilding: "ALGOL 教学楼",
+        classroomFloor: "二楼",
+        classroomNumber: "A201",
+        date: "",
+        time: []
     },
     {
-        classroom_building: "ALGOL教学楼",
-        classroom_floor: 2,
-        classroom_number: "A202",
-        reservation_orders: []
+        classroomBuilding: "ALGOL 教学楼",
+        classroomFloor: "二楼",
+        classroomNumber: "A202",
+        date: "",
+        time: []
     },
     {
-        classroom_building: "ALGOL教学楼",
-        classroom_floor: 2,
-        classroom_number: "A203",
-        reservation_orders: []
+        classroomBuilding: "ALGOL 教学楼",
+        classroomFloor: "二楼",
+        classroomNumber: "A203",
+        date: "",
+        time: []
     },
     {
-        classroom_building: "ALGOL教学楼",
-        classroom_floor: 3,
-        classroom_number: "A301",
-        reservation_orders: []
+        classroomBuilding: "ALGOL 教学楼",
+        classroomFloor: "三楼",
+        classroomNumber: "A301",
+        date: "",
+        time: []
     },
     {
-        classroom_building: "ALGOL教学楼",
-        classroom_floor: 4,
-        classroom_number: "A402",
-        reservation_orders: []
+        classroomBuilding: "ALGOL 教学楼",
+        classroomFloor: "四楼",
+        classroomNumber: "A402",
+        date: "",
+        time: []
     },
     {
-        classroom_building: "ALGOL教学楼",
-        classroom_floor: 5,
-        classroom_number: "A504",
-        reservation_orders: []
+        classroomBuilding: "ALGOL 教学楼",
+        classroomFloor: "五楼",
+        classroomNumber: "A504",
+        date: "",
+        time: []
     },
     {
-        classroom_building: "BASIC教学楼",
-        classroom_floor: 1,
-        classroom_number: "B101",
-        reservation_orders: []
+        classroomBuilding: "BASIC 教学楼",
+        classroomFloor: "一楼",
+        classroomNumber: "B101",
+        date: "",
+        time: []
     },
     {
-        classroom_building: "BASIC教学楼",
-        classroom_floor: 1,
-        classroom_number: "B102",
-        reservation_orders: []
+        classroomBuilding: "BASIC 教学楼",
+        classroomFloor: "一楼",
+        classroomNumber: "B102",
+        date: "",
+        time: []
     },
     {
-        classroom_building: "BASIC教学楼",
-        classroom_floor: 1,
-        classroom_number: "B103",
-        reservation_orders: []
+        classroomBuilding: "BASIC 教学楼",
+        classroomFloor: "一楼",
+        classroomNumber: "B103",
+        date: "",
+        time: []
     },
     {
-        classroom_building: "BASIC教学楼",
-        classroom_floor: 1,
-        classroom_number: "B105",
-        reservation_orders: []
+        classroomBuilding: "BASIC 教学楼",
+        classroomFloor: "一楼",
+        classroomNumber: "B105",
+        date: "",
+        time: []
     },
     {
-        classroom_building: "BASIC教学楼",
-        classroom_floor: 2,
-        classroom_number: "B201",
-        reservation_orders: []
+        classroomBuilding: "BASIC 教学楼",
+        classroomFloor: "二楼",
+        classroomNumber: "B201",
+        date: "",
+        time: []
     },
     {
-        classroom_building: "BASIC教学楼",
-        classroom_floor: 2,
-        classroom_number: "B202",
-        reservation_orders: []
+        classroomBuilding: "BASIC 教学楼",
+        classroomFloor: "二楼",
+        classroomNumber: "B202",
+        date: "",
+        time: []
+    },
+    {
+        classroomBuilding: "BASIC 教学楼",
+        classroomFloor: "二楼",
+        classroomNumber: "B202",
+        date: "",
+        time: []
+    },
+    {
+        classroomBuilding: "C++ 教学楼",
+        classroomFloor: "一楼",
+        classroomNumber: "C102",
+        date: "",
+        time: []
+    },
+    {
+        classroomBuilding: "C++ 教学楼",
+        classroomFloor: "一楼",
+        classroomNumber: "C103",
+        date: "",
+        time: []
+    },
+    {
+        classroomBuilding: "C++ 教学楼",
+        classroomFloor: "一楼",
+        classroomNumber: "C106",
+        date: "",
+        time: []
+    },
+    {
+        classroomBuilding: "C++ 教学楼",
+        classroomFloor: "二楼",
+        classroomNumber: "C201",
+        date: "",
+        time: []
+    },
+    {
+        classroomBuilding: "C++ 教学楼",
+        classroomFloor: "二楼",
+        classroomNumber: "C202",
+        date: "",
+        time: []
+    },
+    {
+        classroomBuilding: "DELPHI 教学楼",
+        classroomFloor: "一楼",
+        classroomNumber: "C101",
+        date: "",
+        time: []
+    },
+    {
+        classroomBuilding: "DELPHI 教学楼",
+        classroomFloor: "一楼",
+        classroomNumber: "C104",
+        date: "",
+        time: []
+    },
+    {
+        classroomBuilding: "DELPHI 教学楼",
+        classroomFloor: "二楼",
+        classroomNumber: "C202",
+        date: "",
+        time: []
+    },
+    {
+        classroomBuilding: "ERLANG 教学楼",
+        classroomFloor: "一楼",
+        classroomNumber: "C101",
+        date: "",
+        time: []
+    },
+    {
+        classroomBuilding: "ERLANG 教学楼",
+        classroomFloor: "二楼",
+        classroomNumber: "C201",
+        date: "",
+        time: []
     },
 ]

@@ -15,10 +15,13 @@ export class Classroom {
     reason: string;             // 申请理由
 
     @Column({ type: 'varchar', length: 255, nullable: false })
-    time_frame: string;         // 申请的时间范围
+    date: string;               // 申请的日期
 
     @Column({ type: 'varchar', length: 255, nullable: false })
-    classroom_number: string;   // 申请的教室号
+    time: string;               // 申请的时间
+
+    @Column({ type: 'varchar', length: 255, nullable: false })
+    classroomNumber: string;   // 申请的教室号
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     state: string;              // 是否申请成功
