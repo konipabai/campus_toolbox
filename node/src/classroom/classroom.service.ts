@@ -5,7 +5,8 @@ import { CreateClassroomDto } from './dto/create-classroom.dto';
 import { UpdateClassroomDto } from './dto/update-classroom.dto';
 import { Classroom } from './entities/classroom.entity';
 import { classroom } from './constants';
-import { classroomType } from "./constants-type"
+import type { classroomType } from "./constants-type"
+import * as moment from 'moment-timezone';
 
 @Injectable()
 export class ClassroomService {
@@ -14,16 +15,16 @@ export class ClassroomService {
   ) { }
 
   async findClassroom(query: { building: string, floor: string, date: string, time: string }): Promise<classroomType[]> {
-    let classroomData: classroomType[] = []
-    if (query.building != null && query.floor != null) {
+    var classroomData: classroomType[] = []
+    if ((query.building != null && query.floor != null) && (query.building != '' && query.floor != '')) {
       classroomData = classroom.filter((item) => {
         return (item.classroomBuilding == query.building && item.classroomFloor == query.floor)
       })
-    } else if (query.building != null) {
+    } else if (query.building != null && query.building != '') {
       classroomData = classroom.filter((item) => {
         return item.classroomBuilding == query.building
       })
-    } else if (query.floor != null) {
+    } else if (query.floor != null && query.floor != '') {
       classroomData = classroom.filter((item) => {
         return item.classroomFloor == query.floor
       })
@@ -31,37 +32,19 @@ export class ClassroomService {
       classroomData = classroom
     }
 
-    var dateYear = ""
-    var dateMonth = ""
-    var dateDay = ""
-    if (query.date == null) {
-      const nowDate = new Date();
-      dateYear = nowDate.getFullYear().toString();
-      dateMonth = (nowDate.getMonth() + 1).toString();
-      dateDay = nowDate.getDate().toString();
+    var formattedDateTime: string = ''
+    if (query.date != null && query.date != '') {
+      formattedDateTime = moment(query.date).tz('Asia/Shanghai').format('YYYY MM DD');
     } else {
-      dateYear = query.date.split(" ")[3]
-      dateDay = query.date.split(" ")[2]
-      if (query.date.split(" ")[1] == "Jan") dateMonth = "1"
-      else if (query.date.split(" ")[1] == "Feb") dateMonth = "2"
-      else if (query.date.split(" ")[1] == "Mar") dateMonth = "3"
-      else if (query.date.split(" ")[1] == "Apr") dateMonth = "4"
-      else if (query.date.split(" ")[1] == "May") dateMonth = "5"
-      else if (query.date.split(" ")[1] == "Jun") dateMonth = "6"
-      else if (query.date.split(" ")[1] == "Jul") dateMonth = "7"
-      else if (query.date.split(" ")[1] == "Aug") dateMonth = "8"
-      else if (query.date.split(" ")[1] == "Sep") dateMonth = "9"
-      else if (query.date.split(" ")[1] == "Oct") dateMonth = "10"
-      else if (query.date.split(" ")[1] == "Nov") dateMonth = "11"
-      else if (query.date.split(" ")[1] == "Dec") dateMonth = "12"
+      formattedDateTime = moment().tz('Asia/Shanghai').format('YYYY MM DD');
     }
 
     const reserveClassroom: CreateClassroomDto[] = await this.classroom.find()
     classroomData.map((classroomItem: classroomType) => {
       classroomItem.time = []
-      classroomItem.date = dateYear + " " + dateMonth + " " + dateDay
-      var timeData = []
-      if (query.time != null) {
+      classroomItem.date = formattedDateTime
+      var timeData: string[] = []
+      if (query.time != null && query.time != '') {
         timeData.push(query.time)
       } else {
         timeData = [

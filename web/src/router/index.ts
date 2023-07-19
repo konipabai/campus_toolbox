@@ -8,7 +8,6 @@ const routes: Array<RouteRecordRaw> = [
             father: "false"
         },
         component: () => import("../components/contents/home/index.vue")
-        
     },
     {
         path: '/orders',

@@ -56,10 +56,10 @@
       </el-row>
     </el-card>
     <el-card shadow="hover" class="classroom-main-card">
-      <el-table :data="tableData" class="classroom-main-table">
-        <el-table-column prop="building" label="地点" min-width="2" />
-        <el-table-column prop="floor" label="楼层" min-width="2" />
-        <el-table-column prop="number" label="教室号" min-width="2" />
+      <el-table :data="resultData" class="classroom-main-table">
+        <el-table-column prop="classroomBuilding" label="地点" min-width="2" />
+        <el-table-column prop="classroomFloor" label="楼层" min-width="2" />
+        <el-table-column prop="classroomNumber" label="教室号" min-width="2" />
         <el-table-column prop="date" label="日期" min-width="2" />
         <el-table-column prop="time" label="时间段" min-width="2" />
         <el-table-column min-width="1">
@@ -71,26 +71,40 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { Ref, ref, watch } from 'vue'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import { Timer, MapLocation, OfficeBuilding } from '@element-plus/icons-vue'
+import { getClassroom } from "../../../server/index";
+import type { classroomType } from "../../../types/classroom"
 
-
-const buildingValue = ref('')
-const floorValue = ref('')
-const dateValue = ref('')
-const time = ref('')
+const buildingValue: Ref<string> = ref('')
+const floorValue: Ref<string> = ref('')
+const dateValue: Ref<string> = ref('')
+const time: Ref<string> = ref('')
 const locale = zhCn
+const result: Ref<classroomType[]> = ref([])
+const resultData: Ref<classroomType[]> = ref([]);
 
-const searchForm = () => {
-  // console.log('buildingValue', buildingValue.value);
-  // console.log('floorValue', floorValue.value);
-  console.log('dateValue', dateValue.value);
-  console.log('dateValue', dateValue.value.toString().split(" ")[3]);
-  console.log('dateValue', dateValue.value.toString().split(" ")[1]);
-  console.log('dateValue', dateValue.value.toString().split(" ")[2]);
-  console.log('timeValue', time.value);
-}
+const searchForm = async () => {
+  const data = await getClassroom({ building: buildingValue.value, floor: floorValue.value, date: dateValue.value, time: time.value });
+  result.value = data;
+};
+
+watch(result, () => {
+  const newData: classroomType[] = [];
+  result.value.forEach(item => {
+    item.time.forEach(timeEntry => {
+      newData.push({
+        classroomBuilding: item.classroomBuilding,
+        classroomFloor: item.classroomFloor,
+        classroomNumber: item.classroomNumber,
+        date: item.date.replace(/ /g, '/'),
+        time: [timeEntry]
+      });
+    });
+  });
+  resultData.value = newData;
+});
 
 const resetForm = () => {
   buildingValue.value = ''
@@ -143,117 +157,6 @@ const timeData = [
   '第10节 19:20-20:05',
   '第11节 20:25-21:10',
   '第12节 21:15-22:00'
-]
-const tableData = [
-  {
-    building: 'ALGOL教学楼',
-    floor: '二楼',
-    number: 'A202',
-    date: '2023/07/12',
-    time: '第12节 21:15-22:00'
-  }, {
-    building: 'ALGOL教学楼',
-    floor: '二楼',
-    number: 'A202',
-    date: '2023/07/12',
-    time: '第12节 21:15-22:00'
-  }, {
-    building: 'ALGOL教学楼',
-    floor: '二楼',
-    number: 'A202',
-    date: '2023/07/12',
-    time: '第12节 21:15-22:00'
-  }, {
-    building: 'ALGOL教学楼',
-    floor: '二楼',
-    number: 'A202',
-    date: '2023/07/12',
-    time: '第12节 21:15-22:00'
-  }, {
-    building: 'ALGOL教学楼',
-    floor: '二楼',
-    number: 'A202',
-    date: '2023/07/12',
-    time: '第12节 21:15-22:00'
-  }, {
-    building: 'ALGOL教学楼',
-    floor: '二楼',
-    number: 'A202',
-    date: '2023/07/12',
-    time: '第12节 21:15-22:00'
-  }, {
-    building: 'ALGOL教学楼',
-    floor: '二楼',
-    number: 'A202',
-    date: '2023/07/12',
-    time: '第12节 21:15-22:00'
-  }, {
-    building: 'ALGOL教学楼',
-    floor: '二楼',
-    number: 'A202',
-    date: '2023/07/12',
-    time: '第12节 21:15-22:00'
-  }, {
-    building: 'ALGOL教学楼',
-    floor: '二楼',
-    number: 'A202',
-    date: '2023/07/12',
-    time: '第12节 21:15-22:00'
-  }, {
-    building: 'ALGOL教学楼',
-    floor: '二楼',
-    number: 'A202',
-    date: '2023/07/12',
-    time: '第12节 21:15-22:00'
-  }, {
-    building: 'ALGOL教学楼',
-    floor: '二楼',
-    number: 'A202',
-    date: '2023/07/12',
-    time: '第12节 21:15-22:00'
-  }, {
-    building: 'ALGOL教学楼',
-    floor: '二楼',
-    number: 'A202',
-    date: '2023/07/12',
-    time: '第12节 21:15-22:00'
-  }, {
-    building: 'ALGOL教学楼',
-    floor: '二楼',
-    number: 'A202',
-    date: '2023/07/12',
-    time: '第12节 21:15-22:00'
-  }, {
-    building: 'ALGOL教学楼',
-    floor: '二楼',
-    number: 'A202',
-    date: '2023/07/12',
-    time: '第12节 21:15-22:00'
-  }, {
-    building: 'ALGOL教学楼',
-    floor: '二楼',
-    number: 'A202',
-    date: '2023/07/12',
-    time: '第12节 21:15-22:00'
-  }, {
-    building: 'ALGOL教学楼',
-    floor: '二楼',
-    number: 'A202',
-    date: '2023/07/12',
-    time: '第12节 21:15-22:00'
-  }, {
-    building: 'ALGOL教学楼',
-    floor: '二楼',
-    number: 'A202',
-    date: '2023/07/12',
-    time: '第12节 21:15-22:00'
-  }, {
-    building: 'ALGOL教学楼',
-    floor: '二楼',
-    number: 'A202',
-    date: '2023/07/12',
-    time: '第12节 21:15-22:00'
-  }
 ]
 </script>
 
