@@ -179,35 +179,35 @@ export const classroom: classroomType[] = [
     {
         classroomBuilding: "DELPHI 教学楼",
         classroomFloor: "一楼",
-        classroomNumber: "C101",
+        classroomNumber: "D101",
         date: "",
         time: []
     },
     {
         classroomBuilding: "DELPHI 教学楼",
         classroomFloor: "一楼",
-        classroomNumber: "C104",
+        classroomNumber: "D104",
         date: "",
         time: []
     },
     {
         classroomBuilding: "DELPHI 教学楼",
         classroomFloor: "二楼",
-        classroomNumber: "C202",
+        classroomNumber: "D202",
         date: "",
         time: []
     },
     {
         classroomBuilding: "ERLANG 教学楼",
         classroomFloor: "一楼",
-        classroomNumber: "C101",
+        classroomNumber: "E101",
         date: "",
         time: []
     },
     {
         classroomBuilding: "ERLANG 教学楼",
         classroomFloor: "二楼",
-        classroomNumber: "C201",
+        classroomNumber: "E201",
         date: "",
         time: []
     },
