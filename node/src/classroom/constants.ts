@@ -1,6 +1,6 @@
-import { classroomType } from "./constants-type"
+import type { BE_filterClassroomDto } from './dto/classroom.dto';
 
-export const classroom: classroomType[] = [
+export const classroom: BE_filterClassroomDto[] = [
     {
         classroomBuilding: "ALGOL 教学楼",
         classroomFloor: "一楼",

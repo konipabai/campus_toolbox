@@ -43,7 +43,7 @@
         </el-tooltip>
       </template>
       <template v-else>
-        <el-tooltip effect="dark" content="取消全屏" placement="bottom" class="qwe">
+        <el-tooltip effect="dark" content="取消全屏" placement="bottom">
           <img src="../../assets/icon/cancelFullScreen.svg" @click="changeFullScreen()"
             class="head-box-span-2-img head-box-span-2-all" />
         </el-tooltip>
@@ -64,7 +64,7 @@
 import { Fold, Expand, ArrowRight, ArrowDown } from "@element-plus/icons-vue";
 import { menuControlStore } from "../../store/menuControlStore";
 import router from "../../router";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 
 const menuControl = menuControlStore();
 const menuChang = () => {
@@ -82,20 +82,28 @@ const dropDown = (item: any, items: any) => {
 
 const fullScreen = ref(false)
 const changeFullScreen = () => {
-  fullScreen.value = !fullScreen.value
+  const isFullscreen = document.fullscreenElement !== null;
+  fullScreen.value = !isFullscreen;
   if (fullScreen.value == true) {
-    document.documentElement.requestFullscreen()
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
   }
-  else {
-    document.exitFullscreen()
-  }
-}
+};
+
+const updateFullScreenState = () => {
+  const isFullscreen = document.fullscreenElement !== null;
+  fullScreen.value = isFullscreen;
+};
+
+onMounted(() => {
+  document.addEventListener("fullscreenchange", updateFullScreenState);
+});
 
 const drawer = ref(false)
 </script>
 
 <style lang="less" scoped>
-
 .head-box {
   height: var(--element-height-full);
   display: flex;

@@ -1,5 +1,7 @@
 :root {
   --bg-color: #2B579A;
+  --bg-success-color: #B3E19D;
+  --bg-error-color: #FAB6B6;
   --main-bg-color: #ebebeb;
   --title-hover-bg-color: #3967ab;
   --w-text-color: #D7DADD;

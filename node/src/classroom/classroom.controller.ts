@@ -1,20 +1,19 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { ClassroomService } from './classroom.service';
-import { CreateClassroomDto } from './dto/create-classroom.dto';
-import { UpdateClassroomDto } from './dto/update-classroom.dto';
+import type { FE_findClassroomDto, FE_reserveClassroomDto } from './dto/classroom.dto';
 
 @Controller('classroom')
 export class ClassroomController {
   constructor(private readonly classroomService: ClassroomService) { }
 
   @Get()
-  findClassroom(@Query() query: { building: string, floor: string, date: string, time: string }) {
-    return this.classroomService.findClassroom(query);
+  findClassroom(@Query() params: FE_findClassroomDto) {
+    return this.classroomService.findClassroom(params);
   }
 
   @Post()
-  create(@Body() createClassroomDto: CreateClassroomDto) {
-    return this.classroomService.create(createClassroomDto);
+  reserveClassroom(@Body() params: FE_reserveClassroomDto) {
+    return this.classroomService.reserveClassroom(params);
   }
 
   @Get(':id')
@@ -23,8 +22,8 @@ export class ClassroomController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClassroomDto: UpdateClassroomDto) {
-    return this.classroomService.update(+id, updateClassroomDto);
+  update(@Param('id') id: string, @Body() FE_reserveClassroomDto: FE_reserveClassroomDto) {
+    return this.classroomService.update(+id, FE_reserveClassroomDto);
   }
 
   @Delete(':id')

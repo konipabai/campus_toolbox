@@ -1,104 +1,177 @@
 <template>
   <div class="classroom">
     <el-card shadow="hover">
-      <el-row>
-        <el-col :span="6">
-          <el-form-item label="地点">
-            <el-select v-model="buildingValue" placeholder="请选择楼名" clearable>
-              <template #prefix>
-                <el-icon>
-                  <MapLocation />
-                </el-icon>
-              </template>
-              <el-option v-for="item in buildingData" :key="item.value" :value="item.value" />
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item label="楼层">
-            <el-select v-model="floorValue" placeholder="请选择楼层" clearable>
-              <template #prefix>
-                <el-icon>
-                  <OfficeBuilding />
-                </el-icon>
-              </template>
-              <el-option v-for="item in floorData" :key="item.value" :value="item.value" />
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item label="日期">
-            <el-config-provider :locale="locale">
-              <el-date-picker v-model="dateValue" type="date" placeholder="请选择日期" />
-            </el-config-provider>
-          </el-form-item>
-        </el-col>
-        <el-col :span="6">
-          <el-form-item label="时间段">
-            <el-select v-model="time" class="m-2" placeholder="请选择时间" clearable>
-              <template #prefix>
-                <el-icon>
-                  <Timer />
-                </el-icon>
-              </template>
-              <el-option v-for="item in timeData" :key="item" :value="item" />
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col class="classroom-head-button">
-          <el-form-item>
-            <el-button type="primary" @click="searchForm()">查询</el-button>
-            <el-button @click="resetForm()">重置</el-button>
-          </el-form-item>
-        </el-col>
-      </el-row>
+      <el-form :inline="true" :model="searchData">
+        <el-row>
+          <el-col :span="6">
+            <el-form-item label="地点">
+              <el-select v-model="searchData.buildingValue" placeholder="请选择楼名" clearable>
+                <template #prefix>
+                  <el-icon>
+                    <MapLocation />
+                  </el-icon>
+                </template>
+                <el-option v-for="item in buildingData" :key="item.value" :value="item.value" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="楼层">
+              <el-select v-model="searchData.floorValue" placeholder="请选择楼层" clearable>
+                <template #prefix>
+                  <el-icon>
+                    <OfficeBuilding />
+                  </el-icon>
+                </template>
+                <el-option v-for="item in floorData" :key="item.value" :value="item.value" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="日期">
+              <el-config-provider :locale="locale">
+                <el-date-picker v-model="searchData.dateValue" type="date" placeholder="请选择日期" />
+              </el-config-provider>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="时间段">
+              <el-select v-model="searchData.timeValue" class="m-2" placeholder="请选择时间" clearable>
+                <template #prefix>
+                  <el-icon>
+                    <Timer />
+                  </el-icon>
+                </template>
+                <el-option v-for="item in timeData" :key="item" :value="item" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col>
+            <el-form-item class="classroom-head-item">
+              <el-button type="primary" @click="searchForm()">查询</el-button>
+              <el-button @click="resetForm()">重置</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
     </el-card>
     <el-card shadow="hover" class="classroom-main-card">
-      <el-table :data="resultData" class="classroom-main-table">
+      <el-table :data="paginatedData" class="classroom-main-table" ref="tableTop">
         <el-table-column prop="classroomBuilding" label="地点" min-width="2" />
         <el-table-column prop="classroomFloor" label="楼层" min-width="2" />
         <el-table-column prop="classroomNumber" label="教室号" min-width="2" />
         <el-table-column prop="date" label="日期" min-width="2" />
         <el-table-column prop="time" label="时间段" min-width="2" />
         <el-table-column min-width="1">
-          <el-button type="primary">预约</el-button>
+          <template #default="scope">
+            <el-button type="primary" @click="reserveForm(scope.row)">预约</el-button>
+          </template>
         </el-table-column>
       </el-table>
+      <el-config-provider :locale="locale">
+        <el-pagination :model="paginationData" layout="prev, pager, next, jumper"
+          v-model:page-size="paginationData.pageSize" :total="resultData.length" :pager-count="5" background small
+          v-model:current-page="paginationData.currentPage" @current-change="CurrentChange" />
+      </el-config-provider>
     </el-card>
+    <el-dialog v-model="dialogVisible" title="预约" width="400px" draggable center>
+      <el-form label-width="80px" :model="reserveData">
+        <el-form-item label="申请人">
+          <el-input v-model="reserveData.accountAndName" disabled />
+        </el-form-item>
+        <el-form-item label="教室">
+          <el-input v-model="reserveData.classroomNumber" disabled />
+        </el-form-item>
+        <el-form-item label="时间">
+          <el-input v-model="reserveData.dateAndTime" disabled />
+        </el-form-item>
+        <el-form-item label="申请理由">
+          <el-input v-model="reserveData.reason" type="textarea" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span>
+          <el-button type="primary" @click="submitForm">
+            确认
+          </el-button>
+          <el-button @click="dialogVisible = false">取消</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { Ref, ref, watch } from 'vue'
+import { computed, ComputedRef, reactive, Ref, ref, watch } from 'vue'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import { Timer, MapLocation, OfficeBuilding } from '@element-plus/icons-vue'
-import { getClassroom } from "../../../server/index";
-import type { classroomType } from "../../../types/classroom"
+import { addClassroom, getClassroom } from "../../../server/index";
+import type { findClassroomType, searchType, reserveType, paginationType } from "../../../types/classroom"
+import { ElMessage } from 'element-plus';
 
-const buildingValue: Ref<string> = ref('')
-const floorValue: Ref<string> = ref('')
-const dateValue: Ref<string> = ref('')
-const time: Ref<string> = ref('')
 const locale = zhCn
-const result: Ref<classroomType[]> = ref([])
-const resultData: Ref<classroomType[]> = ref([]);
+const result: Ref<findClassroomType[]> = ref([])
+const resultData: Ref<findClassroomType[]> = ref([]);
+const dialogVisible = ref(false)
+const tableTop = ref();
+
+const searchData: searchType = reactive({
+  buildingValue: '',
+  floorValue: '',
+  dateValue: '',
+  timeValue: ''
+})
+
+const reserveData: reserveType = reactive({
+  accountAndName: '卡拉米 22215150514',
+  classroomNumber: '',
+  dateAndTime: '',
+  reason: ''
+})
+
+const paginationData: paginationType = reactive({
+  currentPage: 1,
+  pageSize: 15
+})
+
+const CurrentChange = () => {
+  tableTop.value.setScrollTop(0);
+}
+
+const paginatedData: ComputedRef<findClassroomType[]> = computed(() => {
+  const startIndex = (paginationData.currentPage - 1) * paginationData.pageSize;
+  const endIndex = startIndex + paginationData.pageSize;
+  return resultData.value.slice(startIndex, endIndex);
+});
 
 const searchForm = async () => {
-  const data = await getClassroom({ building: buildingValue.value, floor: floorValue.value, date: dateValue.value, time: time.value });
-  result.value = data;
+  try {
+    const data = await getClassroom({ building: searchData.buildingValue, floor: searchData.floorValue, date: searchData.dateValue, time: searchData.timeValue });
+    result.value = data;
+    paginationData.currentPage = 1
+  } catch (error) {
+    ElMessage.error('未知错误,请稍后再试')
+    console.log(error);
+  }
+};
+
+const reserveForm = (row: findClassroomType) => {
+  dialogVisible.value = true;
+  reserveData.classroomNumber = row.classroomNumber;
+  reserveData.dateAndTime = row.date + " " + row.time;
 };
 
 watch(result, () => {
-  const newData: classroomType[] = [];
+  const newData: findClassroomType[] = [];
   result.value.forEach(item => {
     item.time.forEach(timeEntry => {
       newData.push({
         classroomBuilding: item.classroomBuilding,
         classroomFloor: item.classroomFloor,
         classroomNumber: item.classroomNumber,
-        date: item.date.replace(/ /g, '/'),
+        date: item.date,
         time: [timeEntry]
       });
     });
@@ -107,10 +180,32 @@ watch(result, () => {
 });
 
 const resetForm = () => {
-  buildingValue.value = ''
-  floorValue.value = ''
-  dateValue.value = ''
-  time.value = ''
+  searchData.buildingValue = ''
+  searchData.floorValue = ''
+  searchData.dateValue = ''
+  searchData.timeValue = ''
+}
+
+const submitForm = async () => {
+  if (reserveData.reason == '') {
+    ElMessage.error('请输入理由')
+  } else {
+    try {
+      const state = await addClassroom(reserveData)
+      if (state == true) {
+        dialogVisible.value = false
+        ElMessage({
+          message: '等待审核',
+          type: 'success'
+        })
+      } else {
+        ElMessage.error('未知错误,请稍后再试')
+      }
+    } catch (error) {
+      console.log(error);
+      ElMessage.error('未知错误,请稍后再试')
+    }
+  }
 }
 
 const buildingData = [
@@ -188,16 +283,31 @@ const timeData = [
   font-weight: normal;
 }
 
+.el-pagination {
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+:deep(.el-pagination .el-pager .is-active) {
+  background-color: var(--bg-color) !important;
+  color: var(--button-text-color) !important;
+
+  &:hover {
+    background-color: var(--element-hover-color) !important;
+  }
+}
+
 .classroom {
   display: flex;
   flex-direction: column;
   height: var(--element-height-full);
 
   &-head {
-    &-button {
-      display: flex;
-      margin-bottom: -23px;
-      justify-content: flex-end;
+    &-item {
+      margin-bottom: -5px;
+      margin-left: auto;
+      margin-right: 10px;
     }
   }
 
@@ -210,7 +320,7 @@ const timeData = [
     }
 
     &-table {
-      height: calc(100vh - 270px);
+      height: calc(100vh - 300px);
     }
   }
 }
