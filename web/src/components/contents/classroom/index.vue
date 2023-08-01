@@ -58,7 +58,7 @@
       </el-form>
     </el-card>
     <el-card shadow="hover" class="classroom-main-card">
-      <el-table :data="paginatedData" class="classroom-main-table" ref="tableTop">
+      <el-table :data="paginatedData" class="classroom-main-table" ref="tableTop" v-loading="loading" >
         <el-table-column prop="classroomBuilding" label="地点" min-width="2" />
         <el-table-column prop="classroomFloor" label="楼层" min-width="2" />
         <el-table-column prop="classroomNumber" label="教室号" min-width="2" />
@@ -113,9 +113,10 @@ import { ElMessage } from 'element-plus';
 
 const locale = zhCn
 const result: Ref<findClassroomType[]> = ref([])
-const resultData: Ref<findClassroomType[]> = ref([]);
+const resultData: Ref<findClassroomType[]> = ref([])
 const dialogVisible = ref(false)
-const tableTop = ref();
+const tableTop = ref()
+const loading = ref(false)
 
 const searchData: searchType = reactive({
   buildingValue: '',
@@ -148,12 +149,17 @@ const paginatedData: ComputedRef<findClassroomType[]> = computed(() => {
 
 const searchForm = async () => {
   try {
+    loading.value = true
+    await new Promise(resolve => setTimeout(resolve, 300));
     const data = await getClassroom({ building: searchData.buildingValue, floor: searchData.floorValue, date: searchData.dateValue, time: searchData.timeValue });
+    loading.value = false
     result.value = data;
     paginationData.currentPage = 1
   } catch (error) {
     ElMessage.error('未知错误,请稍后再试')
     console.log(error);
+  } finally {
+    loading.value = false;
   }
 };
 
