@@ -58,7 +58,13 @@
       </el-form>
     </el-card>
     <el-card shadow="hover" class="classroom-main-card">
-      <el-table :data="paginatedData" class="classroom-main-table" ref="tableTop" v-loading="loading" >
+      <el-table :data="paginatedData" class="classroom-main-table" ref="tableTop" v-loading="loading">
+        <template #empty>
+          <div class="tableEmpty">
+            <span class="tableEmptyIcon"></span>
+            <span>暂无数据</span>
+          </div>
+        </template>
         <el-table-column prop="classroomBuilding" label="地点" min-width="2" />
         <el-table-column prop="classroomFloor" label="楼层" min-width="2" />
         <el-table-column prop="classroomNumber" label="教室号" min-width="2" />
