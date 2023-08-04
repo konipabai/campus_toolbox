@@ -6,21 +6,21 @@ export interface findClassroomType {
     time: string[];
 }
 
-export interface searchType {
+export interface searchClassroomType {
     buildingValue: string;
     floorValue: string;
     dateValue: string;
     timeValue: string;
 }
 
-export interface reserveType {
+export interface reserveClassroomType {
     accountAndName: string;
     classroomNumber: string;
     dateAndTime: string;
     reason: string;
 }
 
-export interface paginationType {
+export interface paginationClassroomType {
     currentPage: number;
     pageSize: number;
 }

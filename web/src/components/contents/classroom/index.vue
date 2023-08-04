@@ -114,7 +114,7 @@ import { computed, ComputedRef, reactive, Ref, ref, watch } from 'vue'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import { Timer, MapLocation, OfficeBuilding } from '@element-plus/icons-vue'
 import { addClassroom, getClassroom } from "../../../server/index";
-import type { findClassroomType, searchType, reserveType, paginationType } from "../../../types/classroom"
+import type { findClassroomType, searchClassroomType, reserveClassroomType, paginationClassroomType } from "../../../types/classroom"
 import { ElMessage } from 'element-plus';
 
 const locale = zhCn
@@ -124,21 +124,21 @@ const dialogVisible = ref(false)
 const tableTop = ref()
 const loading = ref(false)
 
-const searchData: searchType = reactive({
+const searchData: searchClassroomType = reactive({
   buildingValue: '',
   floorValue: '',
   dateValue: '',
   timeValue: ''
 })
 
-const reserveData: reserveType = reactive({
+const reserveData: reserveClassroomType = reactive({
   accountAndName: '卡拉米 22215150514',
   classroomNumber: '',
   dateAndTime: '',
   reason: ''
 })
 
-const paginationData: paginationType = reactive({
+const paginationData: paginationClassroomType = reactive({
   currentPage: 1,
   pageSize: 15
 })
