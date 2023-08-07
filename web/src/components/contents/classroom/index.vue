@@ -159,12 +159,16 @@ const searchForm = async () => {
     await new Promise(resolve => setTimeout(resolve, 300));
     const data = await getClassroom({ building: searchData.buildingValue, floor: searchData.floorValue, date: searchData.dateValue, time: searchData.timeValue });
     loading.value = false
-    result.value = data;
-    paginationData.currentPage = 1
+    if (data.length != 0) {
+      result.value = data;
+    } else {
+      ElMessage.error('未知错误,请稍后再试')
+    }
   } catch (error) {
     ElMessage.error('未知错误,请稍后再试')
     console.log(error);
   } finally {
+    paginationData.currentPage = 1
     loading.value = false;
   }
 };
