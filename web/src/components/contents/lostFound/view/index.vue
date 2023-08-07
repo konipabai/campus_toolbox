@@ -49,6 +49,7 @@ watch(chartData, () => {
       breadcrumb: {
         height: 26
       },
+      leafDepth: 1,
       zoomToNodeRatio: 0.07,
       squareRatio: 1,
       itemStyle: {
