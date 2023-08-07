@@ -150,21 +150,13 @@ const routes: Array<RouteRecordRaw> = [
                 component: () => import("../components/contents/lostFound/view/index.vue")
             },
             {
-                path: 'post',
+                path: 'postHistory',
                 meta: {
-                    msg: "发布失物招领",
+                    msg: "发布与记录",
                     father: "false"
                 },
-                component: () => import("../components/contents/lostFound/post/index.vue")
-            },
-            {
-                path: 'history',
-                meta: {
-                    msg: "发布记录",
-                    father: "false"
-                },
-                component: () => import("../components/contents/lostFound/history/index.vue")
-            },
+                component: () => import("../components/contents/lostFound/postHistory/index.vue")
+            }
         ]
 
     },

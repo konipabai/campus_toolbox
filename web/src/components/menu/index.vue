@@ -79,11 +79,8 @@
         <el-menu-item index="8-1" @click="$router.push('/lostFound/view')">
           <template #title><span>查看失物招领</span></template>
         </el-menu-item>
-        <el-menu-item index="8-2" @click="$router.push('/lostFound/post')">
-          <template #title><span>发布失物招领</span></template>
-        </el-menu-item>
-        <el-menu-item index="8-3" @click="$router.push('/lostFound/history')">
-          <template #title><span>发布记录</span></template>
+        <el-menu-item index="8-2" @click="$router.push('/lostFound/postHistory')">
+          <template #title><span>发布与记录</span></template>
         </el-menu-item>
       </el-sub-menu>
 
@@ -162,10 +159,8 @@ const updateMenuSelection = (path: string) => {
   } else if (path.startsWith('/lostFound')) {
     if (path.includes('/view')) {
       activeIndex.value = '8-1';
-    } else if (path.includes('/post')) {
+    } else if (path.includes('/postHistory')) {
       activeIndex.value = '8-2';
-    } else if (path.includes('/history')) {
-      activeIndex.value = '8-3';
     }
   } else if (path.startsWith('/recruitment')) {
     if (path.includes('/view')) {
