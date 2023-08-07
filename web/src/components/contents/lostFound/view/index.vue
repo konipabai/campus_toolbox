@@ -1,169 +1,27 @@
 <template>
   <div class="lostFound" ref="chartContainer">
+    <div class="tableEmpty" v-if="emptyShow">
+      <span class="tableEmptyIcon"></span>
+      <span>暂无数据</span>
+    </div>
   </div>
 </template>
 
 <script setup lang='ts'>
-import { ref, onMounted, onBeforeUnmount, Ref } from 'vue'
+import { ref, onBeforeUnmount, Ref, watch } from 'vue'
 import * as echarts from 'echarts'
 import elementResizeDetectorMaker from 'element-resize-detector'
 import type { getLostFoundType } from '../../../../types/lostFound'
+import { getLostFound } from '../../../../server/index'
+import { ElMessage } from 'element-plus';
 
 const erd: elementResizeDetectorMaker.Erd = elementResizeDetectorMaker();
 const chartContainer: Ref<HTMLDivElement | null> = ref(null);
 var myChart: echarts.ECharts | null = null;
-const data: getLostFoundType[] = [
-  {
-    name: '(拾)手机',
-    value: 100,
-    brand: "华为",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }, {
-    name: '(寻)手表',
-    value: 100,
-    brand: "小米",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }, {
-    name: '(寻)电脑',
-    value: 100,
-    brand: "华硕",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }, {
-    name: '(拾)ipad',
-    value: 100,
-    brand: "苹果",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }, {
-    name: '(拾)手机',
-    value: 100,
-    brand: "红米",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }, {
-    name: '(寻)书包',
-    value: 100,
-    brand: "无/暂不清楚",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }, {
-    name: '(寻)水杯',
-    value: 100,
-    brand: "无/暂不清楚",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }, {
-    name: '(拾)耳机',
-    value: 100,
-    brand: "apple",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }, {
-    name: '(拾)鼠标',
-    value: 100,
-    brand: "罗技",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }, {
-    name: '(寻)充电宝',
-    value: 100,
-    brand: "紫米",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }, {
-    name: '(拾)包包',
-    value: 100,
-    brand: "无/暂不清楚",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }, {
-    name: '(寻)高等数学',
-    value: 100,
-    brand: "人民出版社",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }, {
-    name: '(拾)眼镜',
-    value: 100,
-    brand: "无/暂不清楚",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }, {
-    name: '(拾)学生证',
-    value: 100,
-    brand: "无/暂不清楚",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }, {
-    name: '(拾)USB充电线',
-    value: 100,
-    brand: "无/暂不清楚",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }, {
-    name: '(寻)身份证',
-    value: 100,
-    brand: "无/暂不清楚",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }, {
-    name: '(寻)头戴式耳机',
-    value: 100,
-    brand: "铁三角",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }, {
-    name: '(拾)无线键盘',
-    value: 100,
-    brand: "无/暂不清楚",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }, {
-    name: '(拾)充电头',
-    value: 100,
-    brand: "无/暂不清楚",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }, {
-    name: '(拾)钥匙',
-    value: 100,
-    brand: "无/暂不清楚",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }, {
-    name: '(拾)书包',
-    value: 100,
-    brand: "无/暂不清楚",
-    location: "操场",
-    description: "屏幕左上角破损",
-    contact: "12345678910"
-  }
-]
+const chartData: Ref<getLostFoundType[]> = ref([])
+const emptyShow: Ref<boolean> = ref(false)
 
-onMounted(() => {
+watch(chartData, () => {
   myChart = echarts.init(document.querySelector('.lostFound') as HTMLElement);
   myChart.setOption({
     tooltip: {
@@ -188,16 +46,20 @@ onMounted(() => {
       type: 'treemap',
       width: '100%',
       height: '100%',
+      breadcrumb: {
+        height: 26
+      },
       zoomToNodeRatio: 0.07,
+      squareRatio: 1,
       itemStyle: {
         borderRadius: 10,
-        borderWidth: 5,
+        borderWidth: 15,
       },
       label: {
         fontSize: 20,
         color: "black"
       },
-      data: data
+      data: chartData.value
     }]
   })
   erd.listenTo(chartContainer.value as HTMLElement, resizeChart);
@@ -210,16 +72,34 @@ onBeforeUnmount(() => {
   erd.removeListener(chartContainer.value as HTMLElement, resizeChart);
 });
 
-function resizeChart() {
+const resizeChart = () => {
   if (myChart) {
     myChart.resize();
   }
 }
+
+const getChartData = async () => {
+  try {
+    const lostFoundData: getLostFoundType[] = await getLostFound()
+    if (lostFoundData.length != 0) {
+      chartData.value = lostFoundData
+    } else {
+      emptyShow.value = true
+      ElMessage.error('未知错误,请稍后再试')
+    }
+  } catch (error) {
+    emptyShow.value = true
+    ElMessage.error('未知错误,请稍后再试')
+  }
+}
+
+getChartData()
 </script>
 
 <style lang="less" scoped>
 .lostFound {
   width: 100%;
   height: 100%;
+  position: relative;
 }
 </style>

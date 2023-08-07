@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { ClassroomModule } from './classroom/classroom.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { LostFoundModule } from './lostFound/lostFound.module';
 
 @Module({
   imports: [UserModule, ClassroomModule, TypeOrmModule.forRoot({
@@ -18,8 +19,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     retryDelay: 500,
     retryAttempts: 10,
     autoLoadEntities: true,
-  })],
+  }), LostFoundModule],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

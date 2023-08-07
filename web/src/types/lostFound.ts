@@ -1,4 +1,5 @@
 export interface getLostFoundType {
+    state: string,
     name: string,
     value: number,
     brand: string,
