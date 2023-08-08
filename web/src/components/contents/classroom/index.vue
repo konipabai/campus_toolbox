@@ -276,17 +276,7 @@ const timeData = [
   width: 190px;
 }
 
-:deep(.el-button.el-button--primary) {
-  background-color: var(--bg-color);
 
-  &:hover {
-    background-color: var(--element-hover-color);
-  }
-
-  &>span {
-    color: var(--button-text-color) !important;
-  }
-}
 
 .el-col {
   display: flex;
