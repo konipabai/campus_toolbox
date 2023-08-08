@@ -99,8 +99,8 @@ getChartData()
 
 <style lang="less" scoped>
 .lostFound {
-  width: 100%;
-  height: 100%;
+  width: var(--element-width-full);
+  height: var(--element-height-full);
   position: relative;
 }
 </style>
