@@ -1,10 +1,10 @@
 <template>
   <div class="classroom">
     <el-card shadow="hover">
-      <el-form :inline="true" :model="searchData">
+      <el-form :inline="true" :model="searchData" ref="classroomRef">
         <el-row>
           <el-col :span="6">
-            <el-form-item label="地点">
+            <el-form-item label="地点" prop="buildingValue">
               <el-select v-model="searchData.buildingValue" placeholder="请选择楼名" clearable>
                 <template #prefix>
                   <el-icon>
@@ -16,7 +16,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="楼层">
+            <el-form-item label="楼层" prop="floorValue">
               <el-select v-model="searchData.floorValue" placeholder="请选择楼层" clearable>
                 <template #prefix>
                   <el-icon>
@@ -28,14 +28,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="日期">
+            <el-form-item label="日期" prop="dateValue">
               <el-config-provider :locale="locale">
                 <el-date-picker v-model="searchData.dateValue" type="date" placeholder="请选择日期" />
               </el-config-provider>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="时间段">
+            <el-form-item label="时间段" prop="timeValue">
               <el-select v-model="searchData.timeValue" class="m-2" placeholder="请选择时间" clearable>
                 <template #prefix>
                   <el-icon>
@@ -51,7 +51,7 @@
           <el-col>
             <el-form-item class="classroom-head-item">
               <el-button type="primary" @click="searchForm()">查询</el-button>
-              <el-button @click="resetForm()">重置</el-button>
+              <el-button @click="resetForm(classroomRef)">重置</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -115,7 +115,7 @@ import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import { Timer, MapLocation, OfficeBuilding } from '@element-plus/icons-vue'
 import { addClassroom, getClassroom } from "../../../server/index";
 import type { findClassroomType, searchClassroomType, reserveClassroomType, paginationClassroomType } from "../../../types/classroom"
-import { ElMessage } from 'element-plus';
+import { ElMessage, FormInstance } from 'element-plus';
 
 const locale = zhCn
 const result: Ref<findClassroomType[]> = ref([])
@@ -123,6 +123,7 @@ const resultData: Ref<findClassroomType[]> = ref([])
 const dialogVisible = ref(false)
 const tableTop = ref()
 const loading = ref(false)
+const classroomRef = ref<FormInstance>()
 
 const searchData: searchClassroomType = reactive({
   buildingValue: '',
@@ -162,10 +163,13 @@ const searchForm = async () => {
     if (data.length != 0) {
       result.value = data;
     } else {
-      ElMessage.error('未知错误,请稍后再试')
+      ElMessage({
+        message: '未找到对应数据，请选择其他楼层',
+        type: 'warning'
+      })
     }
   } catch (error) {
-    ElMessage.error('未知错误,请稍后再试')
+    ElMessage.error('未知错误，请稍后再试')
     console.log(error);
   } finally {
     paginationData.currentPage = 1
@@ -195,11 +199,9 @@ watch(result, () => {
   resultData.value = newData;
 });
 
-const resetForm = () => {
-  searchData.buildingValue = ''
-  searchData.floorValue = ''
-  searchData.dateValue = ''
-  searchData.timeValue = ''
+const resetForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  formEl.resetFields()
 }
 
 const submitForm = async () => {
@@ -215,11 +217,11 @@ const submitForm = async () => {
           type: 'success'
         })
       } else {
-        ElMessage.error('未知错误,请稍后再试')
+        ElMessage.error('未知错误，请稍后再试')
       }
     } catch (error) {
       console.log(error);
-      ElMessage.error('未知错误,请稍后再试')
+      ElMessage.error('未知错误，请稍后再试')
     }
   }
 }
@@ -275,8 +277,6 @@ const timeData = [
 :deep(.el-input__wrapper) {
   width: 190px;
 }
-
-
 
 .el-col {
   display: flex;
