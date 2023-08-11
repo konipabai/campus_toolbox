@@ -7,3 +7,12 @@ export interface getLostFoundType {
     description: string,
     contact: string
 }
+
+export interface postLostFoundType {
+    state: string,
+    item: string,
+    brand: string,
+    location: string,
+    description: string,
+    contact: string
+}
