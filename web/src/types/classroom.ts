@@ -7,10 +7,10 @@ export interface findClassroomType {
 }
 
 export interface searchClassroomType {
-    buildingValue: string;
-    floorValue: string;
-    dateValue: string;
-    timeValue: string;
+    building: string;
+    floor: string;
+    date: string;
+    time: string;
 }
 
 export interface reserveClassroomType {

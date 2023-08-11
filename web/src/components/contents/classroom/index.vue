@@ -4,8 +4,8 @@
       <el-form :inline="true" :model="searchData" ref="classroomRef" class="classroom-head">
         <el-row>
           <el-col :span="6">
-            <el-form-item label="地点" prop="buildingValue">
-              <el-select v-model="searchData.buildingValue" placeholder="请选择楼名" clearable>
+            <el-form-item label="地点" prop="building">
+              <el-select v-model="searchData.building" placeholder="请选择楼名" clearable>
                 <template #prefix>
                   <el-icon>
                     <MapLocation />
@@ -16,8 +16,8 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="楼层" prop="floorValue">
-              <el-select v-model="searchData.floorValue" placeholder="请选择楼层" clearable>
+            <el-form-item label="楼层" prop="floor">
+              <el-select v-model="searchData.floor" placeholder="请选择楼层" clearable>
                 <template #prefix>
                   <el-icon>
                     <OfficeBuilding />
@@ -28,15 +28,15 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="日期" prop="dateValue">
+            <el-form-item label="日期" prop="date">
               <el-config-provider :locale="locale">
-                <el-date-picker v-model="searchData.dateValue" type="date" placeholder="请选择日期" />
+                <el-date-picker v-model="searchData.date" type="date" placeholder="请选择日期" />
               </el-config-provider>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="时间段" prop="timeValue">
-              <el-select v-model="searchData.timeValue" class="m-2" placeholder="请选择时间" clearable>
+            <el-form-item label="时间段" prop="time">
+              <el-select v-model="searchData.time" class="m-2" placeholder="请选择时间" clearable>
                 <template #prefix>
                   <el-icon>
                     <Timer />
@@ -127,10 +127,10 @@ const loading: Ref<boolean> = ref(false)
 const classroomRef: Ref<FormInstance | undefined> = ref()
 
 const searchData: searchClassroomType = reactive({
-  buildingValue: '',
-  floorValue: '',
-  dateValue: '',
-  timeValue: ''
+  building: '',
+  floor: '',
+  date: '',
+  time: ''
 })
 
 const reserveData: reserveClassroomType = reactive({
@@ -161,7 +161,7 @@ const searchForm = async () => {
   try {
     loading.value = true
     await new Promise(resolve => setTimeout(resolve, 300));
-    const data = await getClassroom({ building: searchData.buildingValue, floor: searchData.floorValue, date: searchData.dateValue, time: searchData.timeValue });
+    const data = await getClassroom(searchData);
     loading.value = false
     if (data.length != 0) {
       result.value = data;
