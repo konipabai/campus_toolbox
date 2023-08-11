@@ -1,7 +1,7 @@
 <template>
   <div class="classroom">
     <el-card shadow="hover">
-      <el-form :inline="true" :model="searchData" ref="classroomRef">
+      <el-form :inline="true" :model="searchData" ref="classroomRef" class="classroom-head">
         <el-row>
           <el-col :span="6">
             <el-form-item label="地点" prop="buildingValue">
@@ -79,7 +79,8 @@
       <el-config-provider :locale="locale">
         <el-pagination :model="paginationData" layout="prev, pager, next, jumper"
           v-model:page-size="paginationData.pageSize" :total="resultData.length" :pager-count="5" background small
-          v-model:current-page="paginationData.currentPage" @current-change="CurrentChange" />
+          v-model:current-page="paginationData.currentPage" @current-change="CurrentChange"
+          class="classroom-main-pagination" />
       </el-config-provider>
     </el-card>
     <el-dialog v-model="dialogVisible" title="预约" width="400px" draggable center>
@@ -276,34 +277,9 @@ const timeData = [
 </script>
 
 <style lang="less" scoped>
-:deep(.el-input__wrapper) {
-  width: 190px;
-}
-
-.el-col {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .el-select-dropdown__item.selected {
   background-color: var(--select-color);
   font-weight: normal;
-}
-
-.el-pagination {
-  margin-top: 15px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-:deep(.el-pagination .el-pager .is-active) {
-  background-color: var(--bg-color) !important;
-  color: var(--button-text-color) !important;
-
-  &:hover {
-    background-color: var(--element-hover-color) !important;
-  }
 }
 
 .classroom {
@@ -312,6 +288,15 @@ const timeData = [
   height: var(--element-height-full);
 
   &-head {
+    &:deep(.el-input__wrapper) {
+      width: 190px;
+    }
+
+    .el-col {
+      display: flex;
+      justify-content: center;
+    }
+
     &-item {
       margin-bottom: -5px;
       margin-left: auto;
@@ -329,6 +314,21 @@ const timeData = [
 
     &-table {
       height: calc(100vh - 300px);
+    }
+
+    &-pagination {
+      margin-top: 15px;
+      display: flex;
+      justify-content: flex-end;
+
+      &:deep(.el-pager .is-active) {
+        background-color: var(--bg-color) !important;
+        color: var(--button-text-color) !important;
+
+        &:hover {
+          background-color: var(--element-hover-color) !important;
+        }
+      }
     }
   }
 }
