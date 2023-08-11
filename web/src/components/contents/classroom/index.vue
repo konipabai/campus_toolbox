@@ -115,15 +115,15 @@ import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import { Timer, MapLocation, OfficeBuilding } from '@element-plus/icons-vue'
 import { addClassroom, getClassroom } from "../../../server/index";
 import type { findClassroomType, searchClassroomType, reserveClassroomType, paginationClassroomType } from "../../../types/classroom"
-import { ElMessage, FormInstance } from 'element-plus';
+import { ElMessage, FormInstance, ElTable } from 'element-plus';
 
 const locale = zhCn
 const result: Ref<findClassroomType[]> = ref([])
 const resultData: Ref<findClassroomType[]> = ref([])
-const dialogVisible = ref(false)
-const tableTop = ref()
-const loading = ref(false)
-const classroomRef = ref<FormInstance>()
+const dialogVisible: Ref<boolean> = ref(false)
+const tableTop: Ref<typeof ElTable | undefined> = ref();
+const loading: Ref<boolean> = ref(false)
+const classroomRef: Ref<FormInstance | undefined> = ref()
 
 const searchData: searchClassroomType = reactive({
   buildingValue: '',
@@ -145,7 +145,9 @@ const paginationData: paginationClassroomType = reactive({
 })
 
 const CurrentChange = () => {
-  tableTop.value.setScrollTop(0);
+  if (tableTop.value) {
+    tableTop.value.setScrollTop(0);
+  }
 }
 
 const paginatedData: ComputedRef<findClassroomType[]> = computed(() => {
