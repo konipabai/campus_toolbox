@@ -57,6 +57,8 @@ import type { postLostFoundType } from '../../../../types/lostFound'
 
 const lostFoundRef: Ref<FormInstance | undefined> = ref()
 const postData: postLostFoundType = reactive({
+  account: '22215150514',
+  name: '卡拉米',
   state: '',
   item: '',
   brand: '',

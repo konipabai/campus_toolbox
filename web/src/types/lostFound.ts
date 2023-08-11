@@ -9,6 +9,8 @@ export interface getLostFoundType {
 }
 
 export interface postLostFoundType {
+    account: string,
+    name: string,
     state: string,
     item: string,
     brand: string,
