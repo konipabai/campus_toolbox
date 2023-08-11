@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { BE_filterLostFoundDto, DB_resultLostFoundDto } from './dto/lostFound.dto';
+import { BE_filterLostFoundDto, DB_resultLostFoundDto, FE_postLostFoundDto } from './dto/lostFound.dto';
 import { resultLostFound } from './entities/lostFound.entity';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class LostFoundService {
     @InjectRepository(resultLostFound) private readonly lostFoundResult: Repository<resultLostFound>
   ) { }
 
-  async getLostFound() {
+  async getLostFound(): Promise<BE_filterLostFoundDto[]> {
     var lostFoundData: BE_filterLostFoundDto[] = []
     try {
       const tempLostFound: DB_resultLostFoundDto[] = await this.lostFoundResult.find()
@@ -26,6 +26,16 @@ export class LostFoundService {
       console.log(error);
     }
     return lostFoundData
+  }
+
+  async postLostFound(params: FE_postLostFoundDto): Promise<boolean> {
+    try {
+      await this.lostFoundResult.save(params)
+      return true
+    } catch (error) {
+      console.log(error);
+      return false
+    }
   }
 
 

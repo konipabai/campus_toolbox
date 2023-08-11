@@ -13,8 +13,8 @@
           </el-form-item>
           <el-form-item label="状态" prop="state">
             <el-select v-model="postData.state" class="lostFound-post-item" placeholder="请选择物品状态">
-              <el-option label="拾取" value="found" />
-              <el-option label="遗失" value="missing" />
+              <el-option label="拾取" value="拾" />
+              <el-option label="遗失" value="寻" />
             </el-select>
           </el-form-item>
           <el-form-item label="品牌" prop="brand">
@@ -54,6 +54,7 @@
 import { ref, Ref, reactive } from 'vue'
 import { ElMessage, FormInstance, FormRules } from 'element-plus'
 import type { postLostFoundType } from '../../../../types/lostFound'
+import { postLostFound } from '../../../../server'
 
 const lostFoundRef: Ref<FormInstance | undefined> = ref()
 const postData: postLostFoundType = reactive({
@@ -67,17 +68,37 @@ const postData: postLostFoundType = reactive({
   contact: ''
 })
 
-const submitForm = async (formEl: FormInstance | undefined) => {
+const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
-  await formEl.validate((valid) => {
-    if (valid) {
-      ElMessage({
-        message: '发布成功',
-        type: 'success'
-      })
-      formEl.resetFields()
+  formEl.validate(async (valid: boolean) => {
+    try {
+      if (valid) {
+        if (postData.brand == '') {
+          postData.brand = '无/暂不清楚'
+        }
+        if (postData.description == '') {
+          postData.description = '无'
+        }
+        const result = await postLostFound(postData)
+        console.log(result);
+        
+        if (result == true) {
+          ElMessage({
+            message: '发布成功',
+            type: 'success'
+          })
+        } else {
+          ElMessage.error('未知错误，请稍后再试')
+        }
+        formEl.resetFields()
+      }
+    } catch (error) {
+      ElMessage.error('未知错误，请稍后再试')
+      console.log(error);
     }
   })
+
+
 }
 
 const resetForm = (formEl: FormInstance | undefined) => {

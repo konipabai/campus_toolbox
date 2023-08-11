@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { LostFoundService } from './lostFound.service';
-import { BE_filterLostFoundDto } from './dto/lostFound.dto';
+import { BE_filterLostFoundDto, FE_postLostFoundDto } from './dto/lostFound.dto';
 
 @Controller('lostFound')
 export class LostFoundController {
@@ -12,8 +12,8 @@ export class LostFoundController {
   }
 
   @Post()
-  create(@Body() BE_filterLostFoundDto: BE_filterLostFoundDto) {
-    return this.lostFoundService.create(BE_filterLostFoundDto);
+  postLostFound(@Body() FE_postLostFoundDto: FE_postLostFoundDto) {
+    return this.lostFoundService.postLostFound(FE_postLostFoundDto);
   }
 
   @Get(':id')
