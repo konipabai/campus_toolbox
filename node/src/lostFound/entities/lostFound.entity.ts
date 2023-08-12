@@ -28,4 +28,7 @@ export class resultLostFound {
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     contact: string;             // 联系方式
+
+    @Column({ type: 'varchar', length: 255, nullable: false })
+    time: string;                // 申请的时间
 }

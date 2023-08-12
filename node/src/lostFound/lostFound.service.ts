@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as moment from 'moment-timezone';
 import { Repository } from 'typeorm';
 import { BE_filterLostFoundDto, DB_resultLostFoundDto, FE_postLostFoundDto } from './dto/lostFound.dto';
 import { resultLostFound } from './entities/lostFound.entity';
@@ -19,6 +20,7 @@ export class LostFoundService {
         value: 1,
         brand: lostFoundItem.brand,
         location: lostFoundItem.location,
+        time: lostFoundItem.time,
         description: lostFoundItem.description,
         contact: lostFoundItem.contact
       }))
@@ -35,6 +37,7 @@ export class LostFoundService {
     if (params.description == '') {
       params.description = '无'
     }
+    params.time = moment(params.time).tz('Asia/Shanghai').format('YYYY/MM/DD');
     try {
       await this.lostFoundResult.save(params)
       return true
@@ -43,7 +46,6 @@ export class LostFoundService {
       return false
     }
   }
-
 
   create(BE_filterLostFoundDto: BE_filterLostFoundDto) {
     return 'This action adds a new lostFound';

@@ -9,13 +9,13 @@ export class BE_filterLostFoundDto {
     value: number;
     brand: string;
     location: string;
+    time: string;
     description: string;
     contact: string;
 }
 
 // 数据库查询出来的数据
 export class DB_resultLostFoundDto {
-    id: number;
     account: string;
     name: string;
     state: string;
@@ -24,6 +24,7 @@ export class DB_resultLostFoundDto {
     location: string;
     description: string;
     contact: string;
+    time: string;
 }
 
 // 前端发布失物招领传来的数据
@@ -34,6 +35,7 @@ export interface FE_postLostFoundDto {
     item: string,
     brand: string,
     location: string,
+    time: string,
     description: string,
     contact: string
 }

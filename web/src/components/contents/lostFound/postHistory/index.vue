@@ -24,6 +24,11 @@
             <el-input v-model="postData.contact" class="lostFound-post-item" placeholder="请输入联系方式 (1-20字)"
               maxlength="20" />
           </el-form-item>
+          <el-form-item label="拾取/遗失时间" prop="time">
+            <el-config-provider :locale="locale">
+              <el-date-picker v-model="postData.time" class="lostFound-post-item" type="date" placeholder="请选择拾取/遗失时间" />
+            </el-config-provider>
+          </el-form-item>
           <el-form-item label="拾取/遗失地点" prop="location">
             <el-input v-model="postData.location" class="lostFound-post-item" placeholder="请输入地点 (1-20字)"
               maxlength="20" />
@@ -55,17 +60,20 @@ import { ref, Ref, reactive } from 'vue'
 import { ElMessage, FormInstance, FormRules } from 'element-plus'
 import type { postLostFoundType } from '../../../../types/lostFound'
 import { postLostFound } from '../../../../server'
+import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 
+const locale = zhCn
 const lostFoundRef: Ref<FormInstance | undefined> = ref()
 const postData: postLostFoundType = reactive({
   account: '22215150514',
   name: '卡拉米',
-  state: '',
   item: '',
+  state: '',
   brand: '',
+  contact: '',
+  time: '',
   location: '',
   description: '',
-  contact: ''
 })
 
 const submitForm = (formEl: FormInstance | undefined) => {
@@ -74,7 +82,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
     try {
       if (valid) {
         const result = await postLostFound(postData)
-
         if (result == true) {
           ElMessage({
             message: '发布成功',
@@ -90,8 +97,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
       console.log(error);
     }
   })
-
-
 }
 
 const resetForm = (formEl: FormInstance | undefined) => {
@@ -110,6 +115,9 @@ const rules: FormRules = reactive({
       trigger: 'change',
     }
   ],
+  time: [
+    { required: true, message: '请选择拾取/遗失时间', trigger: 'blur' }
+  ],
   contact: [
     { required: true, message: '请输入联系方式', trigger: 'blur' }
   ],
@@ -124,10 +132,6 @@ const rules: FormRules = reactive({
   width: var(--element-width-full);
   height: var(--element-height-full);
   display: flex;
-
-  .el-form-item {
-    margin-bottom: 30px;
-  }
 
   &-post {
     width: 35%;
@@ -149,6 +153,15 @@ const rules: FormRules = reactive({
         font-weight: bold;
         font-size: 20px !important;
       }
+    }
+
+    &:deep(.el-input__prefix) {
+      display: none !important;
+    }
+
+    &:deep(.el-date-editor) {
+      width: 100%;
+      margin-right: 30px
     }
 
     &-item {

@@ -4,6 +4,7 @@ export interface getLostFoundType {
     value: number,
     brand: string,
     location: string,
+    time: string,
     description: string,
     contact: string
 }
@@ -15,6 +16,7 @@ export interface postLostFoundType {
     item: string,
     brand: string,
     location: string,
+    time: string,
     description: string,
     contact: string
 }

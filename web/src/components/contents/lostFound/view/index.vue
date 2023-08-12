@@ -32,11 +32,13 @@ watch(chartData, () => {
           var brand = elementData.brand
           var description = elementData.description
           var contact = elementData.contact
+          var time = elementData.time
           var location = elementData.location
           return "<div>物品:  " + name +
             "</div><div>品牌:  " + brand +
             "</div><div>描述:  " + description +
             "</div><div>联系方式:  " + contact +
+            "</div><div>拾取/遗失时间:  " + time +
             "</div><div>拾取/遗失地点:  " + location + "</div>"
         }
       }
