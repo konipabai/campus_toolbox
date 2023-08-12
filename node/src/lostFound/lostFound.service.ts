@@ -29,6 +29,12 @@ export class LostFoundService {
   }
 
   async postLostFound(params: FE_postLostFoundDto): Promise<boolean> {
+    if (params.brand == '') {
+      params.brand = '无/暂不清楚'
+    }
+    if (params.description == '') {
+      params.description = '无'
+    }
     try {
       await this.lostFoundResult.save(params)
       return true

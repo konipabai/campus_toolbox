@@ -73,15 +73,8 @@ const submitForm = (formEl: FormInstance | undefined) => {
   formEl.validate(async (valid: boolean) => {
     try {
       if (valid) {
-        if (postData.brand == '') {
-          postData.brand = '无/暂不清楚'
-        }
-        if (postData.description == '') {
-          postData.description = '无'
-        }
         const result = await postLostFound(postData)
-        console.log(result);
-        
+
         if (result == true) {
           ElMessage({
             message: '发布成功',
