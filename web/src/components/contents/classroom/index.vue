@@ -289,7 +289,7 @@ const timeData = [
 
   &-head {
     &:deep(.el-input__wrapper) {
-      width: 190px;
+      width: 200px;
     }
 
     .el-col {
