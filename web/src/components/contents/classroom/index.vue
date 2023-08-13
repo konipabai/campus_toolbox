@@ -70,7 +70,7 @@
         <el-table-column prop="classroomNumber" label="教室号" min-width="2" />
         <el-table-column prop="date" label="日期" min-width="2" />
         <el-table-column prop="time" label="时间段" min-width="2" />
-        <el-table-column min-width="1">
+        <el-table-column min-width="1" label="操作">
           <template #default="scope">
             <el-button type="primary" @click="reserveForm(scope.row)">预约</el-button>
           </template>
