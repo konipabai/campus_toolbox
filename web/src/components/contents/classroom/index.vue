@@ -320,15 +320,6 @@ const timeData = [
       margin-top: 15px;
       display: flex;
       justify-content: flex-end;
-
-      &:deep(.el-pager .is-active) {
-        background-color: var(--bg-color) !important;
-        color: var(--button-text-color) !important;
-
-        &:hover {
-          background-color: var(--element-hover-color) !important;
-        }
-      }
     }
   }
 }
