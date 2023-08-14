@@ -35,7 +35,7 @@
           </el-form-item>
           <el-form-item label="描述" prop="description">
             <el-input v-model="postData.description" type="textarea" class="lostFound-post-item"
-              placeholder="请描述物品特征 (0-100字)" :autosize="{ minRows: 4, maxRows: 4 }" maxlength="100" />
+              placeholder="请描述物品特征 (0-50字)" :autosize="{ minRows: 4, maxRows: 4 }" maxlength="50" />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm(lostFoundRef)">确认</el-button>
@@ -50,14 +50,39 @@
         <div class="lostFound-history-title-text">历史记录</div>
       </div>
       <el-divider />
-      <div>123</div>
+      <el-table :data="paginatedData" class="lostFound-history-table" ref="tableTop">
+        <template #empty>
+          <div class="tableEmpty">
+            <span class="tableEmptyIcon"></span>
+            <span>暂无数据</span>
+          </div>
+        </template>
+        <el-table-column label="物品" min-width="3" />
+        <el-table-column label="状态" min-width="2" />
+        <el-table-column label="品牌" min-width="3" />
+        <el-table-column label="联系方式" min-width="4" />
+        <el-table-column label="时间" min-width="3" />
+        <el-table-column label="地点" min-width="4" />
+        <el-table-column label="描述" min-width="4" />
+        <el-table-column label="操作" min-width="2">
+          <template #default="scope">
+            <el-button type="primary" @click="">修改</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-config-provider :locale="locale">
+        <el-pagination :model="paginationData" layout="prev, pager, next, jumper"
+          v-model:page-size="paginationData.pageSize" :total="resultData.length" :pager-count="5" background small
+          v-model:current-page="paginationData.currentPage" @current-change="CurrentChange"
+          class="lostFound-history-pagination" />
+      </el-config-provider>
     </el-card>
   </div>
 </template>
 
 <script setup lang='ts'>
-import { ref, Ref, reactive } from 'vue'
-import { ElMessage, FormInstance, FormRules } from 'element-plus'
+import { ref, Ref, reactive, computed } from 'vue'
+import { ElMessage, FormInstance, FormRules, ElTable } from 'element-plus'
 import type { postLostFoundType } from '../../../../types/lostFound'
 import { postLostFound } from '../../../../server'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
@@ -125,6 +150,28 @@ const rules: FormRules = reactive({
     { required: true, message: '请输入地点', trigger: 'blur' }
   ]
 })
+
+
+
+const tableTop: Ref<typeof ElTable | undefined> = ref();
+const resultData = ref([])
+
+const paginationData = reactive({
+  currentPage: 1,
+  pageSize: 15
+})
+
+const CurrentChange = () => {
+  if (tableTop.value) {
+    tableTop.value.setScrollTop(0);
+  }
+}
+
+const paginatedData = computed(() => {
+  const startIndex = (paginationData.currentPage - 1) * paginationData.pageSize;
+  const endIndex = startIndex + paginationData.pageSize;
+  return resultData.value.slice(startIndex, endIndex);
+});
 </script>
 
 <style lang="less" scoped>
@@ -189,6 +236,9 @@ const rules: FormRules = reactive({
   &-history {
     width: 65%;
     height: var(--element-height-full);
+    overflow: auto;
+    flex: 1;
+    overflow: hidden;
 
     &-title {
       display: flex;
@@ -205,6 +255,17 @@ const rules: FormRules = reactive({
         font-weight: bold;
         font-size: 20px !important;
       }
+    }
+
+    &-table {
+      height: calc(100vh - 212px);
+      margin-top: -22px;
+    }
+
+    &-pagination {
+      margin-top: 15px;
+      display: flex;
+      justify-content: flex-end;
     }
   }
 }
