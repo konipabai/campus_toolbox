@@ -6,12 +6,16 @@
 // 后端处理之后的教室数据
 export class BE_filterLostFoundDto {
     name: string;
+    item: string;
+    state: string;
     value: number;
     brand: string;
     location: string;
     time: string;
     description: string;
     contact: string;
+    switch: string;
+    overdue: string;
 }
 
 // 数据库查询出来的数据
@@ -25,17 +29,26 @@ export class DB_resultLostFoundDto {
     description: string;
     contact: string;
     time: string;
+    switch: string;
+    overdue: string;
 }
 
-// 前端发布失物招领传来的数据
+// 前端发布失物招领传来的数据(switch,overdue是数据库需要)
 export interface FE_postLostFoundDto {
-    account: string,
-    name: string,
-    state: string,
-    item: string,
-    brand: string,
-    location: string,
-    time: string,
-    description: string,
-    contact: string
+    account: string;
+    name: string;
+    state: string;
+    item: string;
+    brand: string;
+    location: string;
+    time: string;
+    description: string;
+    contact: string;
+    switch: string;
+    overdue: string;
+}
+
+// 前端查询失物招领传来的数据
+export interface FE_getLostFoundDto {
+    account: string;
 }

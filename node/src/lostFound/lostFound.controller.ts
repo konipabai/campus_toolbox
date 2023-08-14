@@ -1,14 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { LostFoundService } from './lostFound.service';
-import { BE_filterLostFoundDto, FE_postLostFoundDto } from './dto/lostFound.dto';
+import { BE_filterLostFoundDto, FE_postLostFoundDto, FE_getLostFoundDto } from './dto/lostFound.dto';
 
 @Controller('lostFound')
 export class LostFoundController {
   constructor(private readonly lostFoundService: LostFoundService) { }
 
   @Get()
-  getLostFound() {
-    return this.lostFoundService.getLostFound();
+  getLostFound(@Query() params: FE_getLostFoundDto) {
+    return this.lostFoundService.getLostFound(params);
   }
 
   @Post()

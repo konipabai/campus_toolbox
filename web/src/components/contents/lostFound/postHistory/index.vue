@@ -35,7 +35,7 @@
           </el-form-item>
           <el-form-item label="描述" prop="description">
             <el-input v-model="postData.description" type="textarea" class="lostFound-post-item"
-              placeholder="请描述物品特征 (0-50字)" :autosize="{ minRows: 4, maxRows: 4 }" maxlength="50" />
+              placeholder="请描述物品特征 (0-50字)" :autosize="{ minRows: 5 }" maxlength="50" />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm(lostFoundRef)">确认</el-button>
@@ -50,21 +50,20 @@
         <div class="lostFound-history-title-text">历史记录</div>
       </div>
       <el-divider />
-      <el-table :data="paginatedData" class="lostFound-history-table" ref="tableTop">
+      <el-table :data="paginatedData" class="lostFound-history-table" ref="tableTop" :flexible=true>
         <template #empty>
           <div class="tableEmpty">
             <span class="tableEmptyIcon"></span>
             <span>暂无数据</span>
           </div>
         </template>
-        <el-table-column label="物品" min-width="3" />
-        <el-table-column label="状态" min-width="2" />
-        <el-table-column label="品牌" min-width="3" />
-        <el-table-column label="联系方式" min-width="4" />
-        <el-table-column label="时间" min-width="3" />
-        <el-table-column label="地点" min-width="4" />
-        <el-table-column label="描述" min-width="4" />
-        <el-table-column label="操作" min-width="2">
+        <el-table-column prop="item" label="物品" min-width="5" />
+        <el-table-column prop="state" label="状态" min-width="4" />
+        <el-table-column prop="brand" label="品牌" min-width="7" />
+        <el-table-column prop="time" label="时间" min-width="7" />
+        <el-table-column prop="location" label="地点" min-width="6" />
+        <el-table-column prop="description" label="描述" min-width="7" />
+        <el-table-column label="操作" min-width="5">
           <template #default="scope">
             <el-button type="primary" @click="">修改</el-button>
           </template>
@@ -83,8 +82,8 @@
 <script setup lang='ts'>
 import { ref, Ref, reactive, computed } from 'vue'
 import { ElMessage, FormInstance, FormRules, ElTable } from 'element-plus'
-import type { postLostFoundType } from '../../../../types/lostFound'
-import { postLostFound } from '../../../../server'
+import type { getLostFoundType, postLostFoundType, getAccountLostFoundType } from '../../../../types/lostFound'
+import { getLostFound, postLostFound } from '../../../../server'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 
 const locale = zhCn
@@ -112,6 +111,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
             message: '发布成功',
             type: 'success'
           })
+          getFormData()
         } else {
           ElMessage.error('未知错误，请稍后再试')
         }
@@ -154,7 +154,7 @@ const rules: FormRules = reactive({
 
 
 const tableTop: Ref<typeof ElTable | undefined> = ref();
-const resultData = ref([])
+const resultData: Ref<getLostFoundType[]> = ref([])
 
 const paginationData = reactive({
   currentPage: 1,
@@ -172,6 +172,20 @@ const paginatedData = computed(() => {
   const endIndex = startIndex + paginationData.pageSize;
   return resultData.value.slice(startIndex, endIndex);
 });
+
+const getFormData = async () => {
+  try {
+    const lostFoundData: getLostFoundType[] = await getLostFound({ account: postData.account })
+    if (lostFoundData.length != 0) {
+      resultData.value = lostFoundData
+    } else {
+      ElMessage.error('未知错误,请稍后再试')
+    }
+  } catch (error) {
+    ElMessage.error('未知错误,请稍后再试')
+  }
+}
+getFormData()
 </script>
 
 <style lang="less" scoped>
@@ -181,7 +195,7 @@ const paginatedData = computed(() => {
   display: flex;
 
   &-post {
-    width: 35%;
+    width: 32%;
     height: var(--element-height-full);
     margin-right: 1.5%;
 
@@ -234,7 +248,7 @@ const paginatedData = computed(() => {
   }
 
   &-history {
-    width: 65%;
+    width: 68%;
     height: var(--element-height-full);
     overflow: auto;
     flex: 1;

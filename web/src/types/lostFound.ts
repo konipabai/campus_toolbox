@@ -20,3 +20,7 @@ export interface postLostFoundType {
     description: string,
     contact: string
 }
+
+export interface getAccountLostFoundType {
+    account: string
+}

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as moment from 'moment-timezone';
 import { Repository } from 'typeorm';
-import { BE_filterLostFoundDto, DB_resultLostFoundDto, FE_postLostFoundDto } from './dto/lostFound.dto';
+import { BE_filterLostFoundDto, DB_resultLostFoundDto, FE_postLostFoundDto, FE_getLostFoundDto } from './dto/lostFound.dto';
 import { resultLostFound } from './entities/lostFound.entity';
 
 @Injectable()
@@ -11,18 +11,38 @@ export class LostFoundService {
     @InjectRepository(resultLostFound) private readonly lostFoundResult: Repository<resultLostFound>
   ) { }
 
-  async getLostFound(): Promise<BE_filterLostFoundDto[]> {
+  async getLostFound(params: FE_getLostFoundDto): Promise<BE_filterLostFoundDto[]> {
     var lostFoundData: BE_filterLostFoundDto[] = []
     try {
-      const tempLostFound: DB_resultLostFoundDto[] = await this.lostFoundResult.find()
+      var tempLostFound: DB_resultLostFoundDto[] = []
+      if (params.account) {
+        tempLostFound = await this.lostFoundResult.find({
+          where: {
+            account: params.account
+          },
+          order: {
+            id: "DESC"
+          }
+        })
+      } else {
+        tempLostFound = await this.lostFoundResult.find({
+          where: {
+            switch: 'on'
+          }
+        })
+      }
       lostFoundData = tempLostFound.map((lostFoundItem) => ({
         name: "(" + lostFoundItem.state + ")\n" + lostFoundItem.item,
+        item: lostFoundItem.item,
+        state: lostFoundItem.state,
         value: 1,
         brand: lostFoundItem.brand,
         location: lostFoundItem.location,
         time: lostFoundItem.time,
         description: lostFoundItem.description,
-        contact: lostFoundItem.contact
+        contact: lostFoundItem.contact,
+        switch: lostFoundItem.switch,
+        overdue: lostFoundItem.overdue
       }))
     } catch (error) {
       console.log(error);
@@ -38,6 +58,8 @@ export class LostFoundService {
       params.description = '无'
     }
     params.time = moment(params.time).tz('Asia/Shanghai').format('YYYY/MM/DD');
+    params.switch = 'on';
+    params.overdue = 'false';
     try {
       await this.lostFoundResult.save(params)
       return true
