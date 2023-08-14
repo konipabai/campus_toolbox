@@ -18,15 +18,15 @@ export class ClassroomService {
 
     try {
       const tempClassroom: DB_resultClassroomDto[] = await this.classroomResult.find()
-      if ((params.building != null && params.floor != null) && (params.building != '' && params.floor != '')) {
+      if (params.building && params.floor) {
         findClassroomData = classroom.filter((item) => {
           return (item.classroomBuilding == params.building && item.classroomFloor == params.floor)
         })
-      } else if (params.building != null && params.building != '') {
+      } else if (params.building) {
         findClassroomData = classroom.filter((item) => {
           return item.classroomBuilding == params.building
         })
-      } else if (params.floor != null && params.floor != '') {
+      } else if (params.floor) {
         findClassroomData = classroom.filter((item) => {
           return item.classroomFloor == params.floor
         })
@@ -35,7 +35,7 @@ export class ClassroomService {
       }
 
       var formattedDateTime: string = ''
-      if (params.date != null && params.date != '') {
+      if (params.date) {
         formattedDateTime = moment(params.date).tz('Asia/Shanghai').format('YYYY/MM/DD');
       } else {
         formattedDateTime = moment().tz('Asia/Shanghai').format('YYYY/MM/DD');
@@ -44,7 +44,7 @@ export class ClassroomService {
         classroomItem.time = []
         classroomItem.date = formattedDateTime
         var timeData: string[] = []
-        if (params.time != null && params.time != '') {
+        if (params.time) {
           timeData.push(params.time)
         } else {
           timeData = [
@@ -84,10 +84,10 @@ export class ClassroomService {
       date: '',
       time: ''
     }
-    if ((params.accountAndName != null && params.accountAndName != '') &&
-      (params.classroomNumber != null && params.classroomNumber != '') &&
-      (params.dateAndTime != null && params.dateAndTime != '') &&
-      (params.reason != null && params.reason != '')) {
+    if ((params.accountAndName) &&
+      (params.classroomNumber) &&
+      (params.dateAndTime) &&
+      (params.reason)) {
       reserveClassroomData.account = params.accountAndName.split(" ")[1]
       reserveClassroomData.name = params.accountAndName.split(" ")[0]
       reserveClassroomData.classroomNumber = params.classroomNumber
@@ -105,17 +105,5 @@ export class ClassroomService {
       return false
     }
 
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} classroom`;
-  }
-
-  update(id: number, FE_reserveClassroomDto: FE_reserveClassroomDto) {
-    return `This action updates a #${id} classroom`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} classroom`;
   }
 }
