@@ -1,4 +1,5 @@
 export interface getLostFoundType {
+    item: string,
     state: string,
     name: string,
     value: number,
@@ -6,7 +7,9 @@ export interface getLostFoundType {
     location: string,
     time: string,
     description: string,
-    contact: string
+    contact: string,
+    switch: string,
+    overdue: string
 }
 
 export interface postLostFoundType {
@@ -18,7 +21,8 @@ export interface postLostFoundType {
     location: string,
     time: string,
     description: string,
-    contact: string
+    contact: string,
+    switch: string
 }
 
 export interface getAccountLostFoundType {

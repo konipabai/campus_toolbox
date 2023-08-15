@@ -58,7 +58,6 @@ export class LostFoundService {
       params.description = '无'
     }
     params.time = moment(params.time).tz('Asia/Shanghai').format('YYYY/MM/DD');
-    params.switch = 'on';
     params.overdue = 'false';
     try {
       await this.lostFoundResult.save(params)

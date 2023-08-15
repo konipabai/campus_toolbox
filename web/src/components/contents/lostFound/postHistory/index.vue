@@ -3,7 +3,9 @@
     <el-card shadow="hover" class="lostFound-post">
       <div class="lostFound-post-title">
         <img src="../../../../assets/icon/sign.svg" class="lostFound-post-title-icon" />
-        <div class="lostFound-post-title-text">发布失物招领</div>
+        <div class="lostFound-post-title-text" v-if="!updateState && !overdueState">发布失物招领</div>
+        <div class="lostFound-post-title-text" v-else-if="updateState && !overdueState">修改信息</div>
+        <div class="lostFound-post-title-text" v-else>查看信息(已逾期不可更改)</div>
       </div>
       <el-divider />
       <div>
@@ -35,11 +37,21 @@
           </el-form-item>
           <el-form-item label="描述" prop="description">
             <el-input v-model="postData.description" type="textarea" class="lostFound-post-item"
-              placeholder="请描述物品特征 (0-50字)" :autosize="{ minRows: 5 }" maxlength="50" />
+              placeholder="请描述物品特征 (0-50字)" :autosize="{ minRows: 4 }" maxlength="50" />
+          </el-form-item>
+          <el-form-item label="是否公开" prop="switch" v-if="updateState">
+            <el-switch v-model="postData.switch"
+              style="--el-switch-on-color: var(--bg-color); --el-switch-off-color: #76ADFF" active-text="公开"
+              inactive-text="隐藏" active-value="on" inactive-value="off" />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm(lostFoundRef)">确认</el-button>
-            <el-button @click="resetForm(lostFoundRef)">重置</el-button>
+            <el-button type="primary" @click="submitForm(lostFoundRef)" v-if="!overdueState">确认</el-button>
+            <el-button color="#FF9D9D" @click="submitForm(lostFoundRef)" v-else disabled>确认</el-button>
+            <el-button @click="resetForm(lostFoundRef)" v-if="!updateState">重置</el-button>
+            <template v-else>
+              <el-button @click="returnForm(lostFoundRef)">返回</el-button>
+              <el-button type="danger" @click="returnForm(lostFoundRef)">删除</el-button>
+            </template>
           </el-form-item>
         </el-form>
       </div>
@@ -48,6 +60,20 @@
       <div class="lostFound-history-title">
         <img src="../../../../assets/icon/sign.svg" class="lostFound-history-title-icon" />
         <div class="lostFound-history-title-text">历史记录</div>
+        <div class="lostFound-history-title-color">
+          <div class="lostFound-history-title-color-item">
+            <div class="lostFound-history-title-color-on"></div>
+            <div>公开</div>
+          </div>
+          <div class="lostFound-history-title-color-item">
+            <div class="lostFound-history-title-color-off"></div>
+            <div>隐藏</div>
+          </div>
+          <div class="lostFound-history-title-color-item">
+            <div class="lostFound-history-title-color-overdue"></div>
+            <div>逾期</div>
+          </div>
+        </div>
       </div>
       <el-divider />
       <el-table :data="paginatedData" class="lostFound-history-table" ref="tableTop" :flexible=true>
@@ -65,7 +91,9 @@
         <el-table-column prop="description" label="描述" min-width="7" />
         <el-table-column label="操作" min-width="5">
           <template #default="scope">
-            <el-button type="primary" @click="">修改</el-button>
+            <el-button type="danger" v-if="scope.row.overdue == 'true'" @click="update(scope.row)">逾期</el-button>
+            <el-button type="primary" v-else-if="scope.row.switch == 'on'" @click="update(scope.row)">修改</el-button>
+            <el-button color="#76ADFF" v-else @click="update(scope.row)">修改</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -82,12 +110,14 @@
 <script setup lang='ts'>
 import { ref, Ref, reactive, computed } from 'vue'
 import { ElMessage, FormInstance, FormRules, ElTable } from 'element-plus'
-import type { getLostFoundType, postLostFoundType, getAccountLostFoundType } from '../../../../types/lostFound'
+import type { getLostFoundType, postLostFoundType } from '../../../../types/lostFound'
 import { getLostFound, postLostFound } from '../../../../server'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 
 const locale = zhCn
 const lostFoundRef: Ref<FormInstance | undefined> = ref()
+const tableTop: Ref<typeof ElTable | undefined> = ref()
+const resultData: Ref<getLostFoundType[]> = ref([])
 const postData: postLostFoundType = reactive({
   account: '22215150514',
   name: '卡拉米',
@@ -98,6 +128,7 @@ const postData: postLostFoundType = reactive({
   time: '',
   location: '',
   description: '',
+  switch: 'on'
 })
 
 const submitForm = (formEl: FormInstance | undefined) => {
@@ -108,10 +139,15 @@ const submitForm = (formEl: FormInstance | undefined) => {
         const result = await postLostFound(postData)
         if (result == true) {
           ElMessage({
-            message: '发布成功',
+            message: !updateState.value ? '发布成功' : '更新成功',
             type: 'success'
           })
+          updateState.value = false
+          overdueState.value = false
+          postData.switch = 'on'
+          CurrentChange()
           getFormData()
+          paginationData.currentPage = 1
         } else {
           ElMessage.error('未知错误，请稍后再试')
         }
@@ -151,11 +187,6 @@ const rules: FormRules = reactive({
   ]
 })
 
-
-
-const tableTop: Ref<typeof ElTable | undefined> = ref();
-const resultData: Ref<getLostFoundType[]> = ref([])
-
 const paginationData = reactive({
   currentPage: 1,
   pageSize: 15
@@ -186,6 +217,30 @@ const getFormData = async () => {
   }
 }
 getFormData()
+
+
+const updateState: Ref<boolean> = ref(false)
+const overdueState: Ref<boolean> = ref(false)
+const update = (row: getLostFoundType) => {
+  resetForm(lostFoundRef.value)
+  updateState.value = true
+  overdueState.value = JSON.parse(row.overdue)
+  postData.item = row.item
+  postData.state = row.state
+  postData.brand = row.brand
+  postData.contact = row.contact
+  postData.time = row.time
+  postData.location = row.location
+  postData.description = row.description
+  postData.switch = row.switch
+}
+const returnForm = (formEl: FormInstance | undefined) => {
+  updateState.value = false
+  overdueState.value = false
+  if (!formEl) return
+  formEl.resetFields()
+  postData.switch = 'on'
+}
 </script>
 
 <style lang="less" scoped>
@@ -221,13 +276,13 @@ getFormData()
     }
 
     &:deep(.el-date-editor) {
-      width: 100%;
-      margin-right: 30px
+      width: var(--element-width-full);
+      margin-right: 5%;
     }
 
     &-item {
       width: var(--element-width-full);
-      margin-right: 30px;
+      margin-right: 5%;
 
       &:deep(.el-textarea__inner) {
         &::-webkit-scrollbar {
@@ -258,6 +313,7 @@ getFormData()
       display: flex;
       margin-bottom: -10px;
       align-items: center;
+      justify-content: flex-end;
 
       &-icon {
         width: 27px;
@@ -268,6 +324,41 @@ getFormData()
       &-text {
         font-weight: bold;
         font-size: 20px !important;
+      }
+
+      &-color {
+        display: flex;
+        margin-left: auto;
+
+        &-item {
+          display: flex;
+          align-items: center;
+          margin: 0 10px;
+        }
+
+        &-on {
+          width: 15px;
+          height: 15px;
+          background-color: var(--bg-color);
+          margin-right: 5px;
+          border-radius: 15px;
+        }
+
+        &-off {
+          width: 15px;
+          height: 15px;
+          background-color: #76ADFF;
+          margin-right: 5px;
+          border-radius: 15px;
+        }
+
+        &-overdue {
+          width: 15px;
+          height: 15px;
+          background-color: #F89393;
+          margin-right: 5px;
+          border-radius: 15px;
+        }
       }
     }
 
