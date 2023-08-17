@@ -39,18 +39,26 @@
             <el-input v-model="postData.description" type="textarea" class="lostFound-post-item"
               placeholder="请描述物品特征 (0-50字)" :autosize="{ minRows: 4 }" maxlength="50" />
           </el-form-item>
-          <el-form-item label="是否公开" prop="switch" v-if="updateState">
+          <el-form-item label="是否公开" prop="switch" v-show="updateState">
             <el-switch v-model="postData.switch"
               style="--el-switch-on-color: var(--bg-color); --el-switch-off-color: #76ADFF" active-text="公开"
               inactive-text="隐藏" active-value="on" inactive-value="off" />
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="submitForm(lostFoundRef)" v-if="!overdueState">确认</el-button>
-            <el-button color="#FF9D9D" @click="submitForm(lostFoundRef)" v-else disabled>确认</el-button>
+            <el-button type="primary" @click="submitForm(lostFoundRef)"
+              v-if="!overdueState && !updateState">确认</el-button>
+            <el-button type="primary" @click="submitForm(lostFoundRef)"
+              v-else-if="!overdueState && updateState">更新</el-button>
+            <el-button color="#FF9D9D" v-else disabled>更新</el-button>
             <el-button @click="resetForm(lostFoundRef)" v-if="!updateState">重置</el-button>
             <template v-else>
-              <el-button @click="returnForm(lostFoundRef)">返回</el-button>
-              <el-button type="danger" @click="returnForm(lostFoundRef)">删除</el-button>
+              <el-button @click="returnForm()">返回</el-button>
+              <el-popconfirm width="220" confirm-button-text="确定" cancel-button-text="取消" title="确定删除吗?"
+                @confirm="deleteForm()">
+                <template #reference>
+                  <el-button type="danger">删除</el-button>
+                </template>
+              </el-popconfirm>
             </template>
           </el-form-item>
         </el-form>
@@ -111,14 +119,17 @@
 import { ref, Ref, reactive, computed } from 'vue'
 import { ElMessage, FormInstance, FormRules, ElTable } from 'element-plus'
 import type { getLostFoundType, postLostFoundType } from '../../../../types/lostFound'
-import { getLostFound, postLostFound } from '../../../../server'
+import { deleteLostFound, getLostFound, postLostFound, updateLostFound } from '../../../../server'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 
 const locale = zhCn
 const lostFoundRef: Ref<FormInstance | undefined> = ref()
 const tableTop: Ref<typeof ElTable | undefined> = ref()
 const resultData: Ref<getLostFoundType[]> = ref([])
+const updateState: Ref<boolean> = ref(false)
+const overdueState: Ref<boolean> = ref(false)
 const postData: postLostFoundType = reactive({
+  id: 0,
   account: '22215150514',
   name: '卡拉米',
   item: '',
@@ -131,38 +142,93 @@ const postData: postLostFoundType = reactive({
   switch: 'on'
 })
 
+const initData = () => {
+  updateState.value = false
+  overdueState.value = false
+  postData.switch = 'on'
+  postData.id = 0
+}
+
+const initTableData = () => {
+  getFormData()
+  CurrentChange()
+  paginationData.currentPage = 1
+}
+
+const paginationData = reactive({
+  currentPage: 1,
+  pageSize: 15
+})
+
+const CurrentChange = () => {
+  if (tableTop.value) {
+    tableTop.value.setScrollTop(0);
+  }
+}
+
+const resetForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  formEl.resetFields()
+}
+
+const returnForm = () => {
+  initData()
+  resetForm(lostFoundRef.value)
+}
+
+const deleteForm = async () => {
+  try {
+    const result: boolean = await deleteLostFound({ id: postData.id })
+    if (result) {
+      ElMessage({
+        message: '删除完成',
+        type: 'success'
+      })
+      initData()
+      resetForm(lostFoundRef.value)
+      initTableData()
+    } else {
+      ElMessage.error('未知错误,请稍后再试')
+    }
+  } catch (error) {
+    ElMessage.error('未知错误,请稍后再试')
+  }
+}
+
+const paginatedData = computed(() => {
+  const startIndex = (paginationData.currentPage - 1) * paginationData.pageSize;
+  const endIndex = startIndex + paginationData.pageSize;
+  return resultData.value.slice(startIndex, endIndex);
+});
+
 const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return
   formEl.validate(async (valid: boolean) => {
     try {
       if (valid) {
-        const result = await postLostFound(postData)
-        if (result == true) {
+        const result: Ref<boolean | undefined> = ref()
+        if (!(overdueState.value) && !(updateState.value)) {
+          result.value = await postLostFound(postData)
+        } else if (!(overdueState.value) && updateState.value) {
+          result.value = await updateLostFound(postData)
+        }
+        if (result.value == true) {
           ElMessage({
             message: !updateState.value ? '发布成功' : '更新成功',
             type: 'success'
           })
-          updateState.value = false
-          overdueState.value = false
-          postData.switch = 'on'
-          CurrentChange()
-          getFormData()
-          paginationData.currentPage = 1
+          initData()
+          initTableData()
         } else {
           ElMessage.error('未知错误，请稍后再试')
         }
-        formEl.resetFields()
+        resetForm(lostFoundRef.value)
       }
     } catch (error) {
       ElMessage.error('未知错误，请稍后再试')
       console.log(error);
     }
   })
-}
-
-const resetForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-  formEl.resetFields()
 }
 
 const rules: FormRules = reactive({
@@ -187,23 +253,6 @@ const rules: FormRules = reactive({
   ]
 })
 
-const paginationData = reactive({
-  currentPage: 1,
-  pageSize: 15
-})
-
-const CurrentChange = () => {
-  if (tableTop.value) {
-    tableTop.value.setScrollTop(0);
-  }
-}
-
-const paginatedData = computed(() => {
-  const startIndex = (paginationData.currentPage - 1) * paginationData.pageSize;
-  const endIndex = startIndex + paginationData.pageSize;
-  return resultData.value.slice(startIndex, endIndex);
-});
-
 const getFormData = async () => {
   try {
     const lostFoundData: getLostFoundType[] = await getLostFound({ account: postData.account })
@@ -218,13 +267,11 @@ const getFormData = async () => {
 }
 getFormData()
 
-
-const updateState: Ref<boolean> = ref(false)
-const overdueState: Ref<boolean> = ref(false)
 const update = (row: getLostFoundType) => {
   resetForm(lostFoundRef.value)
   updateState.value = true
   overdueState.value = JSON.parse(row.overdue)
+  postData.id = row.id
   postData.item = row.item
   postData.state = row.state
   postData.brand = row.brand
@@ -233,13 +280,6 @@ const update = (row: getLostFoundType) => {
   postData.location = row.location
   postData.description = row.description
   postData.switch = row.switch
-}
-const returnForm = (formEl: FormInstance | undefined) => {
-  updateState.value = false
-  overdueState.value = false
-  if (!formEl) return
-  formEl.resetFields()
-  postData.switch = 'on'
 }
 </script>
 
@@ -355,7 +395,7 @@ const returnForm = (formEl: FormInstance | undefined) => {
         &-overdue {
           width: 15px;
           height: 15px;
-          background-color: #F89393;
+          background-color: #F67D7D;
           margin-right: 5px;
           border-radius: 15px;
         }

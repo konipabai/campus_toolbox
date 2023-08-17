@@ -32,6 +32,7 @@ export class LostFoundService {
         })
       }
       lostFoundData = tempLostFound.map((lostFoundItem) => ({
+        id: lostFoundItem.id,
         name: "(" + lostFoundItem.state + ")\n" + lostFoundItem.item,
         item: lostFoundItem.item,
         state: lostFoundItem.state,
@@ -59,6 +60,7 @@ export class LostFoundService {
     }
     params.time = moment(params.time).tz('Asia/Shanghai').format('YYYY/MM/DD');
     params.overdue = 'false';
+    delete params.id;
     try {
       await this.lostFoundResult.save(params)
       return true
@@ -68,23 +70,31 @@ export class LostFoundService {
     }
   }
 
-  create(BE_filterLostFoundDto: BE_filterLostFoundDto) {
-    return 'This action adds a new lostFound';
+  async updateLostFound(id: number, params: FE_postLostFoundDto): Promise<boolean> {
+    if (params.brand == '') {
+      params.brand = '无/暂不清楚'
+    }
+    if (params.description == '') {
+      params.description = '无'
+    }
+    params.time = moment(params.time).tz('Asia/Shanghai').format('YYYY/MM/DD');
+    delete params.id;
+    try {
+      await this.lostFoundResult.update(id, params)
+      return true
+    } catch (error) {
+      console.log(error);
+      return false
+    }
   }
 
-  findAll() {
-    return `This action returns all lostFound`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} lostFound`;
-  }
-
-  update(id: number, BE_filterLostFoundDto: BE_filterLostFoundDto) {
-    return `This action updates a #${id} lostFound`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} lostFound`;
+  async deleteLostFound(id: number): Promise<boolean> {
+    try {
+      await this.lostFoundResult.delete(id)
+      return true
+    } catch (error) {
+      console.log(error);
+      return false
+    }
   }
 }

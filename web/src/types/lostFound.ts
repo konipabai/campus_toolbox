@@ -1,4 +1,5 @@
 export interface getLostFoundType {
+    id: number,
     item: string,
     state: string,
     name: string,
@@ -13,6 +14,7 @@ export interface getLostFoundType {
 }
 
 export interface postLostFoundType {
+    id: number,
     account: string,
     name: string,
     state: string,
@@ -23,6 +25,10 @@ export interface postLostFoundType {
     description: string,
     contact: string,
     switch: string
+}
+
+export interface deleteLostFoundType {
+    id: number,
 }
 
 export interface getAccountLostFoundType {

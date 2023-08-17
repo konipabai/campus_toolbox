@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { reserveClassroomType, searchClassroomType } from '../types/classroom'
-import { getAccountLostFoundType, postLostFoundType } from '../types/lostFound'
+import { getAccountLostFoundType, postLostFoundType, deleteLostFoundType } from '../types/lostFound'
 
 axios.defaults.baseURL = "/api"
 
@@ -11,3 +11,7 @@ export const addClassroom = (data: reserveClassroomType) => axios.post('/classro
 export const getLostFound = (data?: getAccountLostFoundType) => axios.get('/lostFound', { params: data }).then(res => res.data)
 
 export const postLostFound = (data: postLostFoundType) => axios.post('/lostFound', data).then(res => res.data)
+
+export const updateLostFound = (data: postLostFoundType) => axios.patch(`/lostFound/${data.id}`, data).then(res => res.data)
+
+export const deleteLostFound = (data: deleteLostFoundType) => axios.delete(`/lostFound/${data.id}`).then(res => res.data)

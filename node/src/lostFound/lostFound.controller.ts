@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseIntPipe } from '@nestjs/common';
 import { LostFoundService } from './lostFound.service';
-import { BE_filterLostFoundDto, FE_postLostFoundDto, FE_getLostFoundDto } from './dto/lostFound.dto';
+import { FE_postLostFoundDto, FE_getLostFoundDto } from './dto/lostFound.dto';
 
 @Controller('lostFound')
 export class LostFoundController {
@@ -16,18 +16,13 @@ export class LostFoundController {
     return this.lostFoundService.postLostFound(FE_postLostFoundDto);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.lostFoundService.findOne(+id);
-  }
-
   @Patch(':id')
-  update(@Param('id') id: string, @Body() BE_filterLostFoundDto: BE_filterLostFoundDto) {
-    return this.lostFoundService.update(+id, BE_filterLostFoundDto);
+  updateLostFound(@Param('id', ParseIntPipe) id: number, @Body() FE_updateLostFoundDto: FE_postLostFoundDto) {
+    return this.lostFoundService.updateLostFound(id, FE_updateLostFoundDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.lostFoundService.remove(+id);
+  deleteLostFound(@Param('id', ParseIntPipe) id: number) {
+    return this.lostFoundService.deleteLostFound(id);
   }
 }
