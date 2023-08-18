@@ -36,7 +36,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="时间段" prop="time">
-              <el-select v-model="searchData.time" class="m-2" placeholder="请选择时间" clearable>
+              <el-select v-model="searchData.time" placeholder="请选择时间" clearable>
                 <template #prefix>
                   <el-icon>
                     <Timer />
