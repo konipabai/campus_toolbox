@@ -4,7 +4,7 @@
 // 后端:   BE = backend
 
 // 数据库里已处理的订单结果
-export class DB_resultClassroomDto {
+export interface DB_resultClassroomDto {
     account: string;
     name: string;
     reason: string;
@@ -15,7 +15,7 @@ export class DB_resultClassroomDto {
 }
 
 // 数据库里待处理的订单
-export class DB_pendingClassroomDto {
+export interface DB_pendingClassroomDto {
     account: string;
     name: string;
     classroomNumber: string;

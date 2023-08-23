@@ -4,7 +4,7 @@
 // 后端:   BE = backend
 
 // 后端处理之后的教室数据
-export class BE_filterLostFoundDto {
+export interface BE_filterLostFoundDto {
     id: number;
     name: string;
     item: string;
@@ -20,7 +20,7 @@ export class BE_filterLostFoundDto {
 }
 
 // 数据库查询出来的数据
-export class DB_resultLostFoundDto {
+export interface DB_resultLostFoundDto {
     id: number;
     account: string;
     name: string;
