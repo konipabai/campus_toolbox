@@ -14,6 +14,8 @@
     "echarts": "^5.4.3",
     "element-plus": "^2.3.2",
     "element-resize-detector": "^1.2.4",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.43",
     "pinia": "^2.0.35",
     "vue": "^3.2.47",
     "vue-router": "^4.2.1"
