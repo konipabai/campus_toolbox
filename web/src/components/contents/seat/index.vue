@@ -177,16 +177,16 @@ const openDrawer = (location: string, col: number, row: number, e: Element) => {
       : "一楼";
   var area = "";
   if (location == "left-top") {
-    area = "A区";
+    area = "A";
   } else if (location == "right-top") {
-    area = "B区";
+    area = "B";
   } else if (location == "left-bottom") {
-    area = "C区";
+    area = "C";
   } else {
-    area = "D区";
+    area = "D";
   }
   postData.number =
-    area + "第 " + row + " 行，第 " + col + " 列，" + row + col + " 号桌";
+    area + "区第 " + row + " 行，第 " + col + " 列，" + area + row + col + " 号桌";
 };
 
 const closeDrawer = () => {
