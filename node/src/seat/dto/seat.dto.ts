@@ -9,6 +9,17 @@ export interface FE_getSeatDto {
     date: string;
 }
 
+// 前端请求预约座位传来的数据
+export interface FE_postSeatDto {
+    account: string;
+    name: string;
+    floor: string;
+    date: string;
+    number: string;
+    time: [Date, Date];
+    seat: string;
+}
+
 // 后端处理时的临时合并数据
 export interface BE_mergedSeatDto {
     time: string;
