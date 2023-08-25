@@ -1,7 +1,7 @@
 <template>
   <div class="seat">
     <el-card shadow="hover">
-      <el-form :inline="true" :model="searchData" ref="seat" class="seat-head">
+      <el-form :inline="true" :model="searchData" ref="seatRef" class="seat-head">
         <el-row>
           <el-col :span="9">
             <el-form-item label="楼层" prop="floor">
@@ -24,8 +24,8 @@
           </el-col>
           <el-col :span="6">
             <el-form-item class="seat-head-button">
-              <el-button type="primary" @click="">查询</el-button>
-              <el-button @click="">重置</el-button>
+              <el-button type="primary" @click="searchForm()">查询</el-button>
+              <el-button @click="resetForm()">重置</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -37,9 +37,8 @@
           <div class="seat-chart-left-top">
             <div v-for="col in 8">
               <div v-for="row in 4">
-                <div class="seat-chart-item" @click="
-                  openDrawer('left-top', col, row, $event.target as Element)
-                  " tabindex="1"></div>
+                <div class="seat-chart-item" @click="openDrawer('left-top', col, row, $event.target as Element)"
+                  tabindex="1"></div>
               </div>
             </div>
           </div>
@@ -47,14 +46,8 @@
           <div class="seat-chart-left-bottom">
             <div v-for="col in 8">
               <div v-for="row in 4">
-                <div class="seat-chart-item" @click="
-                  openDrawer(
-                    'left-bottom',
-                    col,
-                    row,
-                    $event.target as Element
-                  )
-                  " tabindex="1"></div>
+                <div class="seat-chart-item" @click="openDrawer('left-bottom', col, row, $event.target as Element)"
+                  tabindex="1"></div>
               </div>
             </div>
           </div>
@@ -67,9 +60,8 @@
           <div class="seat-chart-right-top">
             <div v-for="col in 8">
               <div v-for="row in 4">
-                <div class="seat-chart-item" @click="
-                  openDrawer('right-top', col, row, $event.target as Element)
-                  " tabindex="1"></div>
+                <div class="seat-chart-item" @click="openDrawer('right-top', col, row, $event.target as Element)"
+                  tabindex="1"></div>
               </div>
             </div>
           </div>
@@ -77,14 +69,8 @@
           <div class="seat-chart-right-bottom">
             <div v-for="col in 8">
               <div v-for="row in 4">
-                <div class="seat-chart-item" @click="
-                  openDrawer(
-                    'right-bottom',
-                    col,
-                    row,
-                    $event.target as Element
-                  )
-                  " tabindex="1"></div>
+                <div class="seat-chart-item" @click="openDrawer('right-bottom', col, row, $event.target as Element)"
+                  tabindex="1"></div>
               </div>
             </div>
           </div>
@@ -104,12 +90,13 @@
             <el-input v-model="postData.number" disabled />
           </el-form-item>
           <el-form-item label="已被预订" prop="order" class="seat-drawer-form-order">
-            <el-button v-for="item in postData.order">{{ item }}</el-button>
+            <el-button v-if="postData.order.length == 0">暂无预定</el-button>
+            <el-button v-else v-for="item in postData.order">{{ item }}</el-button>
           </el-form-item>
           <el-form-item label="预约时间" prop="time">
             <el-config-provider :locale="locale">
               <el-time-picker v-model="postData.time" is-range range-separator="—" start-placeholder="开始时间"
-                end-placeholder="结束时间" format="HH:mm" />
+                end-placeholder="结束时间" format="HH:mm" :clearable="false" />
             </el-config-provider>
           </el-form-item>
           <el-form-item label="选择位置" prop="seat">
@@ -133,7 +120,7 @@
       </el-scrollbar>
       <template #footer>
         <span>
-          <el-button type="primary" @click="">
+          <el-button type="primary" @click="submitForm()">
             确认
           </el-button>
           <el-button @click="drawer = false">取消</el-button>
@@ -148,14 +135,15 @@ import { ref, reactive, Ref } from "vue";
 import { OfficeBuilding } from "@element-plus/icons-vue";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import moment from "moment";
+import { getSeat, postSeat } from "../../../server";
+import { ElMessage, FormInstance } from "element-plus";
+import type { findSeatType, postSeatType, getSeatType } from "../../../types/seat"
 
 const locale = zhCn;
 const drawer: Ref<boolean> = ref(false);
-// const value1: Ref<[Date, Date]> = ref([
-//   new Date(2023, 1, 1, 0, 0),
-//   new Date(2023, 1, 1, 23, 59)
-// ]) as Ref<[Date, Date]>
-const searchData = reactive({
+const result: Ref<findSeatType[]> = ref([])
+const seatRef: Ref<FormInstance | undefined> = ref()
+const searchData: getSeatType = reactive({
   floor: "",
   date: "",
 });
@@ -163,19 +151,7 @@ const searchData = reactive({
 const openDrawer = (location: string, col: number, row: number, e: Element) => {
   e.classList.add("active");
   drawer.value = true;
-  postData.date =
-    searchData.date != "" && searchData.date != null
-      ? moment(searchData.date).format("YYYY/MM/DD")
-      : new Date().getFullYear() +
-      "/" +
-      (new Date().getMonth() + 1) +
-      "/" +
-      new Date().getDate();
-  postData.floor =
-    searchData.floor != "" && searchData.floor != null
-      ? searchData.floor
-      : "一楼";
-  var area = "";
+  var area: string = "";
   if (location == "left-top") {
     area = "A";
   } else if (location == "right-top") {
@@ -185,18 +161,23 @@ const openDrawer = (location: string, col: number, row: number, e: Element) => {
   } else {
     area = "D";
   }
-  postData.number =
-    area + "区第 " + row + " 行，第 " + col + " 列，" + area + row + col + " 号桌";
+  postData.number = area + "区第 " + row + " 行，第 " + col + " 列，" + area + row + col + " 号桌";
+  postData.order = []
+  result.value.map((item: findSeatType) => {
+    if (item.number == area + row + col) {
+      for (let index = 0; index < item.seat.length; index++) {
+        postData.order.push(item.seat[index] + " " + item.time[index])
+      }
+    }
+  })
 };
 
 const closeDrawer = () => {
-  const activeElements = document.querySelector(
-    ".seat-chart-item.active"
-  ) as Element;
+  const activeElements: Element = document.querySelector(".seat-chart-item.active") as Element;
   activeElements.classList.remove("active");
 };
 
-const floorData = [
+const floorData: { value: string }[] = [
   {
     value: "一楼",
   },
@@ -211,36 +192,23 @@ const floorData = [
   },
 ];
 
-const postData = reactive({
+const postData: postSeatType = reactive({
+  account: "22215150599",
+  name: '卡拉米',
   date: "",
-  time: [new Date(2023, 1, 1, 0, 0), new Date(2023, 1, 1, 23, 59)] as [
-    Date,
-    Date
-  ],
+  time: [new Date(2023, 1, 1, 0, 0), new Date(2023, 1, 1, 23, 59)] as [Date, Date],
   floor: "",
   number: "",
-  order: [""],
+  order: [],
   seat: "",
 });
-postData.order = [
-  "1座 08:03-10:16",
-  "3座 08:03-10:16",
-  "3座 10:30-12:00",
-  "2座 14:30-18:00",
-  "3座 14:30-18:00",
-  "4座 14:30-18:00",
-  "1座 20:11-22:36",
-  "3座 20:11-22:36",
-  "4座 20:11-22:36",
-];
 
 const selectSeat = (seatNum: number, e: Element) => {
-
   if (e.classList.contains("active")) {
     postData.seat = "";
     e.classList.remove("active");
   } else {
-    const activeElements = document.querySelector(
+    const activeElements: Element | null = document.querySelector(
       ".seat-drawer-form-seat-item.active"
     );
     if (activeElements != null) {
@@ -258,6 +226,61 @@ const selectSeat = (seatNum: number, e: Element) => {
     e.classList.add("active");
   }
 };
+
+const searchForm = async () => {
+  try {
+    if (searchData.date) {
+      searchData.date = moment(searchData.date).format("YYYY/MM/DD")
+    } else {
+      searchData.date = moment().format('YYYY/MM/DD');
+    }
+    if (!searchData.floor) {
+      searchData.floor = "一楼"
+    }
+    postData.date = searchData.date
+    postData.floor = searchData.floor
+    const data = await getSeat(searchData);
+    if (data.length != 0) {
+      result.value = data;
+    } else {
+      ElMessage({
+        message: '未找到对应数据，请选择其他楼层或日期',
+        type: 'warning'
+      })
+    }
+  } catch (error) {
+    ElMessage.error('未知错误，请稍后再试')
+    console.log(error);
+  }
+}
+searchForm()
+
+const resetForm = () => {
+  searchData.date = ''
+  searchData.floor = ''
+}
+
+const submitForm = async () => {
+  if (!postData.seat) {
+    ElMessage.error('请选择座位')
+  } else {
+    try {
+      const data = await postSeat(postData);
+      if (data == true) {
+        drawer.value = false
+        searchForm()
+        ElMessage({
+          message: '预约成功',
+          type: 'success'
+        })
+      } else {
+        ElMessage.error('请选择空闲的座位或正确的时间')
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -398,7 +421,7 @@ const selectSeat = (seatNum: number, e: Element) => {
       &-order {
         &:deep(.el-form-item__content) {
           .el-button {
-            margin: 4px 2px;
+            margin: 4px 6px;
             padding: 0 10px;
           }
         }
