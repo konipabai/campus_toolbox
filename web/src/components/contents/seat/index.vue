@@ -461,8 +461,8 @@ const getSeatClass = (location: string, col: number, row: number) => {
 
       &-seat {
         display: flex;
-        width: 100%;
-        height: 100%;
+        width: var(--element-width-full);
+        height: var(--element-height-full);
         align-items: center;
         margin-top: 40px;
 
@@ -472,7 +472,7 @@ const getSeatClass = (location: string, col: number, row: number) => {
 
         &-center {
           width: 50%;
-          height: 100%;
+          height: var(--element-height-full);
           border: 3px solid var(--b-text-color);
           background-color: var(--svg-select-color);
           border-radius: 10px;
