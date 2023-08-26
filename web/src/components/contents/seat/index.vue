@@ -32,13 +32,13 @@
       </el-form>
     </el-card>
     <el-card class="seat-card" shadow="hover">
-      <div class="seat-chart">
+      <div class="seat-chart" v-loading="loading">
         <div class="seat-chart-left">
           <div class="seat-chart-left-top">
             <div v-for="col in 8">
               <div v-for="row in 4">
-                <div class="seat-chart-item" @click="openDrawer('left-top', col, row, $event.target as Element)"
-                  tabindex="1"></div>
+                <div class="seat-chart-item" :class="getSeatClass('A', col, row)"
+                  @click="openDrawer('A', col, row, $event.target as Element)" tabindex="1"></div>
               </div>
             </div>
           </div>
@@ -46,8 +46,8 @@
           <div class="seat-chart-left-bottom">
             <div v-for="col in 8">
               <div v-for="row in 4">
-                <div class="seat-chart-item" @click="openDrawer('left-bottom', col, row, $event.target as Element)"
-                  tabindex="1"></div>
+                <div class="seat-chart-item" :class="getSeatClass('C', col, row)"
+                  @click="openDrawer('C', col, row, $event.target as Element)" tabindex="1"></div>
               </div>
             </div>
           </div>
@@ -60,8 +60,8 @@
           <div class="seat-chart-right-top">
             <div v-for="col in 8">
               <div v-for="row in 4">
-                <div class="seat-chart-item" @click="openDrawer('right-top', col, row, $event.target as Element)"
-                  tabindex="1"></div>
+                <div class="seat-chart-item" :class="getSeatClass('B', col, row)"
+                  @click="openDrawer('B', col, row, $event.target as Element)" tabindex="1"></div>
               </div>
             </div>
           </div>
@@ -69,8 +69,8 @@
           <div class="seat-chart-right-bottom">
             <div v-for="col in 8">
               <div v-for="row in 4">
-                <div class="seat-chart-item" @click="openDrawer('right-bottom', col, row, $event.target as Element)"
-                  tabindex="1"></div>
+                <div class="seat-chart-item" :class="getSeatClass('D', col, row)"
+                  @click="openDrawer('D', col, row, $event.target as Element)" tabindex="1"></div>
               </div>
             </div>
           </div>
@@ -139,6 +139,7 @@ import { getSeat, postSeat } from "../../../server";
 import { ElMessage, FormInstance } from "element-plus";
 import type { findSeatType, postSeatType, getSeatType } from "../../../types/seat"
 
+const loading: Ref<boolean> = ref(false)
 const locale = zhCn;
 const drawer: Ref<boolean> = ref(false);
 const result: Ref<findSeatType[]> = ref([])
@@ -151,20 +152,10 @@ const searchData: getSeatType = reactive({
 const openDrawer = (location: string, col: number, row: number, e: Element) => {
   e.classList.add("active");
   drawer.value = true;
-  var area: string = "";
-  if (location == "left-top") {
-    area = "A";
-  } else if (location == "right-top") {
-    area = "B";
-  } else if (location == "left-bottom") {
-    area = "C";
-  } else {
-    area = "D";
-  }
-  postData.number = area + "区第 " + row + " 行，第 " + col + " 列，" + area + row + col + " 号桌";
+  postData.number = `${location}区第 ${row} 行，第 ${col} 列，${location}${row}${col} 号桌`;
   postData.order = []
   result.value.map((item: findSeatType) => {
-    if (item.number == area + row + col) {
+    if (item.number == location + row + col) {
       for (let index = 0; index < item.seat.length; index++) {
         postData.order.push(item.seat[index] + " " + item.time[index])
       }
@@ -239,7 +230,10 @@ const searchForm = async () => {
     }
     postData.date = searchData.date
     postData.floor = searchData.floor
+    loading.value = true
+    await new Promise(resolve => setTimeout(resolve, 500));
     const data = await getSeat(searchData);
+    loading.value = false
     if (data.length != 0) {
       result.value = data;
     } else {
@@ -279,6 +273,24 @@ const submitForm = async () => {
     } catch (error) {
       console.log(error);
     }
+  }
+}
+
+const getSeatClass = (location: string, col: number, row: number) => {
+  const number = `${location}${row}${col}`;
+  const item = result.value.find((data) => data.number === number);
+  if (item && item.time.length == 0) {
+    return 'zero';
+  } else if (item && item.time.length >= 1 && item.time.length <= 2) {
+    return 'oneOrTwo';
+  } else if (item && item.time.length >= 3 && item.time.length <= 4) {
+    return 'threeOrFour';
+  } else if (item && item.time.length >= 5 && item.time.length <= 6) {
+    return 'fiveOrSix';
+  } else if (item && item.time.length >= 7 && item.time.length <= 8) {
+    return 'sevenOrEight';
+  } else {
+    return 'over';
   }
 }
 </script>
@@ -331,11 +343,31 @@ const submitForm = async () => {
       align-items: center;
 
       &:hover {
-        background-color: var(--title-hover-bg-color);
+        background-color: var(--title-hover-bg-color) !important;
       }
 
       &.active {
-        background-color: var(--element-active-color);
+        background-color: var(--element-active-color) !important;
+      }
+
+      &.oneOrTwo {
+        background-color: #c9ffd0;
+      }
+
+      &.threeOrFour {
+        background-color: #86FD70;
+      }
+
+      &.fiveOrSix {
+        background-color: #E6FF01;
+      }
+
+      &.sevenOrEight {
+        background-color: #FC9300;
+      }
+
+      &.over {
+        background-color: #FF3F00;
       }
     }
 
