@@ -77,7 +77,6 @@ export class LostFoundService {
     if (params.description == '') {
       params.description = '无'
     }
-    params.time = moment(params.time).tz('Asia/Shanghai').format('YYYY/MM/DD');
     delete params.id;
     try {
       await this.lostFoundResult.update(id, params)
