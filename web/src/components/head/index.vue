@@ -11,7 +11,7 @@
     </span>
     <span class="head-box-span-1">
       <el-breadcrumb :separator-icon="ArrowRight">
-        <el-breadcrumb-item v-for="item in $route.matched">
+        <el-breadcrumb-item v-for="item in $route.matched" :key="(item.meta.msg as string)">
           <template v-if="item.meta.father == 'true'">
             <el-dropdown>
               <span class="head-box-span-1-title">
@@ -22,7 +22,7 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item v-for="items in (item.children as any)" @click="dropDown(item, items)">
+                  <el-dropdown-item v-for="items in (item.children as any)" @click="dropDown(item, items)" :key="items.meta.msg">
                     {{ items.meta.msg }}
                   </el-dropdown-item>
                 </el-dropdown-menu>

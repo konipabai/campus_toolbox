@@ -35,8 +35,8 @@
       <div class="seat-chart" v-loading="loading">
         <div class="seat-chart-left">
           <div class="seat-chart-left-top">
-            <div v-for="col in 8">
-              <div v-for="row in 4">
+            <div v-for="col in 8" :key="col">
+              <div v-for="row in 4" :key="row">
                 <div class="seat-chart-item" :class="getSeatClass('A', col, row)"
                   @click="openDrawer('A', col, row, $event.target as Element)" tabindex="1"></div>
               </div>
@@ -44,8 +44,8 @@
           </div>
           <el-divider />
           <div class="seat-chart-left-bottom">
-            <div v-for="col in 8">
-              <div v-for="row in 4">
+            <div v-for="col in 8" :key="col">
+              <div v-for="row in 4" :key="row">
                 <div class="seat-chart-item" :class="getSeatClass('C', col, row)"
                   @click="openDrawer('C', col, row, $event.target as Element)" tabindex="1"></div>
               </div>
@@ -58,8 +58,8 @@
         </div>
         <div class="seat-chart-right">
           <div class="seat-chart-right-top">
-            <div v-for="col in 8">
-              <div v-for="row in 4">
+            <div v-for="col in 8" :key="col">
+              <div v-for="row in 4" :key="row">
                 <div class="seat-chart-item" :class="getSeatClass('B', col, row)"
                   @click="openDrawer('B', col, row, $event.target as Element)" tabindex="1"></div>
               </div>
@@ -67,8 +67,8 @@
           </div>
           <el-divider />
           <div class="seat-chart-right-bottom">
-            <div v-for="col in 8">
-              <div v-for="row in 4">
+            <div v-for="col in 8" :key="col">
+              <div v-for="row in 4" :key="row">
                 <div class="seat-chart-item" :class="getSeatClass('D', col, row)"
                   @click="openDrawer('D', col, row, $event.target as Element)" tabindex="1"></div>
               </div>
@@ -91,7 +91,7 @@
           </el-form-item>
           <el-form-item label="已被预订" prop="order" class="seat-drawer-form-order">
             <el-button v-if="postData.order.length == 0">暂无预定</el-button>
-            <el-button v-else v-for="item in postData.order">{{ item }}</el-button>
+            <el-button v-else v-for="item in postData.order" :key="item">{{ item }}</el-button>
           </el-form-item>
           <el-form-item label="预约时间" prop="time">
             <el-config-provider :locale="locale">
