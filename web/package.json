@@ -17,11 +17,13 @@
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
     "pinia": "^2.0.35",
+    "three": "^0.158.0",
     "vue": "^3.2.47",
     "vue-router": "^4.2.1"
   },
   "devDependencies": {
     "@types/element-resize-detector": "^1.1.3",
+    "@types/three": "^0.158.3",
     "@vitejs/plugin-vue": "^4.1.0",
     "less": "^4.1.3",
     "typescript": "^4.9.3",
