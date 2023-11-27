@@ -13,8 +13,7 @@ import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js"
 const canvaRef = ref() as Ref<HTMLElement>
 
 const scene: THREE.Scene = new THREE.Scene()
-scene.fog = new THREE.Fog(0x999999, 0.1, 50)
-scene.background = new THREE.Color(0xffffff)
+// scene.fog = new THREE.Fog(0x999999, 0.1, 50)
 const gltfLoader: GLTFLoader = new GLTFLoader()
 const dracoLoader: DRACOLoader = new DRACOLoader()
 dracoLoader.setDecoderPath("/src/assets/draco")
@@ -43,6 +42,16 @@ rgbeLoader.load('/src/assets/hdr/Alex_Hart-Nature_Lab_Bones_2k.hdr', (envMap) =>
   envMap.mapping = THREE.EquirectangularReflectionMapping
   scene.environment = envMap
 })
+const bgUrl = [
+  '/src/assets/image/bg_r.jpg',
+  '/src/assets/image/bg_l.jpg',
+  '/src/assets/image/bg_u.jpg',
+  '/src/assets/image/bg_d.jpg',
+  '/src/assets/image/bg_f.jpg',
+  '/src/assets/image/bg_b.jpg',
+]
+const bg = new THREE.CubeTextureLoader().load(bgUrl);
+scene.background = bg;
 // const axseHelper: THREE.AxesHelper = new THREE.AxesHelper(5)
 // scene.add(axseHelper)
 
