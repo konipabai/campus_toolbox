@@ -1,5 +1,7 @@
 <template>
-  <div ref="canvaRef" class="canvaRef"></div>
+  <div class="sports">
+    <div ref="canvaRef" class="sports-canvas"></div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -13,69 +15,92 @@ import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js"
 const canvaRef = ref() as Ref<HTMLElement>
 
 const scene: THREE.Scene = new THREE.Scene()
-// scene.fog = new THREE.Fog(0x999999, 0.1, 50)
 const gltfLoader: GLTFLoader = new GLTFLoader()
 const dracoLoader: DRACOLoader = new DRACOLoader()
+let model: THREE.Group<THREE.Object3DEventMap>
 dracoLoader.setDecoderPath("/src/assets/draco")
 gltfLoader.setDRACOLoader(dracoLoader)
 gltfLoader.load("/src/assets/model/basketballCourt/scene.gltf", (gltf) => {
-  const model = gltf.scene
+  model = gltf.scene
   model.scale.set(0.6, 0.6, 0.6)
+  model.position.set(45, -2.7, 0)
   model.rotation.y = Math.PI / 2
-  model.position.set(0, -2.7, 0)
+  model.rotateX(-Math.PI / 6)
   scene.add(model)
 });
 gltfLoader.load("/src/assets/model/tennisCourt/scene.gltf", (gltf) => {
-  const model = gltf.scene
+  model = gltf.scene
   model.scale.set(2, 2, 2)
-  model.position.set(0, 0, -20)
+  model.position.set(0, 0, 45)
+  model.rotation.y = Math.PI / 2
+  model.rotateZ(-Math.PI / 6)
   scene.add(model)
 });
 gltfLoader.load("/src/assets/model/pingpongTable/scene.gltf", (gltf) => {
-  const model = gltf.scene
+  model = gltf.scene
   model.scale.set(5, 5, 5)
-  model.position.set(0, 0, -40)
+  model.position.set(-45, 0, 0)
+  model.rotateZ(-Math.PI / 6)
   scene.add(model)
 });
-let rgbeLoader = new RGBELoader()
-rgbeLoader.load('/src/assets/hdr/Alex_Hart-Nature_Lab_Bones_2k.hdr', (envMap) => {
+gltfLoader.load("/src/assets/model/footballCourt/scene.gltf", (gltf) => {
+  model = gltf.scene
+  model.scale.set(0.8, 0.8, 0.8)
+  model.position.set(0, 0, -45)
+  model.rotateX(Math.PI / 6)
+  scene.add(model)
+});
+
+const rgbeLoader: RGBELoader = new RGBELoader()
+rgbeLoader.load('/src/assets/hdr/highDynamicRange.hdr', (envMap) => {
   envMap.mapping = THREE.EquirectangularReflectionMapping
   scene.environment = envMap
 })
-const bgUrl = [
-  '/src/assets/image/bg_r.jpg',
-  '/src/assets/image/bg_l.jpg',
-  '/src/assets/image/bg_u.jpg',
-  '/src/assets/image/bg_d.jpg',
-  '/src/assets/image/bg_f.jpg',
-  '/src/assets/image/bg_b.jpg',
-]
-const bg = new THREE.CubeTextureLoader().load(bgUrl);
-scene.background = bg;
-// const axseHelper: THREE.AxesHelper = new THREE.AxesHelper(5)
-// scene.add(axseHelper)
 
-const camers: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000)
-camers.position.z = 10
-camers.position.x = 18
-camers.position.y = 18
-camers.lookAt(0, 0, 0)
+scene.background = new THREE.CubeTextureLoader().load([
+  '/src/assets/image/bgR.jpg',
+  '/src/assets/image/bgL.jpg',
+  '/src/assets/image/bgU.jpg',
+  '/src/assets/image/bgD.jpg',
+  '/src/assets/image/bgF.jpg',
+  '/src/assets/image/bgB.jpg',
+]);
+// const axseHelper: THREE.AxesHelper = new THREE.AxesHelper(100)
+// scene.add(axseHelper)
 
 const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer()
 
-let controls: OrbitControls = new OrbitControls(camers, renderer.domElement)
+let camera: THREE.PerspectiveCamera
+let controls: OrbitControls
+let target: THREE.Vector3
 
 const animate = () => {
-  renderer.render(scene, camers)
+  renderer.render(scene, camera)
   controls.update();
   requestAnimationFrame(animate)
 };
 
 onMounted(() => {
+  camera = new THREE.PerspectiveCamera(45, canvaRef.value.clientWidth / canvaRef.value.clientHeight, 0.1, 1000)
+  camera.position.set(0, 10, -10)
+  camera.filmOffset = 12
+
   canvaRef.value.appendChild(renderer.domElement)
+  renderer.setSize(canvaRef.value.clientWidth, canvaRef.value.clientHeight)
+
+  controls = new OrbitControls(camera, renderer.domElement)
+  target = new THREE.Vector3(0, 0, -45)
+  controls.target = target
+  controls.enablePan = false;
+  controls.maxAzimuthAngle = Math.PI / 3
+  controls.minAzimuthAngle = -Math.PI / 6
+  controls.maxPolarAngle = Math.PI / 2
+  controls.minPolarAngle = Math.PI / 6
+  controls.maxDistance = 43
+  controls.minDistance = 5
   controls.enableDamping = true
   controls.dampingFactor = 0.02
-  renderer.setSize(canvaRef.value.clientWidth, canvaRef.value.clientHeight)
+
   animate();
 });
 
@@ -91,16 +116,21 @@ const resizeObserver: ResizeObserver = new ResizeObserver((entries) => {
     }
     resizeTimeout = requestAnimationFrame(() => {
       renderer.setSize(canvaRef.value.clientWidth, canvaRef.value.clientHeight)
-      camers.updateProjectionMatrix()
-      renderer.render(scene, camers)
+      camera.updateProjectionMatrix()
+      renderer.render(scene, camera)
     });
   }
 });
 </script>
 
 <style lang="less" scoped>
-.canvaRef {
+.sports {
   width: 100%;
   height: 100%;
+
+  &-canvas {
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>
