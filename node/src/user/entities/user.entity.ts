@@ -12,5 +12,8 @@ export class resultUser {
     name: string;                // 用户名
 
     @Column({ type: 'varchar', length: 255, nullable: false })
-    class: string;                // 班级
+    password: string;            // 密码
+
+    @Column({ type: 'varchar', length: 255, nullable: false })
+    class: string;               // 班级
 }

@@ -8,4 +8,5 @@ export interface DB_resultUserDto {
     account: string;
     name: string;
     class: string;
+    password: string;
 }
