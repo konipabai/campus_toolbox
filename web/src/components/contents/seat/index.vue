@@ -184,7 +184,7 @@ const floorData: { value: string }[] = [
 ];
 
 const postData: postSeatType = reactive({
-  account: "22215150599",
+  account: "22215150514",
   name: '卡拉米',
   date: "",
   time: [new Date(2023, 1, 1, 0, 0), new Date(2023, 1, 1, 23, 59)] as [Date, Date],
