@@ -1,6 +1,7 @@
 <template>
   <div class="sports">
     <div ref="canvaRef" class="sports-canvas"></div>
+    <div shadow="hover" class="sports-form">123</div>
   </div>
 </template>
 
@@ -83,13 +84,13 @@ const animate = () => {
 onMounted(() => {
   camera = new THREE.PerspectiveCamera(45, canvaRef.value.clientWidth / canvaRef.value.clientHeight, 0.1, 1000)
   camera.position.set(0, 10, -10)
-  camera.filmOffset = 12
+  camera.filmOffset = 10
 
   canvaRef.value.appendChild(renderer.domElement)
   renderer.setSize(canvaRef.value.clientWidth, canvaRef.value.clientHeight)
 
   controls = new OrbitControls(camera, renderer.domElement)
-  target = new THREE.Vector3(0, 0, -45)
+  target = new THREE.Vector3(0, 0, -47)
   controls.target = target
   controls.enablePan = false;
   controls.maxAzimuthAngle = Math.PI / 3
@@ -127,10 +128,28 @@ const resizeObserver: ResizeObserver = new ResizeObserver((entries) => {
 .sports {
   width: 100%;
   height: 100%;
+  position: relative;
 
   &-canvas {
     width: 100%;
     height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  &-form {
+    width: 35%;
+    height: 96%;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(-12px, -50%);
+    z-index: 99;
+    background-color: rgba(43, 87, 154, 0.7);
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 10px;
   }
 }
 </style>
