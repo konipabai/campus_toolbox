@@ -5,13 +5,9 @@
 
 // 数据库里已处理的订单结果
 export interface DB_resultClassroomDto {
-    account: string;
-    name: string;
-    reason: string;
     date: string;
     time: string;
     classroomNumber: string;
-    state: string;
 }
 
 // 数据库里待处理的订单
@@ -34,7 +30,7 @@ export interface BE_filterClassroomDto {
 }
 
 // 前端查询请求的教室数据
-export interface FE_findClassroomDto {
+export interface FE_getClassroomDto {
     building: string;
     floor: string;
     date: string;

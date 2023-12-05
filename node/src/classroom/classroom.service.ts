@@ -3,8 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { resultClassroom, checkClassroom } from './entities/classroom.entity';
 import { classroom } from './constants';
-import type { DB_resultClassroomDto, DB_pendingClassroomDto, BE_filterClassroomDto, FE_findClassroomDto, FE_reserveClassroomDto } from './dto/classroom.dto';
+import type { DB_resultClassroomDto, DB_pendingClassroomDto, BE_filterClassroomDto, FE_getClassroomDto, FE_reserveClassroomDto } from './dto/classroom.dto';
 import * as moment from 'moment-timezone';
+import { resultUser } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class ClassroomService {
@@ -13,25 +14,29 @@ export class ClassroomService {
     @InjectRepository(checkClassroom) private readonly classroomCheck: Repository<checkClassroom>,
   ) { }
 
-  async findClassroom(params: FE_findClassroomDto): Promise<BE_filterClassroomDto[]> {
-    var findClassroomData: BE_filterClassroomDto[] = []
+  async getClassroom(params: FE_getClassroomDto): Promise<BE_filterClassroomDto[]> {
+    var getClassroomData: BE_filterClassroomDto[] = []
 
     try {
-      const tempClassroom: DB_resultClassroomDto[] = await this.classroomResult.find()
+      const tempClassroom: DB_resultClassroomDto[] = await this.classroomResult.find({
+        select: ['date', 'time', 'classroomNumber'],
+        where: { state: 'true' }
+      })
+
       if (params.building && params.floor) {
-        findClassroomData = classroom.filter((item) => {
+        getClassroomData = classroom.filter((item) => {
           return (item.classroomBuilding == params.building && item.classroomFloor == params.floor)
         })
       } else if (params.building) {
-        findClassroomData = classroom.filter((item) => {
+        getClassroomData = classroom.filter((item) => {
           return item.classroomBuilding == params.building
         })
       } else if (params.floor) {
-        findClassroomData = classroom.filter((item) => {
+        getClassroomData = classroom.filter((item) => {
           return item.classroomFloor == params.floor
         })
       } else {
-        findClassroomData = classroom
+        getClassroomData = classroom
       }
 
       var formattedDateTime: string = ''
@@ -40,7 +45,7 @@ export class ClassroomService {
       } else {
         formattedDateTime = moment().tz('Asia/Shanghai').format('YYYY/MM/DD');
       }
-      findClassroomData.map((classroomItem: BE_filterClassroomDto) => {
+      getClassroomData.map((classroomItem: BE_filterClassroomDto) => {
         classroomItem.time = []
         classroomItem.date = formattedDateTime
         var timeData: string[] = []
@@ -63,7 +68,7 @@ export class ClassroomService {
           ]
         }
         tempClassroom.map((reserveItem: DB_resultClassroomDto) => {
-          if ((reserveItem.classroomNumber == classroomItem.classroomNumber) && (classroomItem.date == reserveItem.date) && (reserveItem.state == "true")) {
+          if ((reserveItem.classroomNumber == classroomItem.classroomNumber) && (reserveItem.date == classroomItem.date)) {
             timeData = timeData.filter(item => item != reserveItem.time)
           }
         })
@@ -72,7 +77,7 @@ export class ClassroomService {
     } catch (error) {
       console.log(error);
     }
-    return findClassroomData
+    return getClassroomData
   }
 
   async reserveClassroom(params: FE_reserveClassroomDto): Promise<boolean> {
@@ -93,7 +98,7 @@ export class ClassroomService {
       reserveClassroomData.classroomNumber = params.classroomNumber
       reserveClassroomData.reason = params.reason
       reserveClassroomData.date = params.dateAndTime.split(" ")[0]
-      reserveClassroomData.time = params.dateAndTime.split(" ")[1]
+      reserveClassroomData.time = params.dateAndTime.split(" ")[1] + ' ' + params.dateAndTime.split(" ")[2]
       try {
         await this.classroomCheck.save(reserveClassroomData)
         return true

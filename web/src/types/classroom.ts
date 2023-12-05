@@ -1,4 +1,4 @@
-export interface findClassroomType {
+export interface getClassroomType {
     classroomBuilding: string;
     classroomFloor: string;
     classroomNumber: string;

@@ -115,12 +115,12 @@ import { computed, ComputedRef, reactive, Ref, ref, watch } from 'vue'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import { Timer, MapLocation, OfficeBuilding } from '@element-plus/icons-vue'
 import { addClassroom, getClassroom } from "../../../server/index";
-import type { findClassroomType, searchClassroomType, reserveClassroomType, paginationClassroomType } from "../../../types/classroom"
+import type { getClassroomType, searchClassroomType, reserveClassroomType, paginationClassroomType } from "../../../types/classroom"
 import { ElMessage, FormInstance, ElTable } from 'element-plus';
 
 const locale = zhCn
-const result: Ref<findClassroomType[]> = ref([])
-const resultData: Ref<findClassroomType[]> = ref([])
+const result: Ref<getClassroomType[]> = ref([])
+const resultData: Ref<getClassroomType[]> = ref([])
 const dialogVisible: Ref<boolean> = ref(false)
 const tableTop: Ref<typeof ElTable | undefined> = ref();
 const loading: Ref<boolean> = ref(false)
@@ -151,7 +151,7 @@ const CurrentChange = () => {
   }
 }
 
-const paginatedData: ComputedRef<findClassroomType[]> = computed(() => {
+const paginatedData: ComputedRef<getClassroomType[]> = computed(() => {
   const startIndex = (paginationData.currentPage - 1) * paginationData.pageSize;
   const endIndex = startIndex + paginationData.pageSize;
   return resultData.value.slice(startIndex, endIndex);
@@ -180,14 +180,14 @@ const searchForm = async () => {
   }
 };
 
-const reserveForm = (row: findClassroomType) => {
+const reserveForm = (row: getClassroomType) => {
   dialogVisible.value = true;
   reserveData.classroomNumber = row.classroomNumber;
   reserveData.dateAndTime = row.date + " " + row.time;
 };
 
 watch(result, () => {
-  const newData: findClassroomType[] = [];
+  const newData: getClassroomType[] = [];
   result.value.forEach(item => {
     item.time.forEach(timeEntry => {
       newData.push({
