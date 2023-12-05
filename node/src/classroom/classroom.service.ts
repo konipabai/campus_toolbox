@@ -5,7 +5,6 @@ import { resultClassroom, checkClassroom } from './entities/classroom.entity';
 import { classroom } from './constants';
 import type { DB_resultClassroomDto, DB_pendingClassroomDto, BE_filterClassroomDto, FE_getClassroomDto, FE_reserveClassroomDto } from './dto/classroom.dto';
 import * as moment from 'moment-timezone';
-import { resultUser } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class ClassroomService {
