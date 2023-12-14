@@ -9,9 +9,6 @@ export class resultClassroom {
     account: string;            // 账号
 
     @Column({ type: 'varchar', length: 255, nullable: false })
-    name: string;               // 用户名
-
-    @Column({ type: 'varchar', length: 255, nullable: false })
     reason: string;             // 申请理由
 
     @Column({ type: 'varchar', length: 255, nullable: false })
@@ -34,9 +31,6 @@ export class checkClassroom {
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     account: string;            // 账号
-
-    @Column({ type: 'varchar', length: 255, nullable: false })
-    name: string;               // 用户名
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     reason: string;             // 申请理由

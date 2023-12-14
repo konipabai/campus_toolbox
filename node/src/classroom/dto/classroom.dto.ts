@@ -13,7 +13,6 @@ export interface DB_resultClassroomDto {
 // 数据库里待处理的订单
 export interface DB_pendingClassroomDto {
     account: string;
-    name: string;
     classroomNumber: string;
     reason: string;
     date: string;

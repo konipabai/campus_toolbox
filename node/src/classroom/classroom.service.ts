@@ -82,7 +82,6 @@ export class ClassroomService {
   async reserveClassroom(params: FE_reserveClassroomDto): Promise<boolean> {
     var reserveClassroomData: DB_pendingClassroomDto = {
       account: '',
-      name: '',
       classroomNumber: '',
       reason: '',
       date: '',
@@ -93,7 +92,6 @@ export class ClassroomService {
       (params.dateAndTime) &&
       (params.reason)) {
       reserveClassroomData.account = params.accountAndName.split(" ")[1]
-      reserveClassroomData.name = params.accountAndName.split(" ")[0]
       reserveClassroomData.classroomNumber = params.classroomNumber
       reserveClassroomData.reason = params.reason
       reserveClassroomData.date = params.dateAndTime.split(" ")[0]
