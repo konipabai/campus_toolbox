@@ -9,9 +9,6 @@ export class resultLostFound {
     account: string;             // 账号
 
     @Column({ type: 'varchar', length: 255, nullable: false })
-    name: string;                // 用户名
-
-    @Column({ type: 'varchar', length: 255, nullable: false })
     state: string;               // 寻/拾
 
     @Column({ type: 'varchar', length: 255, nullable: false })

@@ -131,7 +131,6 @@ const overdueState: Ref<boolean> = ref(false)
 const postData: postLostFoundType = reactive({
   id: 0,
   account: '22215150514',
-  name: '卡拉米',
   item: '',
   state: '',
   brand: '',

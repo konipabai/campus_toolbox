@@ -23,7 +23,6 @@ export interface BE_filterLostFoundDto {
 export interface DB_resultLostFoundDto {
     id: number;
     account: string;
-    name: string;
     state: string;
     item: string;
     brand: string;
@@ -39,7 +38,6 @@ export interface DB_resultLostFoundDto {
 export interface FE_postLostFoundDto {
     id?: number;
     account: string;
-    name: string;
     state: string;
     item: string;
     brand: string;

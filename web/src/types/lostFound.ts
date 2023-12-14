@@ -16,7 +16,6 @@ export interface getLostFoundType {
 export interface postLostFoundType {
     id: number,
     account: string,
-    name: string,
     state: string,
     item: string,
     brand: string,
