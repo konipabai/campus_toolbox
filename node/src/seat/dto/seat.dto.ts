@@ -12,7 +12,6 @@ export interface FE_getSeatDto {
 // 前端请求预约座位传来的数据
 export interface FE_postSeatDto {
     account: string;
-    name: string;
     floor: string;
     date: string;
     number: string;
@@ -36,7 +35,6 @@ export interface BE_filterSeatDto {
 // 数据库查询出来的数据
 export interface DB_resultSeatDto {
     account: string;
-    name: string;
     floor: string;
     date: string;
     number: string;

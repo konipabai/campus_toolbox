@@ -5,7 +5,6 @@ export interface getSeatType {
 
 export interface postSeatType {
     account: string,
-    name: string,
     date: string
     time: [Date, Date]
     floor: string,

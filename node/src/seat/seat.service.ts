@@ -98,7 +98,6 @@ export class SeatService {
       if (hasNoOverlap == true) {
         await this.seatResult.save({
           account: params.account,
-          name: params.name,
           floor: params.floor,
           date: params.date,
           number: params.number.split('，')[2].split(' ')[0],
