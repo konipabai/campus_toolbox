@@ -1,17 +1,44 @@
 <template>
   <div class="sports">
     <div ref="canvaRef" class="sports-canvas"></div>
-    <div shadow="hover" class="sports-form">123</div>
+    <div class="sports-form">
+      <el-form :model="searchData" label-width="80px" ref="sportsRef">
+        <el-form-item label="场地类型" prop="type" class="sports-form-search">
+          <el-select v-model="searchData.type" placeholder="请选择类型">
+            <template #prefix>
+                  <el-icon>
+                    <Place />
+                  </el-icon>
+                </template>
+            <el-option v-for="item in typeData" :key="item" :value="item" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="日期" prop="date" class="sports-form-search">
+          <el-config-provider :locale="locale">
+            <el-date-picker v-model="searchData.date" type="date" placeholder="请选择日期" />
+          </el-config-provider>
+        </el-form-item>
+        <el-form-item label="预约时间" prop="time" class="sports-form-search">
+          <el-config-provider :locale="locale">
+            <el-time-picker v-model="searchData.time" is-range range-separator="—" start-placeholder="开始时间"
+              end-placeholder="结束时间" format="HH:mm" :clearable="false" />
+          </el-config-provider>
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, Ref, watch } from "vue"
+import { ref, onMounted, Ref, watch, reactive } from "vue"
 import * as THREE from "three"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js"
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js"
+
+import zhCn from "element-plus/lib/locale/lang/zh-cn";
+import { Place } from "@element-plus/icons-vue";
 
 const canvaRef = ref() as Ref<HTMLElement>
 
@@ -122,6 +149,18 @@ const resizeObserver: ResizeObserver = new ResizeObserver((entries) => {
     });
   }
 });
+
+
+
+const searchData = reactive({
+  type: "足球场",
+  date: "",
+  time: [new Date(2023, 1, 1, 0, 0), new Date(2023, 1, 1, 23, 59)] as [Date, Date],
+})
+
+const typeData: string[] = ["足球场", "篮球场", "网球场", "乒乓球场"];
+const locale = zhCn;
+
 </script>
 
 <style lang="less" scoped>
@@ -148,8 +187,22 @@ const resizeObserver: ResizeObserver = new ResizeObserver((entries) => {
     z-index: 99;
     background-color: rgba(43, 87, 154, 0.7);
     box-sizing: border-box;
-    padding: 10px;
+    padding: 30px 10px 10px 10px;
     border-radius: 10px;
+
+    .el-select, :deep(.el-date-editor.el-date-editor--date) {
+      width: 100%;
+    }
+
+    &-search {
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+
+      :deep(.el-form-item__label) {
+        color: #ebebeb !important;
+      }
+    }
   }
 }
 </style>
