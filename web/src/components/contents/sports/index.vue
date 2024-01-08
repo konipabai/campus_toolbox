@@ -6,10 +6,10 @@
         <el-form-item label="场地类型" prop="type" class="sports-form-search">
           <el-select v-model="searchData.type" placeholder="请选择类型">
             <template #prefix>
-                  <el-icon>
-                    <Place />
-                  </el-icon>
-                </template>
+              <el-icon>
+                <Place />
+              </el-icon>
+            </template>
             <el-option v-for="item in typeData" :key="item" :value="item" />
           </el-select>
         </el-form-item>
@@ -25,6 +25,12 @@
           </el-config-provider>
         </el-form-item>
       </el-form>
+      <el-divider />
+      <el-scrollbar>
+        <div class="sports-form-show">
+          <div v-for="item in 15" class="sports-form-show-div">篮球场A</div>
+        </div>
+      </el-scrollbar>
     </div>
   </div>
 </template>
@@ -39,6 +45,7 @@ import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js"
 
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import { Place } from "@element-plus/icons-vue";
+import { searchSportsType } from "../../../types/sports"
 
 const canvaRef = ref() as Ref<HTMLElement>
 
@@ -152,12 +159,11 @@ const resizeObserver: ResizeObserver = new ResizeObserver((entries) => {
 
 
 
-const searchData = reactive({
+const searchData: searchSportsType = reactive({
   type: "足球场",
   date: "",
   time: [new Date(2023, 1, 1, 0, 0), new Date(2023, 1, 1, 23, 59)] as [Date, Date],
 })
-
 const typeData: string[] = ["足球场", "篮球场", "网球场", "乒乓球场"];
 const locale = zhCn;
 
@@ -189,8 +195,11 @@ const locale = zhCn;
     box-sizing: border-box;
     padding: 30px 10px 10px 10px;
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
 
-    .el-select, :deep(.el-date-editor.el-date-editor--date) {
+    .el-select,
+    :deep(.el-date-editor.el-date-editor--date) {
       width: 100%;
     }
 
@@ -201,6 +210,25 @@ const locale = zhCn;
 
       :deep(.el-form-item__label) {
         color: #ebebeb !important;
+      }
+    }
+
+    &-show {
+      display: flex;
+      flex-wrap: wrap;
+      flex: 1;
+      overflow: auto;
+
+      &-div {
+        width: 42%;
+        height: 80px;
+        margin: 10px 4%;
+        border-radius: 10px;
+        background-color: #3967AB;
+        color: #ebebeb !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
   }
