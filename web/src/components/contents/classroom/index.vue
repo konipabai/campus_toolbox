@@ -4,7 +4,7 @@
       <el-form :inline="true" :model="searchData" ref="classroomRef" class="classroom-head">
         <el-row>
           <el-col :span="6">
-            <el-form-item label="地点" prop="building">
+            <el-form-item label="地点" prop="building" class="classroom-head-search">
               <el-select v-model="searchData.building" placeholder="请选择楼名" clearable>
                 <template #prefix>
                   <el-icon>
@@ -16,7 +16,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="楼层" prop="floor">
+            <el-form-item label="楼层" prop="floor" class="classroom-head-search">
               <el-select v-model="searchData.floor" placeholder="请选择楼层" clearable>
                 <template #prefix>
                   <el-icon>
@@ -28,14 +28,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="日期" prop="date">
+            <el-form-item label="日期" prop="date" class="classroom-head-search">
               <el-config-provider :locale="locale">
                 <el-date-picker v-model="searchData.date" type="date" placeholder="请选择日期" />
               </el-config-provider>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="时间段" prop="time">
+            <el-form-item label="时间" prop="time" class="classroom-head-search">
               <el-select v-model="searchData.time" placeholder="请选择时间" clearable>
                 <template #prefix>
                   <el-icon>
@@ -288,13 +288,19 @@ const timeData = [
   height: var(--element-height-full);
 
   &-head {
-    &:deep(.el-input__wrapper) {
-      width: 200px;
+
+    .el-select,
+    :deep(.el-date-editor.el-date-editor--date) {
+      width: var(--element-width-full);
     }
 
     .el-col {
       display: flex;
       justify-content: center;
+    }
+
+    &-search {
+      width: 90%;
     }
 
     &-item {
