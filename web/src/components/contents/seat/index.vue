@@ -25,7 +25,7 @@
           <el-col :span="6">
             <el-form-item class="seat-head-button">
               <el-button type="primary" @click="searchForm()">查询</el-button>
-              <el-button @click="resetForm()">重置</el-button>
+              <el-button @click="resetForm(seatRef)">重置</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -248,9 +248,9 @@ const searchForm = async () => {
 }
 searchForm()
 
-const resetForm = () => {
-  searchData.date = ''
-  searchData.floor = ''
+const resetForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  formEl.resetFields()
 }
 
 const submitForm = async () => {
