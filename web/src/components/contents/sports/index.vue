@@ -81,7 +81,7 @@ import gsap from 'gsap'
 
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import { Place } from "@element-plus/icons-vue";
-import { searchSportsType } from "../../../types/sports"
+import { reserveSportsType, searchSportsType } from "../../../types/sports"
 
 const canvaRef = ref() as Ref<HTMLElement>
 
@@ -241,7 +241,7 @@ const dialogVisible: Ref<boolean> = ref(false)
 const changeDialog = () => {
   dialogVisible.value = true
 }
-const reserveData = reactive({
+const reserveData: reserveSportsType = reactive({
   typeAndCourt: "",
   dateAndTime: "",
   reserveOrder: [],
