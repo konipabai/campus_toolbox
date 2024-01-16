@@ -46,26 +46,16 @@
         </el-form-item>
         <el-form-item label="半场/全场">
           <el-select v-model="reserveData.location" placeholder="请选择半场/全场" clearable>
-            <template #prefix>
-              <el-icon>
-                <Place />
-              </el-icon>
-            </template>
             <el-option v-for="item in ['全场', 'A半场', 'B半场']" :key="item" :value="item" />
           </el-select>
         </el-form-item>
         <el-form-item label="允许加入">
           <el-select v-model="reserveData.collaborative" placeholder="是否允许陌生人加入" clearable>
-            <template #prefix>
-              <el-icon>
-                <Place />
-              </el-icon>
-            </template>
             <el-option v-for="item in ['是', '否']" :key="item" :value="item" />
           </el-select>
         </el-form-item>
         <el-form-item label="人数">
-          <el-slider v-model="reserveData.number" :min="1" :max="10" :step="1" show-stops show-input />
+          <el-slider v-model="reserveData.number" :min="1" :max="10" :step="1" show-stops show-input placement="bottom" />
         </el-form-item>
       </el-form>
       <template #footer>
