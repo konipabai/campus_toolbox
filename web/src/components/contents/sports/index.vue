@@ -28,10 +28,55 @@
       <el-divider />
       <el-scrollbar>
         <div class="sports-form-show">
-          <div v-for="item in 15" class="sports-form-show-div">篮球场A</div>
+          <div v-for="item in 15" class="sports-form-show-div" @click="changeDialog()">篮球场{{ item }}</div>
         </div>
       </el-scrollbar>
     </div>
+    <el-dialog v-model="dialogVisible" title="预约" width="400px" draggable center>
+      <el-form label-width="85px" :model="reserveData">
+        <el-form-item label="预约场地">
+          <el-input v-model="reserveData.typeAndCourt" disabled />
+        </el-form-item>
+        <el-form-item label="时间日期">
+          <el-input v-model="reserveData.dateAndTime" disabled />
+        </el-form-item>
+        <el-form-item label="已被预约">
+          <el-button v-if="reserveData.reserveOrder.length == 0">暂无预定</el-button>
+          <el-button v-else v-for="item in reserveData.reserveOrder" :key="item">{{ item }}</el-button>
+        </el-form-item>
+        <el-form-item label="半场/全场">
+          <el-select v-model="reserveData.location" placeholder="请选择半场/全场" clearable>
+            <template #prefix>
+              <el-icon>
+                <Place />
+              </el-icon>
+            </template>
+            <el-option v-for="item in ['全场', 'A半场', 'B半场']" :key="item" :value="item" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="允许加入">
+          <el-select v-model="reserveData.collaborative" placeholder="是否允许陌生人加入" clearable>
+            <template #prefix>
+              <el-icon>
+                <Place />
+              </el-icon>
+            </template>
+            <el-option v-for="item in ['是', '否']" :key="item" :value="item" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="人数">
+          <el-slider v-model="reserveData.number" :min="1" :max="10" :step="1" show-stops show-input />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span>
+          <el-button type="primary" @click="submitForm">
+            确认
+          </el-button>
+          <el-button @click="dialogVisible = false">取消</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -199,6 +244,23 @@ const select = (v: string) => {
   } else {
     viewTo(new THREE.Vector3(-18, 10, 0), new THREE.Vector3(-45, 5, 0), Math.PI / 4 * 3, Math.PI / 4)
   }
+}
+
+
+const dialogVisible: Ref<boolean> = ref(false)
+const changeDialog = () => {
+  dialogVisible.value = true
+}
+const reserveData = reactive({
+  typeAndCourt: "",
+  dateAndTime: "",
+  reserveOrder: [],
+  location: "",
+  collaborative: "",
+  number: 0
+})
+const submitForm = async () => {
+
 }
 </script>
 
