@@ -23,18 +23,13 @@ export class SeatService {
         }
       })
       findSeatData.map((seatItem: BE_filterSeatDto) => {
-        var timeData: string[] = []
-        var seatData: string[] = []
+        const mergedArray: BE_mergedSeatDto[] = []
         tempSeat.map((reserveItem: DB_resultSeatDto) => {
           if (seatItem.number == reserveItem.number) {
-            timeData.push(reserveItem.time)
-            seatData.push(reserveItem.seat)
+            mergedArray.push({ time: reserveItem.time, seat: reserveItem.seat })
           }
         })
-        const mergedArray: BE_mergedSeatDto[] = timeData.map((time, index) => ({
-          time,
-          seat: seatData[index]
-        }));
+
         mergedArray.sort((a, b) => {
           const aStartTime: number = parseInt(a.time.split('-')[0].replace(':', ''), 10);
           const bStartTime: number = parseInt(b.time.split('-')[0].replace(':', ''), 10);
