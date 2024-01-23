@@ -21,24 +21,23 @@ export class SportsService {
           type: params.type
         }
       })
-      const paramsStartTime: Date = new Date(`2023-01-01 ${params.time.split('-')[0]}`);
-      const paramsEndTime: Date = new Date(`2023-01-01 ${params.time.split('-')[1]}`);
+
       tempSports = tempSports.filter((reserveItem) => {
-        const itemStartTime: Date = new Date(`2023-01-01 ${reserveItem.time.split('-')[0]}`);
-        const itemEndTime: Date = new Date(`2023-01-01 ${reserveItem.time.split('-')[1]}`);
-        return paramsStartTime < itemEndTime && itemStartTime < paramsEndTime
+        return new Date(params.time[0]) < reserveItem.endTime && reserveItem.startTime < new Date(params.time[1])
       })
       findSportsData.map((sportsItem) => {
         sportsItem.date = params.date
         const mergedArray: BE_mergedSportsDto[] = []
         tempSports.map((reserveItem) => {
           if (sportsItem.sportsType == reserveItem.type && sportsItem.sportsCourt == reserveItem.court) {
-            mergedArray.push({ time: reserveItem.time, location: reserveItem.location })
+            mergedArray.push({ time: [reserveItem.startTime, reserveItem.endTime], location: reserveItem.location })
           }
         })
         mergedArray.sort((a, b) => {
-          if (a.time !== b.time) {
-            return a.time.localeCompare(b.time);
+          if (a.time[0].getTime() !== b.time[0].getTime()) {
+            return a.time[0].getTime() - b.time[0].getTime()
+          } else if (a.time[1].getTime() !== b.time[1].getTime()) {
+            return a.time[1].getTime() - b.time[1].getTime()
           } else {
             return ['全场', 'a半', 'b半'].indexOf(a.location) - ['全场', 'a半', 'b半'].indexOf(b.location);
           }

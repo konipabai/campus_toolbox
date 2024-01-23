@@ -6,15 +6,15 @@
 // 前端查询球场信息传来的数据
 export interface FE_getSportsDto {
     type: string;
-    time: string;
-    date: string;
+    time: [Date, Date];
+    date: Date;
 }
 
 // 前端请求预约球场传来的数据
 export interface FE_postSportsDto {
     account: string;
-    date: string;
-    time: string;
+    date: Date;
+    time: [Date, Date];
     type: string;
     court: string;
     location: string;
@@ -26,16 +26,17 @@ export interface FE_postSportsDto {
 export interface BE_filterSportsDto {
     sportsType: string;
     sportsCourt: string;
-    date: string;
-    time: string[];
+    date: Date;
+    time: [Date, Date][];
     location: string[];
 }
 
 // 数据库查询出来的数据
 export interface DB_resultSportsDto {
     account: string;
-    date: string;
-    time: string;
+    date: Date;
+    startTime: Date;
+    endTime: Date;
     type: string;
     court: string;
     location: string;
@@ -45,6 +46,6 @@ export interface DB_resultSportsDto {
 
 // 后端处理时的临时合并数据
 export interface BE_mergedSportsDto {
-    time: string;
+    time: [Date, Date];
     location: string;
 }

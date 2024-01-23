@@ -4,140 +4,140 @@ export const sports: BE_filterSportsDto[] = [
     {
         sportsType: "足球场",
         sportsCourt: "A",
-        date: "",
+        date: new Date(),
         time: [],
         location: []
     },
     {
         sportsType: "篮球场",
         sportsCourt: "A",
-        date: "",
+        date: new Date(),
         time: [],
         location: []
     },
     {
         sportsType: "篮球场",
         sportsCourt: "B",
-        date: "",
+        date: new Date(),
         time: [],
         location: []
     },
     {
         sportsType: "篮球场",
         sportsCourt: "C",
-        date: "",
+        date: new Date(),
         time: [],
         location: []
     },
     {
         sportsType: "篮球场",
         sportsCourt: "D",
-        date: "",
+        date: new Date(),
         time: [],
         location: []
     },
     {
         sportsType: "篮球场",
         sportsCourt: "E",
-        date: "",
+        date: new Date(),
         time: [],
         location: []
     },
     {
         sportsType: "篮球场",
         sportsCourt: "F",
-        date: "",
+        date: new Date(),
         time: [],
         location: []
     },
     {
         sportsType: "篮球场",
         sportsCourt: "G",
-        date: "",
+        date: new Date(),
         time: [],
         location: []
     },
     {
         sportsType: "篮球场",
         sportsCourt: "H",
-        date: "",
+        date: new Date(),
         time: [],
         location: []
     },
     {
         sportsType: "篮球场",
         sportsCourt: "I",
-        date: "",
+        date: new Date(),
         time: [],
         location: []
     },
     {
         sportsType: "网球场",
         sportsCourt: "A",
-        date: "",
+        date: new Date(),
         time: [],
         location: []
     },
     {
         sportsType: "网球场",
         sportsCourt: "B",
-        date: "",
+        date: new Date(),
         time: [],
         location: []
     },
     {
         sportsType: "网球场",
         sportsCourt: "C",
-        date: "",
+        date: new Date(),
         time: [],
         location: []
     },
     {
         sportsType: "网球场",
         sportsCourt: "D",
-        date: "",
+        date: new Date(),
         time: [],
         location: []
     },
     {
         sportsType: "乒乓球场",
         sportsCourt: "A",
-        date: "",
+        date: new Date(),
         time: [],
         location: []
     },
     {
         sportsType: "乒乓球场",
         sportsCourt: "B",
-        date: "",
+        date: new Date(),
         time: [],
         location: []
     },
     {
         sportsType: "乒乓球场",
         sportsCourt: "C",
-        date: "",
+        date: new Date(),
         time: [],
         location: []
     },
     {
         sportsType: "乒乓球场",
         sportsCourt: "D",
-        date: "",
+        date: new Date(),
         time: [],
         location: []
     },
     {
         sportsType: "乒乓球场",
         sportsCourt: "E",
-        date: "",
+        date: new Date(),
         time: [],
         location: []
     },
     {
         sportsType: "乒乓球场",
         sportsCourt: "F",
-        date: "",
+        date: new Date(),
         time: [],
         location: []
     }

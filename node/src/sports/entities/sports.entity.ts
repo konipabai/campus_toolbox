@@ -8,11 +8,14 @@ export class resultSport {
     @Column({ type: 'varchar', length: 255, nullable: false })
     account: string;            // 账号
 
-    @Column({ type: 'varchar', length: 255, nullable: false })
-    date: string;               // 申请的日期
+    @Column({ type: 'date', nullable: false })
+    date: Date;              // 申请的日期
 
-    @Column({ type: 'varchar', length: 255, nullable: false })
-    time: string;               // 申请的时间
+    @Column({ type: 'datetime', nullable: false })
+    startTime: Date;          // 申请的开始时间
+
+    @Column({ type: 'datetime', nullable: false })
+    endTime: Date;            // 申请的结束时间
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     type: string;               // 场地类型
