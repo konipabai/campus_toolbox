@@ -31,19 +31,11 @@ export class SeatService {
         })
 
         mergedArray.sort((a, b) => {
-          const aStartTime: number = parseInt(a.time.split('-')[0].replace(':', ''), 10);
-          const bStartTime: number = parseInt(b.time.split('-')[0].replace(':', ''), 10);
-          if (aStartTime !== bStartTime) {
-            return aStartTime - bStartTime;
+          if (a.time !== b.time) {
+            return a.time.localeCompare(b.time);
+          } else {
+            return a.seat.localeCompare(b.seat)
           }
-          const aEndTime: number = parseInt(a.time.split('-')[1].replace(':', ''), 10);
-          const bEndTime: number = parseInt(b.time.split('-')[1].replace(':', ''), 10);
-          if (aEndTime !== bEndTime) {
-            return aEndTime - bEndTime;
-          }
-          const aSeatNumber: number = parseInt(a.seat.replace('座', ''), 10);
-          const bSeatNumber: number = parseInt(b.seat.replace('座', ''), 10);
-          return aSeatNumber - bSeatNumber;
         });
         seatItem.time = mergedArray.map(item => item.time);
         seatItem.seat = mergedArray.map(item => item.seat);
