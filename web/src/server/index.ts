@@ -7,7 +7,7 @@ axios.defaults.baseURL = "/api"
 
 export const getClassroom = (data: searchClassroomType) => axios.get('/classroom', { params: data }).then(res => res.data)
 
-export const addClassroom = (data: reserveClassroomType) => axios.post('/classroom', data).then(res => res.data)
+export const postClassroom = (data: reserveClassroomType) => axios.post('/classroom', data).then(res => res.data)
 
 export const getLostFound = (data?: getAccountLostFoundType) => axios.get('/lostFound', { params: data }).then(res => res.data)
 
@@ -20,3 +20,5 @@ export const deleteLostFound = (data: deleteLostFoundType) => axios.delete(`/los
 export const getSeat = (data: getSeatType) => axios.get('/seat', { params: data }).then(res => res.data)
 
 export const postSeat = (data: postSeatType) => axios.post('/seat', data).then(res => res.data)
+
+export const getSports = (data: getSeatType) => axios.get('/sports', { params: data }).then(res => res.data)

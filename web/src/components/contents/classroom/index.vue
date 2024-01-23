@@ -114,7 +114,7 @@
 import { computed, ComputedRef, reactive, Ref, ref, watch } from 'vue'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 import { Timer, MapLocation, OfficeBuilding } from '@element-plus/icons-vue'
-import { addClassroom, getClassroom } from "../../../server/index";
+import { postClassroom, getClassroom } from "../../../server/index";
 import type { getClassroomType, searchClassroomType, reserveClassroomType, paginationClassroomType } from "../../../types/classroom"
 import { ElMessage, FormInstance, ElTable } from 'element-plus';
 
@@ -212,7 +212,7 @@ const submitForm = async () => {
     ElMessage.error('请输入理由')
   } else {
     try {
-      const state = await addClassroom(reserveData)
+      const state = await postClassroom(reserveData)
       if (state == true) {
         dialogVisible.value = false
         ElMessage({
