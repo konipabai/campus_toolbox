@@ -220,9 +220,9 @@ const selectSeat = (seatNum: number, e: Element) => {
 const searchForm = async () => {
   try {
     if (searchData.date) {
-      searchData.date = moment(searchData.date).format("YYYY/MM/DD")
+      searchData.date = moment(searchData.date).format("YYYY-MM-DD")
     } else {
-      searchData.date = moment().format('YYYY/MM/DD');
+      searchData.date = moment().format('YYYY-MM-DD');
     }
     if (!searchData.floor) {
       searchData.floor = "一楼"

@@ -6,14 +6,14 @@
 // 前端查询座位信息传来的数据
 export interface FE_getSeatDto {
     floor: string;
-    date: string;
+    date: Date;
 }
 
 // 前端请求预约座位传来的数据
 export interface FE_postSeatDto {
     account: string;
     floor: string;
-    date: string;
+    date: Date;
     number: string;
     time: [Date, Date];
     seat: string;
@@ -36,7 +36,7 @@ export interface BE_filterSeatDto {
 export interface DB_resultSeatDto {
     account: string;
     floor: string;
-    date: string;
+    date: Date;
     number: string;
     time: string;
     seat: string;

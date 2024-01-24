@@ -11,8 +11,8 @@ export class resultSeat {
     @Column({ type: 'varchar', length: 255, nullable: false })
     floor: string;              // 楼层
 
-    @Column({ type: 'varchar', length: 255, nullable: false })
-    date: string;               // 申请的日期
+    @Column({ type: 'date', nullable: false })
+    date: Date;               // 申请的日期
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     number: string;             // 申请的桌号
