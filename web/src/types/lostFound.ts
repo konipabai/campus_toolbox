@@ -6,7 +6,7 @@ export interface getLostFoundType {
     value: number,
     brand: string,
     location: string,
-    time: string,
+    date: Date,
     description: string,
     contact: string,
     switch: string,
@@ -20,7 +20,7 @@ export interface postLostFoundType {
     item: string,
     brand: string,
     location: string,
-    time: string,
+    date: Date | string,
     description: string,
     contact: string,
     switch: string

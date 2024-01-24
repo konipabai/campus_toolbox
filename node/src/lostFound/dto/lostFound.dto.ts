@@ -12,7 +12,7 @@ export interface BE_filterLostFoundDto {
     value: number;
     brand: string;
     location: string;
-    time: string;
+    date: Date;
     description: string;
     contact: string;
     switch: string;
@@ -29,7 +29,7 @@ export interface DB_resultLostFoundDto {
     location: string;
     description: string;
     contact: string;
-    time: string;
+    date: Date;
     switch: string;
     overdue: string;
 }
@@ -42,7 +42,7 @@ export interface FE_postLostFoundDto {
     item: string;
     brand: string;
     location: string;
-    time: string;
+    date: Date | string;
     description: string;
     contact: string;
     switch?: string;

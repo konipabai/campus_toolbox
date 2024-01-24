@@ -26,9 +26,9 @@
             <el-input v-model="postData.contact" class="lostFound-post-item" placeholder="请输入联系方式 (1-20字)"
               maxlength="20" />
           </el-form-item>
-          <el-form-item label="拾取/遗失时间" prop="time">
+          <el-form-item label="拾取/遗失时间" prop="date">
             <el-config-provider :locale="locale">
-              <el-date-picker v-model="postData.time" class="lostFound-post-item" type="date" placeholder="请选择拾取/遗失时间" />
+              <el-date-picker v-model="postData.date" class="lostFound-post-item" type="date" placeholder="请选择拾取/遗失时间" />
             </el-config-provider>
           </el-form-item>
           <el-form-item label="拾取/遗失地点" prop="location">
@@ -84,7 +84,7 @@
         </div>
       </div>
       <el-divider />
-      <el-table :data="paginatedData" class="lostFound-history-table" ref="tableTop" :flexible=true>
+      <el-table :data="paginatedData" class="lostFound-history-table" ref="tableTop" :flexible=true v-loading="loading">
         <template #empty>
           <div class="tableEmpty">
             <span class="tableEmptyIcon"></span>
@@ -94,7 +94,7 @@
         <el-table-column prop="item" label="物品" min-width="5" />
         <el-table-column prop="state" label="状态" min-width="4" />
         <el-table-column prop="brand" label="品牌" min-width="7" />
-        <el-table-column prop="time" label="时间" min-width="7" />
+        <el-table-column prop="date" label="时间" min-width="7" />
         <el-table-column prop="location" label="地点" min-width="6" />
         <el-table-column prop="description" label="描述" min-width="7" />
         <el-table-column label="操作" min-width="5">
@@ -128,6 +128,7 @@ const tableTop: Ref<typeof ElTable | undefined> = ref()
 const resultData: Ref<getLostFoundType[]> = ref([])
 const updateState: Ref<boolean> = ref(false)
 const overdueState: Ref<boolean> = ref(false)
+const loading: Ref<boolean> = ref(false)
 const postData: postLostFoundType = reactive({
   id: 0,
   account: '22215150514',
@@ -135,7 +136,7 @@ const postData: postLostFoundType = reactive({
   state: '',
   brand: '',
   contact: '',
-  time: '',
+  date: '',
   location: '',
   description: '',
   switch: 'on'
@@ -241,7 +242,7 @@ const rules: FormRules = reactive({
       trigger: 'change',
     }
   ],
-  time: [
+  date: [
     { required: true, message: '请选择拾取/遗失时间', trigger: 'blur' }
   ],
   contact: [
@@ -256,6 +257,9 @@ const getFormData = async () => {
   try {
     const lostFoundData: getLostFoundType[] = await getLostFound({ account: postData.account })
     if (lostFoundData.length != 0) {
+      loading.value = true
+      await new Promise(resolve => setTimeout(resolve, 500));
+      loading.value = false
       resultData.value = lostFoundData
     } else {
       ElMessage.error('未知错误,请稍后再试')
@@ -275,7 +279,7 @@ const update = (row: getLostFoundType) => {
   postData.state = row.state
   postData.brand = row.brand
   postData.contact = row.contact
-  postData.time = row.time
+  postData.date = row.date
   postData.location = row.location
   postData.description = row.description
   postData.switch = row.switch

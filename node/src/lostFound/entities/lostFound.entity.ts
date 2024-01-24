@@ -26,8 +26,8 @@ export class resultLostFound {
     @Column({ type: 'varchar', length: 255, nullable: false })
     contact: string;             // 联系方式
 
-    @Column({ type: 'varchar', length: 255, nullable: false })
-    time: string;                // 申请的时间
+    @Column({ type: 'date', nullable: false })
+    date: Date;                  // 申请的时间
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     switch: string;              // 开关

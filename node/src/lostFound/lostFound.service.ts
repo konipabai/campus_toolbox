@@ -39,7 +39,7 @@ export class LostFoundService {
         value: 1,
         brand: lostFoundItem.brand,
         location: lostFoundItem.location,
-        time: lostFoundItem.time,
+        date: lostFoundItem.date,
         description: lostFoundItem.description,
         contact: lostFoundItem.contact,
         switch: lostFoundItem.switch,
@@ -58,7 +58,7 @@ export class LostFoundService {
     if (params.description == '') {
       params.description = '无'
     }
-    params.time = moment(params.time).tz('Asia/Shanghai').format('YYYY/MM/DD');
+    params.date = moment(params.date).tz('Asia/Shanghai').format('YYYY-MM-DD');
     params.overdue = 'false';
     delete params.id;
     try {
@@ -71,6 +71,7 @@ export class LostFoundService {
   }
 
   async updateLostFound(id: number, params: FE_postLostFoundDto): Promise<boolean> {
+    params.date = moment(params.date).tz('Asia/Shanghai').format('YYYY-MM-DD');
     if (params.brand == '') {
       params.brand = '无/暂不清楚'
     }
