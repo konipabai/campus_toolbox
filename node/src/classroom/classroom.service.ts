@@ -40,9 +40,9 @@ export class ClassroomService {
 
       var formattedDateTime: string = ''
       if (params.date) {
-        formattedDateTime = moment(params.date).tz('Asia/Shanghai').format('YYYY/MM/DD');
+        formattedDateTime = moment(params.date).tz('Asia/Shanghai').format('YYYY-MM-DD');
       } else {
-        formattedDateTime = moment().tz('Asia/Shanghai').format('YYYY/MM/DD');
+        formattedDateTime = moment().tz('Asia/Shanghai').format('YYYY-MM-DD');
       }
       getClassroomData.map((classroomItem: BE_filterClassroomDto) => {
         classroomItem.time = []
@@ -67,7 +67,7 @@ export class ClassroomService {
           ]
         }
         tempClassroom.map((reserveItem: DB_resultClassroomDto) => {
-          if ((reserveItem.classroomNumber == classroomItem.classroomNumber) && (reserveItem.date == classroomItem.date)) {
+          if ((reserveItem.classroomNumber == classroomItem.classroomNumber) && (reserveItem.date.toString() == classroomItem.date)) {
             timeData = timeData.filter(item => item != reserveItem.time)
           }
         })

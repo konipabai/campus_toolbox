@@ -5,7 +5,7 @@
 
 // 数据库里已处理的订单结果
 export interface DB_resultClassroomDto {
-    date: string;
+    date: Date;
     time: string;
     classroomNumber: string;
 }
@@ -15,7 +15,7 @@ export interface DB_pendingClassroomDto {
     account: string;
     classroomNumber: string;
     reason: string;
-    date: string;
+    date: Date | string;
     time: string;
 }
 
@@ -24,7 +24,7 @@ export interface BE_filterClassroomDto {
     classroomBuilding: string;
     classroomFloor: string;
     classroomNumber: string;
-    date: string;
+    date: Date | string;
     time: string[];
 }
 
@@ -32,7 +32,7 @@ export interface BE_filterClassroomDto {
 export interface FE_getClassroomDto {
     building: string;
     floor: string;
-    date: string;
+    date: Date;
     time: string;
 }
 

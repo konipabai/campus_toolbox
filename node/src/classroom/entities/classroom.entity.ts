@@ -11,8 +11,8 @@ export class resultClassroom {
     @Column({ type: 'varchar', length: 255, nullable: false })
     reason: string;             // 申请理由
 
-    @Column({ type: 'varchar', length: 255, nullable: false })
-    date: string;               // 申请的日期
+    @Column({ type: 'date', nullable: false })
+    date: Date;               // 申请的日期
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     time: string;               // 申请的时间
@@ -35,8 +35,8 @@ export class checkClassroom {
     @Column({ type: 'varchar', length: 255, nullable: false })
     reason: string;             // 申请理由
 
-    @Column({ type: 'varchar', length: 255, nullable: false })
-    date: string;               // 申请的日期
+    @Column({ type: 'date', nullable: false })
+    date: Date;               // 申请的日期
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     time: string;               // 申请的时间
