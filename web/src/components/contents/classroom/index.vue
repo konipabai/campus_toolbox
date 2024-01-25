@@ -11,7 +11,7 @@
                     <MapLocation />
                   </el-icon>
                 </template>
-                <el-option v-for="item in buildingData" :key="item.value" :value="item.value" />
+                <el-option v-for="(item, index) in buildingData" :key="index" :value="item.value" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -23,7 +23,7 @@
                     <OfficeBuilding />
                   </el-icon>
                 </template>
-                <el-option v-for="item in floorData" :key="item.value" :value="item.value" />
+                <el-option v-for="(item, index) in floorData" :key="index" :value="item.value" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -42,7 +42,7 @@
                     <Timer />
                   </el-icon>
                 </template>
-                <el-option v-for="item in timeData" :key="item" :value="item" />
+                <el-option v-for="(item, index) in timeData" :key="index" :value="item" />
               </el-select>
             </el-form-item>
           </el-col>

@@ -11,7 +11,7 @@
                     <OfficeBuilding />
                   </el-icon>
                 </template>
-                <el-option v-for="item in floorData" :key="item.value" :value="item.value" />
+                <el-option v-for="(item, index) in floorData" :key="index" :value="item.value" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -91,7 +91,7 @@
           </el-form-item>
           <el-form-item label="已被预订" prop="order" class="seat-drawer-form-order">
             <el-button v-if="postData.order.length == 0">暂无预定</el-button>
-            <el-button v-else v-for="item in postData.order" :key="item">{{ item }}</el-button>
+            <el-button v-else v-for="(item, index) in postData.order" :key="index">{{ item }}</el-button>
           </el-form-item>
           <el-form-item label="预约时间" prop="time">
             <el-config-provider :locale="locale">
