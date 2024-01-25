@@ -29,6 +29,6 @@ export class resultSport {
     @Column({ type: 'varchar', length: 255, nullable: false })
     collaborative: string;      // 是否接收陌生人加入
 
-    @Column({ type: 'varchar', length: 255, nullable: false })
-    number: string;             // 该预约订单目前有多少人
+    @Column({ type: 'int', nullable: false })
+    number: number;             // 该预约订单目前有多少人
 }

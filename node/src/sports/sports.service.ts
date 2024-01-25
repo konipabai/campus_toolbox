@@ -27,10 +27,11 @@ export class SportsService {
       })
       findSportsData.map((sportsItem) => {
         sportsItem.date = params.date
+        sportsItem.reserveTime = params.time
         const mergedArray: BE_mergedSportsDto[] = []
         tempSports.map((reserveItem) => {
           if (sportsItem.sportsType == reserveItem.type && sportsItem.sportsCourt == reserveItem.court) {
-            mergedArray.push({ time: [reserveItem.startTime, reserveItem.endTime], location: reserveItem.location })
+            mergedArray.push({ time: [reserveItem.startTime, reserveItem.endTime], location: reserveItem.location, number: reserveItem.number })
           }
         })
         mergedArray.sort((a, b) => {
@@ -38,12 +39,15 @@ export class SportsService {
             return a.time[0].getTime() - b.time[0].getTime()
           } else if (a.time[1].getTime() !== b.time[1].getTime()) {
             return a.time[1].getTime() - b.time[1].getTime()
-          } else {
+          } else if (a.location !== b.location) {
             return ['全场', 'a半', 'b半'].indexOf(a.location) - ['全场', 'a半', 'b半'].indexOf(b.location);
+          } else {
+            return a.number - b.number
           }
         });
         sportsItem.time = mergedArray.map(item => item.time);
         sportsItem.location = mergedArray.map(item => item.location);
+        sportsItem.number = mergedArray.map(item => item.number)
       })
     } catch (error) {
       console.log(error);

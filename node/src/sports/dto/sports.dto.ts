@@ -19,7 +19,7 @@ export interface FE_postSportsDto {
     court: string;
     location: string;
     collaborative: string;
-    number: string;
+    number: number;
 }
 
 // 后端处理之后传回前端的数据
@@ -27,8 +27,10 @@ export interface BE_filterSportsDto {
     sportsType: string;
     sportsCourt: string;
     date: Date;
+    reserveTime: [Date, Date],
     time: [Date, Date][];
     location: string[];
+    number: number[]
 }
 
 // 数据库查询出来的数据
@@ -41,11 +43,12 @@ export interface DB_resultSportsDto {
     court: string;
     location: string;
     collaborative: string;
-    number: string;
+    number: number;
 }
 
 // 后端处理时的临时合并数据
 export interface BE_mergedSportsDto {
     time: [Date, Date];
     location: string;
+    number: number;
 }
