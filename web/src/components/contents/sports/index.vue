@@ -49,7 +49,8 @@
           <el-scrollbar max-height="105px">
             <el-button v-if="reserveData.reserveOrder.length == 0">暂无预定</el-button>
             <el-button v-else v-for="(item, index) in reserveData.reserveOrder" :key="index"
-              :class="reserveData.reserveOrder.length == 1 ? '' : 'sports-dialog-button'">{{ item[0] + ' ' + item[1][0] +
+              :class="reserveData.reserveOrder.length == 1 ? '' : 'sports-dialog-button'"
+              :color="item[3] == '是' ? '#AFF090' : '#FFADAD'">{{ item[0] + ' ' + item[1][0] +
                 '-' + item[1][1] + ' ' + item[2] + '人' }}</el-button>
           </el-scrollbar>
         </el-form-item>
@@ -69,7 +70,7 @@
             <el-option v-for="(item, index) in ['是', '否']" :key="index" :value="item" />
           </el-select>
         </el-form-item>
-        <el-form-item label="当前人数" v-if="reserveData.collaborative == '是'">
+        <el-form-item label="预约人数" v-if="reserveData.collaborative == '是'">
           <el-slider v-model="reserveData.number" :min="1" :max="10" :step="1" show-stops show-input placement="bottom" />
         </el-form-item>
       </el-form>
@@ -102,7 +103,7 @@ import { getSports } from "../../../server"
 import moment from "moment";
 import { ElMessage, ElScrollbar, FormInstance } from "element-plus"
 
-const canvaRef = ref() as Ref<HTMLElement>
+const canvaRef: Ref<HTMLElement> = ref() as Ref<HTMLElement>
 const sportsRef: Ref<FormInstance | undefined> = ref()
 const topRef: Ref<typeof ElScrollbar | undefined> = ref();
 
@@ -282,8 +283,8 @@ var disabledHours = () => {
 const changeDialog = (item: resultSportsType) => {
   dialogVisible.value = true
   reserveData.typeAndCourt = item.sportsType + item.sportsCourt
-  reserveData.dateAndTime = item.date + "   " + moment(item.reserveTime[0]).format('HH:mm') + " - " + moment(item.reserveTime[1]).format('HH:mm')
-  reserveData.reserveOrder = item.location.map((loc, index) => [loc, item.time[index].map(date => moment(date).format('HH:mm')), item.number[index]])
+  reserveData.dateAndTime = item.date + "   " + moment(item.reserveTime[0]).format('HH:mm') + "-" + moment(item.reserveTime[1]).format('HH:mm')
+  reserveData.reserveOrder = item.location.map((loc, index) => [loc, item.time[index].map(date => moment(date).format('HH:mm')), item.number[index], item.collaborative[index]])
   reserveData.reserveTime = item.reserveTime
   disabledHours = () => {
     return makeRange(0, new Date(searchData.time[0]).getHours() - 1).concat(makeRange(new Date(searchData.time[1]).getHours() + 1, 23))

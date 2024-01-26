@@ -8,7 +8,8 @@ export const sports: BE_filterSportsDto[] = [
         reserveTime: [new Date(), new Date()],
         time: [],
         location: [],
-        number: []
+        number: [],
+        collaborative: []
     },
     {
         sportsType: "篮球场",
@@ -17,7 +18,8 @@ export const sports: BE_filterSportsDto[] = [
         reserveTime: [new Date(), new Date()],
         time: [],
         location: [],
-        number: []
+        number: [],
+        collaborative: []
     },
     {
         sportsType: "篮球场",
@@ -26,7 +28,8 @@ export const sports: BE_filterSportsDto[] = [
         reserveTime: [new Date(), new Date()],
         time: [],
         location: [],
-        number: []
+        number: [],
+        collaborative: []
     },
     {
         sportsType: "篮球场",
@@ -35,7 +38,8 @@ export const sports: BE_filterSportsDto[] = [
         reserveTime: [new Date(), new Date()],
         time: [],
         location: [],
-        number: []
+        number: [],
+        collaborative: []
     },
     {
         sportsType: "篮球场",
@@ -44,7 +48,8 @@ export const sports: BE_filterSportsDto[] = [
         reserveTime: [new Date(), new Date()],
         time: [],
         location: [],
-        number: []
+        number: [],
+        collaborative: []
     },
     {
         sportsType: "篮球场",
@@ -53,7 +58,8 @@ export const sports: BE_filterSportsDto[] = [
         reserveTime: [new Date(), new Date()],
         time: [],
         location: [],
-        number: []
+        number: [],
+        collaborative: []
     },
     {
         sportsType: "篮球场",
@@ -62,7 +68,8 @@ export const sports: BE_filterSportsDto[] = [
         reserveTime: [new Date(), new Date()],
         time: [],
         location: [],
-        number: []
+        number: [],
+        collaborative: []
     },
     {
         sportsType: "篮球场",
@@ -71,7 +78,8 @@ export const sports: BE_filterSportsDto[] = [
         reserveTime: [new Date(), new Date()],
         time: [],
         location: [],
-        number: []
+        number: [],
+        collaborative: []
     },
     {
         sportsType: "篮球场",
@@ -80,7 +88,8 @@ export const sports: BE_filterSportsDto[] = [
         reserveTime: [new Date(), new Date()],
         time: [],
         location: [],
-        number: []
+        number: [],
+        collaborative: []
     },
     {
         sportsType: "篮球场",
@@ -89,7 +98,8 @@ export const sports: BE_filterSportsDto[] = [
         reserveTime: [new Date(), new Date()],
         time: [],
         location: [],
-        number: []
+        number: [],
+        collaborative: []
     },
     {
         sportsType: "网球场",
@@ -98,7 +108,8 @@ export const sports: BE_filterSportsDto[] = [
         reserveTime: [new Date(), new Date()],
         time: [],
         location: [],
-        number: []
+        number: [],
+        collaborative: []
     },
     {
         sportsType: "网球场",
@@ -107,7 +118,8 @@ export const sports: BE_filterSportsDto[] = [
         reserveTime: [new Date(), new Date()],
         time: [],
         location: [],
-        number: []
+        number: [],
+        collaborative: []
     },
     {
         sportsType: "网球场",
@@ -116,7 +128,8 @@ export const sports: BE_filterSportsDto[] = [
         reserveTime: [new Date(), new Date()],
         time: [],
         location: [],
-        number: []
+        number: [],
+        collaborative: []
     },
     {
         sportsType: "网球场",
@@ -125,7 +138,8 @@ export const sports: BE_filterSportsDto[] = [
         reserveTime: [new Date(), new Date()],
         time: [],
         location: [],
-        number: []
+        number: [],
+        collaborative: []
     },
     {
         sportsType: "乒乓球场",
@@ -134,7 +148,8 @@ export const sports: BE_filterSportsDto[] = [
         reserveTime: [new Date(), new Date()],
         time: [],
         location: [],
-        number: []
+        number: [],
+        collaborative: []
     },
     {
         sportsType: "乒乓球场",
@@ -143,7 +158,8 @@ export const sports: BE_filterSportsDto[] = [
         reserveTime: [new Date(), new Date()],
         time: [],
         location: [],
-        number: []
+        number: [],
+        collaborative: []
     },
     {
         sportsType: "乒乓球场",
@@ -152,7 +168,8 @@ export const sports: BE_filterSportsDto[] = [
         reserveTime: [new Date(), new Date()],
         time: [],
         location: [],
-        number: []
+        number: [],
+        collaborative: []
     },
     {
         sportsType: "乒乓球场",
@@ -161,7 +178,8 @@ export const sports: BE_filterSportsDto[] = [
         reserveTime: [new Date(), new Date()],
         time: [],
         location: [],
-        number: []
+        number: [],
+        collaborative: []
     },
     {
         sportsType: "乒乓球场",
@@ -170,7 +188,8 @@ export const sports: BE_filterSportsDto[] = [
         reserveTime: [new Date(), new Date()],
         time: [],
         location: [],
-        number: []
+        number: [],
+        collaborative: []
     },
     {
         sportsType: "乒乓球场",
@@ -179,6 +198,7 @@ export const sports: BE_filterSportsDto[] = [
         reserveTime: [new Date(), new Date()],
         time: [],
         location: [],
-        number: []
+        number: [],
+        collaborative: []
     }
 ]

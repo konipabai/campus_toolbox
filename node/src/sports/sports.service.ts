@@ -31,11 +31,13 @@ export class SportsService {
         const mergedArray: BE_mergedSportsDto[] = []
         tempSports.map((reserveItem) => {
           if (sportsItem.sportsType == reserveItem.type && sportsItem.sportsCourt == reserveItem.court) {
-            mergedArray.push({ time: [reserveItem.startTime, reserveItem.endTime], location: reserveItem.location, number: reserveItem.number })
+            mergedArray.push({ time: [reserveItem.startTime, reserveItem.endTime], location: reserveItem.location, number: reserveItem.number, collaborative: reserveItem.collaborative })
           }
         })
         mergedArray.sort((a, b) => {
-          if (a.time[0].getTime() !== b.time[0].getTime()) {
+          if (a.collaborative !== b.collaborative) {
+            return ['是', '否'].indexOf(a.collaborative) - ['是', '否'].indexOf(b.collaborative);
+          } else if (a.time[0].getTime() !== b.time[0].getTime()) {
             return a.time[0].getTime() - b.time[0].getTime()
           } else if (a.time[1].getTime() !== b.time[1].getTime()) {
             return a.time[1].getTime() - b.time[1].getTime()
@@ -48,6 +50,7 @@ export class SportsService {
         sportsItem.time = mergedArray.map(item => item.time);
         sportsItem.location = mergedArray.map(item => item.location);
         sportsItem.number = mergedArray.map(item => item.number)
+        sportsItem.collaborative = mergedArray.map(item => item.collaborative)
       })
     } catch (error) {
       console.log(error);

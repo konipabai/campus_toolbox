@@ -30,7 +30,8 @@ export interface BE_filterSportsDto {
     reserveTime: [Date, Date],
     time: [Date, Date][];
     location: string[];
-    number: number[]
+    number: number[];
+    collaborative: string[];
 }
 
 // 数据库查询出来的数据
@@ -51,4 +52,5 @@ export interface BE_mergedSportsDto {
     time: [Date, Date];
     location: string;
     number: number;
+    collaborative: string;
 }
