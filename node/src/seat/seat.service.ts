@@ -93,6 +93,7 @@ export class SeatService {
         })
       }
     } catch (error) {
+      hasNoOverlap = false
       console.log(error);
     }
     return hasNoOverlap;
