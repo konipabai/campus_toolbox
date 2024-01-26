@@ -18,7 +18,7 @@
             <el-date-picker v-model="searchData.date" type="date" placeholder="请选择日期" :clearable="false" />
           </el-config-provider>
         </el-form-item>
-        <el-form-item label="预约时间" prop="time" class="sports-form-search">
+        <el-form-item label="时间范围" prop="time" class="sports-form-search">
           <el-config-provider :locale="locale">
             <el-time-picker v-model="searchData.time" is-range range-separator="—" start-placeholder="开始时间"
               end-placeholder="结束时间" format="HH:mm" :clearable="false" />
@@ -49,8 +49,15 @@
           <el-scrollbar max-height="105px">
             <el-button v-if="reserveData.reserveOrder.length == 0">暂无预定</el-button>
             <el-button v-else v-for="(item, index) in reserveData.reserveOrder" :key="index"
-              :class="reserveData.reserveOrder.length == 1 ? '' : 'sports-dialog-button'">{{ item[0] + ' ' + item[1][0] + '-' + item[1][1] + ' ' + item[2] + '人' }}</el-button>
+              :class="reserveData.reserveOrder.length == 1 ? '' : 'sports-dialog-button'">{{ item[0] + ' ' + item[1][0] +
+                '-' + item[1][1] + ' ' + item[2] + '人' }}</el-button>
           </el-scrollbar>
+        </el-form-item>
+        <el-form-item label="选择时间">
+          <el-config-provider :locale="locale">
+            <el-time-picker v-model="reserveData.reserveTime" is-range range-separator="—" start-placeholder="开始时间"
+              end-placeholder="结束时间" format="HH:mm" :clearable="false" :disabled-hours="disabledHours" />
+          </el-config-provider>
         </el-form-item>
         <el-form-item label="半场/全场">
           <el-select v-model="reserveData.location" placeholder="请选择半场/全场" clearable>
@@ -62,7 +69,7 @@
             <el-option v-for="(item, index) in ['是', '否']" :key="index" :value="item" />
           </el-select>
         </el-form-item>
-        <el-form-item label="人数" v-if="reserveData.collaborative == '是'">
+        <el-form-item label="当前人数" v-if="reserveData.collaborative == '是'">
           <el-slider v-model="reserveData.number" :min="1" :max="10" :step="1" show-stops show-input placement="bottom" />
         </el-form-item>
       </el-form>
@@ -257,15 +264,30 @@ const reserveData: reserveSportsType = reactive({
   typeAndCourt: "",
   dateAndTime: "",
   reserveOrder: [],
+  reserveTime: [new Date(), new Date()],
   location: "",
   collaborative: "否",
   number: 1
 })
+const makeRange = (start: number, end: number) => {
+  const result: number[] = []
+  for (let i = start; i <= end; i++) {
+    result.push(i)
+  }
+  return result
+}
+var disabledHours = () => {
+  return makeRange(0, new Date(searchData.time[0]).getHours() - 1).concat(makeRange(new Date(searchData.time[1]).getHours() + 1, 23))
+}
 const changeDialog = (item: resultSportsType) => {
   dialogVisible.value = true
   reserveData.typeAndCourt = item.sportsType + item.sportsCourt
   reserveData.dateAndTime = item.date + "   " + moment(item.reserveTime[0]).format('HH:mm') + " - " + moment(item.reserveTime[1]).format('HH:mm')
   reserveData.reserveOrder = item.location.map((loc, index) => [loc, item.time[index].map(date => moment(date).format('HH:mm')), item.number[index]])
+  reserveData.reserveTime = item.reserveTime
+  disabledHours = () => {
+    return makeRange(0, new Date(searchData.time[0]).getHours() - 1).concat(makeRange(new Date(searchData.time[1]).getHours() + 1, 23))
+  }
 }
 const searchForm = async () => {
   try {
@@ -286,7 +308,7 @@ const searchForm = async () => {
     if (topRef.value) {
       topRef.value.setScrollTop(0);
     }
-    const data: resultSportsType[] = await getSports(searchData);    
+    const data: resultSportsType[] = await getSports(searchData);
     loading.value = false
     if (data.length != 0) {
       result.value = data;
@@ -312,7 +334,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
   searchForm()
 }
 const submitForm = async () => {
-
+  console.log(reserveData, 1111);
 }
 </script>
 
@@ -392,5 +414,9 @@ const submitForm = async () => {
       margin: 4px 2px;
     }
   }
+}
+
+:deep(.el-overlay-dialog) {
+  overflow: hidden;
 }
 </style>

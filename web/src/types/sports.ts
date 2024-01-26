@@ -8,6 +8,7 @@ export interface reserveSportsType {
     typeAndCourt: string;
     dateAndTime: string;
     reserveOrder: [string, string[], number][];
+    reserveTime: [Date, Date];
     location: string;
     collaborative: string;
     number: number;
