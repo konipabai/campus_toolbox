@@ -37,35 +37,35 @@
         </div>
       </el-scrollbar>
     </div>
-    <el-dialog v-model="dialogVisible" title="预约" width="480px" draggable center>
+    <el-dialog v-model="dialogVisible" title="预约" width="480px" draggable center @close="resetData()">
       <el-form label-width="85px" :model="reserveData">
         <el-form-item label="预约场地">
           <el-input v-model="reserveData.typeAndCourt" disabled />
         </el-form-item>
-        <el-form-item label="时间日期">
+        <el-form-item label="时间范围">
           <el-input v-model="reserveData.dateAndTime" disabled />
         </el-form-item>
         <el-form-item label="已被预约">
           <el-scrollbar max-height="105px">
             <el-button v-if="reserveData.reserveOrder.length == 0">暂无预定</el-button>
             <el-button v-else v-for="(item, index) in reserveData.reserveOrder" :key="index"
-              :class="reserveData.reserveOrder.length == 1 ? '' : 'sports-dialog-button'"
-              :color="item[3] == '是' ? '#AFF090' : '#FFADAD'">{{ item[0] + ' ' + item[1][0] +
-                '-' + item[1][1] + ' ' + item[2] + '人' }}</el-button>
+              :class="[reserveData.reserveOrder.length == 1 ? '' : 'sports-dialog-button', item[5] == 'true' ? 'isActive' : '']"
+              :color="item[3] == '是' ? '#AFF090' : '#FFADAD'" @click="joinOrder(item)">{{ item[0] + ' ' + item[1][0] +
+                '-' + item[1][1] + ' ' + (item[3] == '是' ? item[2] + '人' : '') }}</el-button>
           </el-scrollbar>
         </el-form-item>
-        <el-form-item label="选择时间">
+        <el-form-item label="选择时间" v-show="reserveData.ownership == 'true'">
           <el-config-provider :locale="locale">
             <el-time-picker v-model="reserveData.reserveTime" is-range range-separator="—" start-placeholder="开始时间"
-              end-placeholder="结束时间" format="HH:mm" :clearable="false" :disabled-hours="disabledHours" />
+              end-placeholder="结束时间" format="HH:mm" :clearable="false" />
           </el-config-provider>
         </el-form-item>
-        <el-form-item label="半场/全场">
+        <el-form-item label="半场/全场" v-show="reserveData.ownership == 'true'">
           <el-select v-model="reserveData.location" placeholder="请选择半场/全场" clearable>
-            <el-option v-for="(item, index) in ['全场', 'a半场', 'b半场']" :key="index" :value="item" />
+            <el-option v-for="(item, index) in ['全场', 'a半', 'b半']" :key="index" :value="item" />
           </el-select>
         </el-form-item>
-        <el-form-item label="允许加入">
+        <el-form-item label="允许加入" v-show="reserveData.ownership == 'true'">
           <el-select v-model="reserveData.collaborative" placeholder="是否允许陌生人加入" clearable>
             <el-option v-for="(item, index) in ['是', '否']" :key="index" :value="item" />
           </el-select>
@@ -75,11 +75,17 @@
         </el-form-item>
       </el-form>
       <template #footer>
-        <span>
+        <span v-if="reserveData.ownership == 'true'">
           <el-button type="primary" @click="submitForm">
             确认
           </el-button>
           <el-button @click="dialogVisible = false">取消</el-button>
+        </span>
+        <span v-else>
+          <el-button type="primary" @click="submitForm">
+            加入
+          </el-button>
+          <el-button @click="resetData">退出</el-button>
         </span>
       </template>
     </el-dialog>
@@ -97,9 +103,9 @@ import gsap from 'gsap'
 
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import { Place } from "@element-plus/icons-vue";
-import { reserveSportsType, getSportsType, resultSportsType } from "../../../types/sports"
+import { reserveSportsType, getSportsType, resultSportsType, postSportsType } from "../../../types/sports"
 
-import { getSports } from "../../../server"
+import { getSports, postSports } from "../../../server"
 import moment from "moment";
 import { ElMessage, ElScrollbar, FormInstance } from "element-plus"
 
@@ -268,27 +274,16 @@ const reserveData: reserveSportsType = reactive({
   reserveTime: [new Date(), new Date()],
   location: "",
   collaborative: "否",
-  number: 1
+  number: 1,
+  ownership: 'true'
 })
-const makeRange = (start: number, end: number) => {
-  const result: number[] = []
-  for (let i = start; i <= end; i++) {
-    result.push(i)
-  }
-  return result
-}
-var disabledHours = () => {
-  return makeRange(0, new Date(searchData.time[0]).getHours() - 1).concat(makeRange(new Date(searchData.time[1]).getHours() + 1, 23))
-}
 const changeDialog = (item: resultSportsType) => {
   dialogVisible.value = true
   reserveData.typeAndCourt = item.sportsType + item.sportsCourt
   reserveData.dateAndTime = item.date + "   " + moment(item.reserveTime[0]).format('HH:mm') + "-" + moment(item.reserveTime[1]).format('HH:mm')
-  reserveData.reserveOrder = item.location.map((loc, index) => [loc, item.time[index].map(date => moment(date).format('HH:mm')), item.number[index], item.collaborative[index]])
+  reserveData.reserveOrder = item.location.map((loc, index) => [loc, item.time[index].map(date => moment(date).format('HH:mm')), item.number[index], item.collaborative[index], item.id[index], 'false'])
   reserveData.reserveTime = item.reserveTime
-  disabledHours = () => {
-    return makeRange(0, new Date(searchData.time[0]).getHours() - 1).concat(makeRange(new Date(searchData.time[1]).getHours() + 1, 23))
-  }
+  reserveData.ownership = 'true'
 }
 const searchForm = async () => {
   try {
@@ -334,20 +329,97 @@ const resetForm = (formEl: FormInstance | undefined) => {
   searchData.type = "足球场"
   searchForm()
 }
+const postData: postSportsType = reactive({
+  id: 0,
+  account: '22215150514',
+  date: new Date(),
+  time: [new Date(), new Date()],
+  typeAndCourt: "",
+  location: "",
+  collaborative: "",
+  number: 1,
+  ownership: ''
+})
 const submitForm = async () => {
-  console.log(reserveData, 1111);
+  try {
+    postData.date = reserveData.dateAndTime.split('   ')[0]
+    postData.typeAndCourt = reserveData.typeAndCourt
+    postData.location = reserveData.location
+    postData.collaborative = reserveData.collaborative
+    postData.ownership = reserveData.ownership
+    if (reserveData.collaborative == '是') {
+      postData.number = reserveData.number
+    } else {
+      postData.number = 1
+    }
+    if (reserveData.ownership == 'true') {
+      postData.time = reserveData.reserveTime
+    }
+    const data = await postSports(postData);
+    if (data == true) {
+      ElMessage({
+        message: reserveData.ownership == 'true' ? '预约成功' : '加入成功',
+        type: 'success'
+      })
+      dialogVisible.value = false
+      loading.value = true
+      await new Promise(resolve => setTimeout(resolve, 500));
+      loading.value = false
+      searchForm()
+    } else {
+      ElMessage({
+        message: '当前时间范围已有其他订单，请选择其他时间或从已被预约的订单中选择加入',
+        type: 'warning'
+      })
+    }
+  } catch (error) {
+    ElMessage.error('未知错误，请稍后再试')
+    console.log(error);
+  }
+}
+
+const joinOrder = (item: any) => {
+  if (item[3] == '是') {
+    if (reserveData.ownership == 'true') {
+      ElMessage({
+        message: '已进入加入模式，点击 退出 按钮退出加入模式',
+        type: 'warning'
+      })
+    }
+    reserveData.reserveOrder.forEach(msg => {
+      msg[5] = 'false';
+    })
+    item[5] = 'true'
+    reserveData.ownership = 'false'
+    reserveData.collaborative = item[3]
+    reserveData.location = item[0]
+    postData.id = item[4]
+    postData.time = item[1]
+  } else {
+    ElMessage({
+      message: '当前预约订单不允许加入',
+      type: 'warning'
+    })
+  }
+}
+const resetData = () => {
+  reserveData.ownership = 'true'
+  reserveData.reserveOrder.forEach(msg => {
+    msg[5] = 'false';
+  })
+  postData.id = 0
 }
 </script>
 
 <style lang="less" scoped>
 .sports {
-  width: 100%;
-  height: 100%;
+  width: var(--element-width-full);
+  height: var(--element-height-full);
   position: relative;
 
   &-canvas {
-    width: 100%;
-    height: 100%;
+    width: var(--element-width-full);
+    height: var(--element-height-full);
     position: absolute;
     top: 0;
     left: 0;
@@ -370,7 +442,7 @@ const submitForm = async () => {
 
     .el-select,
     :deep(.el-date-editor.el-date-editor--date) {
-      width: 100%;
+      width: var(--element-width-full);
     }
 
     &-search {
@@ -379,7 +451,7 @@ const submitForm = async () => {
       margin-right: auto;
 
       :deep(.el-form-item__label) {
-        color: #ebebeb !important;
+        color: var(--main-bg-color) !important;
       }
     }
 
@@ -400,8 +472,8 @@ const submitForm = async () => {
         height: 80px;
         margin: 10px 4%;
         border-radius: 10px;
-        background-color: #3967AB;
-        color: #ebebeb !important;
+        background-color: var(--title-hover-bg-color);
+        color: var(--button-text-color) !important;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -411,7 +483,7 @@ const submitForm = async () => {
 
   &-dialog {
     &-button {
-      width: calc(50% - 4px);
+      width: calc(50% - 6px);
       margin: 4px 2px;
     }
   }
@@ -419,5 +491,9 @@ const submitForm = async () => {
 
 :deep(.el-overlay-dialog) {
   overflow: hidden;
+}
+
+.isActive {
+  border: 2px solid var(--b-text-color);
 }
 </style>

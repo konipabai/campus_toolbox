@@ -2,7 +2,7 @@ import axios from 'axios'
 import { reserveClassroomType, searchClassroomType } from '../types/classroom'
 import { getAccountLostFoundType, postLostFoundType, deleteLostFoundType } from '../types/lostFound'
 import { getSeatType, postSeatType } from '../types/seat'
-import { getSportsType } from '../types/sports'
+import { getSportsType, postSportsType } from '../types/sports'
 
 axios.defaults.baseURL = "/api"
 
@@ -23,3 +23,5 @@ export const getSeat = (data: getSeatType) => axios.get('/seat', { params: data 
 export const postSeat = (data: postSeatType) => axios.post('/seat', data).then(res => res.data)
 
 export const getSports = (data: getSportsType) => axios.get('/sports', { params: data }).then(res => res.data)
+
+export const postSports = (data: postSportsType) => axios.post('/sports', data).then(res => res.data)
