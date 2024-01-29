@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { resultSport } from './entities/sports.entity';
 import { Repository } from 'typeorm';
 import { sports } from './constants'
+import * as moment from 'moment-timezone';
 
 @Injectable()
 export class SportsService {
@@ -18,10 +19,10 @@ export class SportsService {
       var tempSports: DB_resultSportsDto[] = await this.sportsResult.find({
         where: {
           date: params.date,
-          type: params.type
+          type: params.type,
+          ownership: 'true'
         }
       })
-
       tempSports = tempSports.filter((reserveItem) => {
         return new Date(params.time[0]) < reserveItem.endTime && reserveItem.startTime < new Date(params.time[1])
       })
@@ -31,7 +32,7 @@ export class SportsService {
         const mergedArray: BE_mergedSportsDto[] = []
         tempSports.map((reserveItem) => {
           if (sportsItem.sportsType == reserveItem.type && sportsItem.sportsCourt == reserveItem.court) {
-            mergedArray.push({ time: [reserveItem.startTime, reserveItem.endTime], location: reserveItem.location, number: reserveItem.number, collaborative: reserveItem.collaborative })
+            mergedArray.push({ time: [reserveItem.startTime, reserveItem.endTime], location: reserveItem.location, number: reserveItem.number, collaborative: reserveItem.collaborative, id: reserveItem.id })
           }
         })
         mergedArray.sort((a, b) => {
@@ -51,6 +52,7 @@ export class SportsService {
         sportsItem.location = mergedArray.map(item => item.location);
         sportsItem.number = mergedArray.map(item => item.number)
         sportsItem.collaborative = mergedArray.map(item => item.collaborative)
+        sportsItem.id = mergedArray.map(item => item.id)
       })
     } catch (error) {
       console.log(error);
@@ -59,6 +61,49 @@ export class SportsService {
   }
 
   async postSports(params: FE_postSportsDto) {
-    return `This action returns all sports`;
+    var hasNoOverlap: boolean = true
+    var tempSports: DB_resultSportsDto[] = []
+    try {
+      if (params.ownership == 'true') {
+        tempSports = await this.sportsResult.find({
+          where: {
+            date: params.date,
+            type: params.typeAndCourt.slice(0, params.typeAndCourt.length - 1),
+            court: params.typeAndCourt.slice(-1),
+            ownership: 'true'
+          }
+        })
+        tempSports = tempSports.filter((reserveItem) => {
+          return new Date(params.time[0]) < reserveItem.endTime && reserveItem.startTime < new Date(params.time[1])
+            && (reserveItem.location == params.location || reserveItem.location == '全场' || params.location == '全场')
+        })
+      } else {
+        params.time[0] = moment(`${params.date}T${params.time[0]}`).toISOString()
+        params.time[1] = moment(`${params.date}T${params.time[1]}`).toISOString()        
+        const originNumber: number = (await this.sportsResult.findOne({ where: { id: params.id } })).number
+        await this.sportsResult.update(params.id, { number: originNumber + params.number })
+      }
+      if (tempSports.length == 0) {
+        await this.sportsResult.save({
+          account: params.account,
+          date: params.date,
+          startTime: new Date(params.time[0]),
+          endTime: new Date(params.time[1]),
+          type: params.typeAndCourt.slice(0, params.typeAndCourt.length - 1),
+          court: params.typeAndCourt.slice(-1),
+          location: params.location,
+          collaborative: params.collaborative,
+          number: params.number,
+          ownership: params.ownership
+        })
+        hasNoOverlap = true
+      } else {
+        hasNoOverlap = false
+      }
+    } catch (error) {
+      hasNoOverlap = false
+      console.log(error);
+    }
+    return hasNoOverlap;
   }
 }

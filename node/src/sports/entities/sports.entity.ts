@@ -31,4 +31,7 @@ export class resultSport {
 
     @Column({ type: 'int', nullable: false })
     number: number;             // 该预约订单目前有多少人
+
+    @Column({ type: 'varchar', length: 255, nullable: false })
+    ownership: string;          // 是否是该订单发起者
 }
