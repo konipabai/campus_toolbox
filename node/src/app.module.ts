@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LostFoundModule } from './lostFound/lostFound.module';
 import { SeatModule } from './seat/seat.module';
 import { SportsModule } from './sports/sports.module';
+import { FaultModule } from './fault/fault.module';
 
 @Module({
   imports: [UserModule, ClassroomModule, TypeOrmModule.forRoot({
@@ -21,7 +22,7 @@ import { SportsModule } from './sports/sports.module';
     retryDelay: 500,
     retryAttempts: 10,
     autoLoadEntities: true,
-  }), LostFoundModule, SeatModule, SportsModule],
+  }), LostFoundModule, SeatModule, SportsModule, FaultModule],
   controllers: [AppController],
   providers: [AppService],
 })
