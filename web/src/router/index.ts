@@ -112,26 +112,9 @@ const routes: Array<RouteRecordRaw> = [
         path: '/fault',
         meta: {
             msg: "故障报修",
-            father: "true"
+            father: "false"
         },
-        children: [
-            {
-                path: 'apply',
-                meta: {
-                    msg: "申请报修",
-                    father: "false"
-                },
-                component: () => import("../components/contents/fault/apply/index.vue")
-            },
-            {
-                path: 'records',
-                meta: {
-                    msg: "报修记录",
-                    father: "false"
-                },
-                component: () => import("../components/contents/fault/records/index.vue")
-            }
-        ]
+        component: () => import("../components/contents/fault/index.vue")
 
     },
     {

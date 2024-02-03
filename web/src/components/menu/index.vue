@@ -58,18 +58,10 @@
         <template #title><span>预约记录</span></template>
       </el-menu-item>
 
-      <el-sub-menu index="7">
-        <template #title>
-          <img src="../../assets/icon/malfunction.svg" class="el-menu-vertical-all-icon" />
-          <span>故障报修</span>
-        </template>
-        <el-menu-item index="7-1" @click="$router.push('/fault/apply')">
-          <template #title><span>申请报修</span></template>
-        </el-menu-item>
-        <el-menu-item index="7-2" @click="$router.push('/fault/records')">
-          <template #title><span>报修记录</span></template>
-        </el-menu-item>
-      </el-sub-menu>
+      <el-menu-item index="7" @click="$router.push('/fault')">
+        <img src="../../assets/icon/malfunction.svg" class="el-menu-vertical-all-icon" />
+        <template #title><span>故障报修</span></template>
+      </el-menu-item>
 
       <el-sub-menu index="8">
         <template #title>
@@ -150,12 +142,8 @@ const updateMenuSelection = (path: string) => {
     activeIndex.value = '5';
   } else if (path === '/records') {
     activeIndex.value = '6';
-  } else if (path.startsWith('/fault')) {
-    if (path.includes('/apply')) {
-      activeIndex.value = '7-1';
-    } else if (path.includes('/records')) {
-      activeIndex.value = '7-2';
-    }
+  } else if (path === '/fault') {
+    activeIndex.value = '7';
   } else if (path.startsWith('/lostFound')) {
     if (path.includes('/view')) {
       activeIndex.value = '8-1';
@@ -183,6 +171,7 @@ const updateMenuSelection = (path: string) => {
 
 :deep(.el-menu-vertical > .el-sub-menu.is-active > .el-sub-menu__title.el-tooltip__trigger) {
   background-color: var(--element-active-color) !important;
+
   &:hover {
     background-color: var(--element-hover-color) !important;
   }

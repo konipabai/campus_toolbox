@@ -1,6 +1,6 @@
 <template>
   <div>
-    apply
+    fault
   </div>
 </template>
 
