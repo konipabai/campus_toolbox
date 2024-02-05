@@ -3,7 +3,7 @@
 // 前端:   FE = frontend
 // 后端:   BE = backend
 
-// 后端处理之后的教室数据
+// 后端处理之后的数据
 export interface BE_filterLostFoundDto {
     id: number;
     name: string;
