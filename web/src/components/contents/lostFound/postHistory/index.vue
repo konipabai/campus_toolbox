@@ -41,7 +41,7 @@
           </el-form-item>
           <el-form-item label="是否公开" prop="switch" v-show="updateState">
             <el-switch v-model="postData.switch"
-              style="--el-switch-on-color: var(--bg-color); --el-switch-off-color: #76ADFF" active-text="公开"
+              style="--el-switch-on-color: var(--bg-color); --el-switch-off-color: var(--switch-off-color)" active-text="公开"
               inactive-text="隐藏" active-value="on" inactive-value="off" />
           </el-form-item>
           <el-form-item>
@@ -390,7 +390,7 @@ const update = (row: getLostFoundType) => {
         &-off {
           width: 15px;
           height: 15px;
-          background-color: #76ADFF;
+          background-color: var(--switch-off-color);
           margin-right: 5px;
           border-radius: 15px;
         }
@@ -398,7 +398,7 @@ const update = (row: getLostFoundType) => {
         &-overdue {
           width: 15px;
           height: 15px;
-          background-color: #F67D7D;
+          background-color: var(--switch-overdue-color);
           margin-right: 5px;
           border-radius: 15px;
         }
