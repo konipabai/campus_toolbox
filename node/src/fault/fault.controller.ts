@@ -1,34 +1,28 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseIntPipe } from '@nestjs/common';
 import { FaultService } from './fault.service';
-import { CreateFaultDto } from './dto/create-fault.dto';
-import { UpdateFaultDto } from './dto/update-fault.dto';
+import { FE_postFaultDto, FE_getFaultDto } from './dto/fault.dto';
 
 @Controller('fault')
 export class FaultController {
-  constructor(private readonly faultService: FaultService) {}
-
-  @Post()
-  create(@Body() createFaultDto: CreateFaultDto) {
-    return this.faultService.create(createFaultDto);
-  }
+  constructor(private readonly faultService: FaultService) { }
 
   @Get()
-  findAll() {
-    return this.faultService.findAll();
+  getfault(@Query() params: FE_getFaultDto) {
+    return this.faultService.getFault(params);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.faultService.findOne(+id);
+  @Post()
+  postfault(@Body() FE_postfaultDto: FE_postFaultDto) {
+    return this.faultService.postFault(FE_postfaultDto);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFaultDto: UpdateFaultDto) {
-    return this.faultService.update(+id, updateFaultDto);
+  updatefault(@Param('id', ParseIntPipe) id: number, @Body() FE_updatefaultDto: FE_postFaultDto) {
+    return this.faultService.updateFault(id, FE_updatefaultDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.faultService.remove(+id);
+  deletefault(@Param('id', ParseIntPipe) id: number) {
+    return this.faultService.deleteFault(id);
   }
 }
