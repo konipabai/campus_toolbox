@@ -3,6 +3,7 @@ import { reserveClassroomType, searchClassroomType } from '../types/classroom'
 import { getAccountLostFoundType, postLostFoundType, deleteLostFoundType } from '../types/lostFound'
 import { getSeatType, postSeatType } from '../types/seat'
 import { getSportsType, postSportsType } from '../types/sports'
+import { getAccountFaultType, postFaultType, deleteFaultType } from '../types/fault'
 
 axios.defaults.baseURL = "/api"
 
@@ -25,3 +26,11 @@ export const postSeat = (data: postSeatType) => axios.post('/seat', data).then(r
 export const getSports = (data: getSportsType) => axios.get('/sports', { params: data }).then(res => res.data)
 
 export const postSports = (data: postSportsType) => axios.post('/sports', data).then(res => res.data)
+
+export const getFault = (data?: getAccountFaultType) => axios.get('/fault', { params: data }).then(res => res.data)
+
+export const postFault = (data: postFaultType) => axios.post('/fault', data).then(res => res.data)
+
+export const updateFault = (data: postFaultType) => axios.patch(`/fault/${data.id}`, data).then(res => res.data)
+
+export const deleteFault = (data: deleteFaultType) => axios.delete(`/fault/${data.id}`).then(res => res.data)
