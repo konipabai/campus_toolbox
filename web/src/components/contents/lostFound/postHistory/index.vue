@@ -41,8 +41,8 @@
           </el-form-item>
           <el-form-item label="是否公开" prop="switch" v-show="updateState">
             <el-switch v-model="postData.switch"
-              style="--el-switch-on-color: var(--bg-color); --el-switch-off-color: var(--switch-off-color)" active-text="公开"
-              inactive-text="隐藏" active-value="on" inactive-value="off" />
+              style="--el-switch-on-color: var(--bg-color); --el-switch-off-color: var(--switch-off-color)"
+              active-text="公开" inactive-text="隐藏" active-value="on" inactive-value="off" />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm(lostFoundRef)"
@@ -84,20 +84,21 @@
         </div>
       </div>
       <el-divider />
-      <el-table :data="paginatedData" class="lostFound-history-table" ref="tableTop" :flexible=true v-loading="loading">
+      <el-table :data="paginatedData" class="lostFound-history-table" ref="tableTop" :flexible=true v-loading="loading"
+        :tooltip-options="{ placement: 'left' }">
         <template #empty>
           <div class="tableEmpty">
             <span class="tableEmptyIcon"></span>
             <span>暂无数据</span>
           </div>
         </template>
-        <el-table-column prop="item" label="物品" min-width="5" />
-        <el-table-column prop="state" label="状态" min-width="4" />
-        <el-table-column prop="brand" label="品牌" min-width="7" />
-        <el-table-column prop="date" label="时间" min-width="7" />
-        <el-table-column prop="location" label="地点" min-width="6" />
-        <el-table-column prop="description" label="描述" min-width="7" />
-        <el-table-column label="操作" min-width="5">
+        <el-table-column prop="item" label="物品" min-width="5" :show-overflow-tooltip=true />
+        <el-table-column prop="state" label="状态" min-width="4" :show-overflow-tooltip=true />
+        <el-table-column prop="brand" label="品牌" min-width="7" :show-overflow-tooltip=true />
+        <el-table-column prop="date" label="时间" min-width="7" :show-overflow-tooltip=true />
+        <el-table-column prop="location" label="地点" min-width="6" :show-overflow-tooltip=true />
+        <el-table-column prop="description" label="描述" min-width="7" :show-overflow-tooltip=true />
+        <el-table-column label="操作" min-width="5" :show-overflow-tooltip=true>
           <template #default="scope">
             <el-button type="danger" v-if="scope.row.overdue == 'true'" @click="update(scope.row)">逾期</el-button>
             <el-button type="primary" v-else-if="scope.row.switch == 'on'" @click="update(scope.row)">修改</el-button>
@@ -408,6 +409,10 @@ const update = (row: getLostFoundType) => {
     &-table {
       height: calc(100vh - 212px);
       margin-top: -22px;
+
+      :deep(.el-popper.is-dark) {
+        color: var(--w-text-color) !important;
+      }
     }
 
     &-pagination {
