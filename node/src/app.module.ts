@@ -8,6 +8,7 @@ import { LostFoundModule } from './lostFound/lostFound.module';
 import { SeatModule } from './seat/seat.module';
 import { SportsModule } from './sports/sports.module';
 import { FaultModule } from './fault/fault.module';
+import { NewsModule } from './news/news.module';
 
 @Module({
   imports: [UserModule, ClassroomModule, TypeOrmModule.forRoot({
@@ -22,7 +23,7 @@ import { FaultModule } from './fault/fault.module';
     retryDelay: 500,
     retryAttempts: 10,
     autoLoadEntities: true,
-  }), LostFoundModule, SeatModule, SportsModule, FaultModule],
+  }), LostFoundModule, SeatModule, SportsModule, FaultModule, NewsModule],
   controllers: [AppController],
   providers: [AppService],
 })
