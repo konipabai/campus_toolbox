@@ -4,6 +4,7 @@ import { getAccountLostFoundType, postLostFoundType, deleteLostFoundType } from 
 import { getSeatType, postSeatType } from '../types/seat'
 import { getSportsType, postSportsType } from '../types/sports'
 import { getAccountFaultType, postFaultType, deleteFaultType } from '../types/fault'
+import { getNewsType } from '../types/news'
 
 axios.defaults.baseURL = "/api"
 
@@ -27,10 +28,12 @@ export const getSports = (data: getSportsType) => axios.get('/sports', { params:
 
 export const postSports = (data: postSportsType) => axios.post('/sports', data).then(res => res.data)
 
-export const getFault = (data?: getAccountFaultType) => axios.get('/fault', { params: data }).then(res => res.data)
+export const getFault = (data: getAccountFaultType) => axios.get('/fault', { params: data }).then(res => res.data)
 
 export const postFault = (data: postFaultType) => axios.post('/fault', data).then(res => res.data)
 
 export const updateFault = (data: postFaultType) => axios.patch(`/fault/${data.id}`, data).then(res => res.data)
 
 export const deleteFault = (data: deleteFaultType) => axios.delete(`/fault/${data.id}`).then(res => res.data)
+
+export const getNews = (data: getNewsType) => axios.get('/news', { params: data }).then(res => res.data)
