@@ -2,33 +2,25 @@
   <div class="seat">
     <el-card shadow="hover">
       <el-form :inline="true" :model="searchData" ref="seatRef" class="seat-head">
-        <el-row>
-          <el-col :span="9">
-            <el-form-item label="楼层" prop="floor">
-              <el-select v-model="searchData.floor" placeholder="请选择楼层" clearable>
-                <template #prefix>
-                  <el-icon>
-                    <OfficeBuilding />
-                  </el-icon>
-                </template>
-                <el-option v-for="(item, index) in floorData" :key="index" :value="item.value" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="9">
-            <el-form-item label="日期" prop="date">
-              <el-config-provider :locale="locale">
-                <el-date-picker v-model="searchData.date" type="date" placeholder="请选择日期" />
-              </el-config-provider>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item class="seat-head-button">
-              <el-button type="primary" @click="searchForm()">查询</el-button>
-              <el-button @click="resetForm(seatRef)">重置</el-button>
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <el-form-item label="楼层" prop="floor" class="seat-head-form">
+          <el-select v-model="searchData.floor" placeholder="请选择楼层" clearable>
+            <template #prefix>
+              <el-icon>
+                <OfficeBuilding />
+              </el-icon>
+            </template>
+            <el-option v-for="(item, index) in floorData" :key="index" :value="item.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="日期" prop="date" class="seat-head-form">
+          <el-config-provider :locale="locale">
+            <el-date-picker v-model="searchData.date" type="date" placeholder="请选择日期" />
+          </el-config-provider>
+        </el-form-item>
+        <el-form-item class="seat-head-button">
+          <el-button type="primary" @click="searchForm()">查询</el-button>
+          <el-button @click="resetForm(seatRef)">重置</el-button>
+        </el-form-item>
       </el-form>
     </el-card>
     <el-card class="seat-card" shadow="hover">
@@ -299,22 +291,28 @@ const getSeatClass = (location: string, col: number, row: number) => {
   &-head {
     align-items: center;
     margin-bottom: -20px;
+    display: flex;
 
-    .el-col:not(:nth-child(3)) {
+    &-form {
+      box-sizing: border-box;
       padding: 0px 30px;
-
-      &:deep(.el-date-editor.el-input) {
-        width: 250px;
-      }
-    }
-
-    .el-col:nth-child(3) {
-      display: flex;
-      justify-content: flex-end;
+      width: 30%;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     &-button {
-      margin-right: 10px;
+      margin-left: auto;
+      width: 20%;
+
+      :deep(.el-form-item__content) {
+        justify-content: flex-end;
+      }
+    }
+
+    .el-select,
+    :deep(.el-date-editor.el-date-editor--date) {
+      width: var(--element-width-full);
     }
   }
 
