@@ -1,26 +1,48 @@
 import { Injectable } from '@nestjs/common';
-import { CreateRecruitmentDto } from './dto/create-recruitment.dto';
-import { UpdateRecruitmentDto } from './dto/update-recruitment.dto';
+import { BE_filterRecruitmentDto, DB_resultRecruitmentDto, FE_getRecruitmentDto } from './dto/recruitment.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Between, Like, Repository } from 'typeorm';
+import { resultRecruitment } from './entities/recruitment.entity';
 
 @Injectable()
 export class RecruitmentService {
-  create(createRecruitmentDto: CreateRecruitmentDto) {
-    return 'This action adds a new recruitment';
-  }
+  constructor(
+    @InjectRepository(resultRecruitment) private readonly recruitmentResult: Repository<resultRecruitment>
+  ) { }
 
-  findAll() {
-    return `This action returns all recruitment`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} recruitment`;
-  }
-
-  update(id: number, updateRecruitmentDto: UpdateRecruitmentDto) {
-    return `This action updates a #${id} recruitment`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} recruitment`;
+  async getRecruitment(params: FE_getRecruitmentDto) {
+    var findRecruitmentData: BE_filterRecruitmentDto[] = []
+    try {
+      const whereCondition: any = {}
+      if (params.job !== '') {
+        whereCondition.job = Like(`%${params.job}%`)
+      }
+      if (!(params.bottom.toString() == '0' && params.top.toString() == '0')) {
+        if (parseInt(params.bottom.toString()) > parseInt(params.top.toString())) {
+          whereCondition.salary = Between(params.top, params.bottom)
+        } else {
+          whereCondition.salary = Between(params.bottom, params.top)
+        }
+      }
+      var tempRecruitment: DB_resultRecruitmentDto[] = await this.recruitmentResult.find({
+        where: whereCondition
+      })
+      tempRecruitment.map(item => {
+        findRecruitmentData.push({
+          name: item.name,
+          hr: item.hr,
+          job: item.job,
+          description: item.description,
+          salary: item.salary,
+          requirements: item.requirements.split('||'),
+          benefits: item.benefits,
+          contact: item.contact,
+          location: item.location
+        })
+      })
+    } catch (error) {
+      console.log(error);
+    }
+    return findRecruitmentData;
   }
 }
