@@ -161,7 +161,7 @@ const routes: Array<RouteRecordRaw> = [
             {
                 path: 'edit',
                 meta: {
-                    msg: "编辑招聘信息",
+                    msg: "发布招聘信息",
                     father: "false"
                 },
                 component: () => import("../components/contents/recruitment/edit/index.vue")

@@ -85,7 +85,7 @@
           <template #title><span>查看招聘信息</span></template>
         </el-menu-item>
         <el-menu-item index="9-2" @click="$router.push('/recruitment/edit')">
-          <template #title><span>编辑招聘信息</span></template>
+          <template #title><span>发布招聘信息</span></template>
         </el-menu-item>
       </el-sub-menu>
 
