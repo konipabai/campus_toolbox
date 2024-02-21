@@ -1,16 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { resultClassroom, checkClassroom } from './entities/classroom.entity';
+import { resultClassroom } from './entities/classroom.entity';
 import { classroom } from './constants';
-import type { DB_resultClassroomDto, DB_pendingClassroomDto, BE_filterClassroomDto, FE_getClassroomDto, FE_reserveClassroomDto } from './dto/classroom.dto';
+import type { DB_resultClassroomDto, DB_pendingClassroomDto, BE_filterClassroomDto, FE_getClassroomDto, FE_postClassroomDto } from './dto/classroom.dto';
 import * as moment from 'moment-timezone';
 
 @Injectable()
 export class ClassroomService {
   constructor(
-    @InjectRepository(resultClassroom) private readonly classroomResult: Repository<resultClassroom>,
-    @InjectRepository(checkClassroom) private readonly classroomCheck: Repository<checkClassroom>,
+    @InjectRepository(resultClassroom) private readonly classroomResult: Repository<resultClassroom>
   ) { }
 
   async getClassroom(params: FE_getClassroomDto): Promise<BE_filterClassroomDto[]> {
@@ -79,13 +78,14 @@ export class ClassroomService {
     return getClassroomData
   }
 
-  async reserveClassroom(params: FE_reserveClassroomDto): Promise<boolean> {
+  async postClassroom(params: FE_postClassroomDto): Promise<boolean> {
     var reserveClassroomData: DB_pendingClassroomDto = {
       account: '',
       classroomNumber: '',
       reason: '',
       date: '',
-      time: ''
+      time: '',
+      state: 'false'
     }
     if ((params.accountAndName) &&
       (params.classroomNumber) &&
@@ -97,7 +97,7 @@ export class ClassroomService {
       reserveClassroomData.date = params.dateAndTime.split(" ")[0]
       reserveClassroomData.time = params.dateAndTime.split(" ")[1] + ' ' + params.dateAndTime.split(" ")[2]
       try {
-        await this.classroomCheck.save(reserveClassroomData)
+        await this.classroomResult.save(reserveClassroomData)
         return true
       } catch (error) {
         console.log(error);

@@ -17,6 +17,7 @@ export interface DB_pendingClassroomDto {
     reason: string;
     date: Date | string;
     time: string;
+    state: string;
 }
 
 // 后端筛选出来的教室数据
@@ -37,7 +38,7 @@ export interface FE_getClassroomDto {
 }
 
 // 前端预约请求的教室数据
-export interface FE_reserveClassroomDto {
+export interface FE_postClassroomDto {
     accountAndName: string;
     classroomNumber: string;
     dateAndTime: string;

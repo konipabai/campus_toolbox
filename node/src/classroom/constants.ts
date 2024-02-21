@@ -137,7 +137,7 @@ export const classroom: BE_filterClassroomDto[] = [
     {
         classroomBuilding: "BASIC 教学楼",
         classroomFloor: "二楼",
-        classroomNumber: "B202",
+        classroomNumber: "B203",
         date: "",
         time: []
     },

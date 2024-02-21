@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { ClassroomService } from './classroom.service';
-import type { FE_getClassroomDto, FE_reserveClassroomDto } from './dto/classroom.dto';
+import type { FE_getClassroomDto, FE_postClassroomDto } from './dto/classroom.dto';
 
 @Controller('classroom')
 export class ClassroomController {
@@ -12,7 +12,7 @@ export class ClassroomController {
   }
 
   @Post()
-  reserveClassroom(@Body() params: FE_reserveClassroomDto) {
-    return this.classroomService.reserveClassroom(params);
+  postClassroom(@Body() params: FE_postClassroomDto) {
+    return this.classroomService.postClassroom(params);
   }
 }
