@@ -18,7 +18,7 @@ export interface BE_filterRecruitmentDto {
 
 // 数据库查询出来的数据
 export interface DB_resultRecruitmentDto {
-    id: number;
+    id?: number;
     name: string;
     hr: string;
     job: string;
@@ -35,4 +35,17 @@ export interface FE_getRecruitmentDto {
     job: string;
     bottom: number;
     top: number;
+}
+
+// 前端查询传来的数据
+export interface FE_postRecruitmentDto {
+    name: string;
+    hr: string;
+    job: string;
+    description: string;
+    salary: number;
+    requirements: string[];
+    benefits: string;
+    contact: string;
+    location: string;
 }

@@ -1,6 +1,6 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { RecruitmentService } from './recruitment.service';
-import { FE_getRecruitmentDto } from './dto/recruitment.dto';
+import { FE_getRecruitmentDto, FE_postRecruitmentDto } from './dto/recruitment.dto';
 
 @Controller('recruitment')
 export class RecruitmentController {
@@ -9,5 +9,11 @@ export class RecruitmentController {
   @Get()
   getRecruitment(@Query() params: FE_getRecruitmentDto) {
     return this.recruitmentService.getRecruitment(params);
+  }
+
+  
+  @Post()
+  postRecruitment(@Body() params: FE_postRecruitmentDto) {
+    return this.recruitmentService.postRecruitment(params);
   }
 }
