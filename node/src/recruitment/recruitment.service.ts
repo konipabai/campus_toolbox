@@ -24,9 +24,7 @@ export class RecruitmentService {
           whereCondition.salary = Between(params.bottom, params.top)
         }
       }
-      var tempRecruitment: DB_resultRecruitmentDto[] = await this.recruitmentResult.find({
-        where: whereCondition
-      })
+      var tempRecruitment: DB_resultRecruitmentDto[] = await this.recruitmentResult.find()
       tempRecruitment.map(item => {
         findRecruitmentData.push({
           name: item.name,
