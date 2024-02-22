@@ -12,7 +12,7 @@ export class resultClassroom {
     reason: string;             // 申请理由
 
     @Column({ type: 'date', nullable: false })
-    date: Date;               // 申请的日期
+    date: Date;                 // 申请的日期
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     time: string;               // 申请的时间
@@ -21,11 +21,14 @@ export class resultClassroom {
     location: string;           // 申请的地点
 
     @Column({ type: 'varchar', length: 255, nullable: false })
-    floor: string;           // 申请的地点
+    floor: string;             // 申请的地点
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     classroomNumber: string;   // 申请的教室号
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     state: string;              // 是否申请成功
+
+    @Column({ type: 'varchar', length: 255 })
+    reasonRefusal: string;      // 申请不通过的理由
 }

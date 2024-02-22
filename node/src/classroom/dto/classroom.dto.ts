@@ -20,6 +20,7 @@ export interface DB_pendingClassroomDto {
     state: string;
     location: string;
     floor: string;
+    reasonRefusal: string;
 }
 
 // 后端筛选出来的教室数据

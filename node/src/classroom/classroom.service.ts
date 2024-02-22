@@ -87,7 +87,8 @@ export class ClassroomService {
       time: '',
       state: 'false',
       location: '',
-      floor: ''
+      floor: '',
+      reasonRefusal: ''
     }
     if ((params.accountAndName) &&
       (params.classroomNumber) &&
