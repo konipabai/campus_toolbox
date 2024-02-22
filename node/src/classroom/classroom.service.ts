@@ -85,17 +85,23 @@ export class ClassroomService {
       reason: '',
       date: '',
       time: '',
-      state: 'false'
+      state: 'false',
+      location: '',
+      floor: ''
     }
     if ((params.accountAndName) &&
       (params.classroomNumber) &&
       (params.dateAndTime) &&
-      (params.reason)) {
+      (params.reason) &&
+      (params.location) &&
+      (params.floor)) {
       reserveClassroomData.account = params.accountAndName.split(" ")[1]
       reserveClassroomData.classroomNumber = params.classroomNumber
       reserveClassroomData.reason = params.reason
       reserveClassroomData.date = params.dateAndTime.split(" ")[0]
       reserveClassroomData.time = params.dateAndTime.split(" ")[1] + ' ' + params.dateAndTime.split(" ")[2]
+      reserveClassroomData.location = params.location
+      reserveClassroomData.floor = params.floor
       try {
         await this.classroomResult.save(reserveClassroomData)
         return true

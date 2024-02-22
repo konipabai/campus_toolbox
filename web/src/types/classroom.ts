@@ -18,6 +18,8 @@ export interface reserveClassroomType {
     classroomNumber: string;
     dateAndTime: string;
     reason: string;
+    location: string;
+    floor: string;
 }
 
 export interface paginationClassroomType {

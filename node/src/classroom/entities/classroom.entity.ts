@@ -18,6 +18,12 @@ export class resultClassroom {
     time: string;               // 申请的时间
 
     @Column({ type: 'varchar', length: 255, nullable: false })
+    location: string;           // 申请的地点
+
+    @Column({ type: 'varchar', length: 255, nullable: false })
+    floor: string;           // 申请的地点
+
+    @Column({ type: 'varchar', length: 255, nullable: false })
     classroomNumber: string;   // 申请的教室号
 
     @Column({ type: 'varchar', length: 255, nullable: false })

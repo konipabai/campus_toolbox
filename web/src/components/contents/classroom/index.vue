@@ -137,7 +137,9 @@ const reserveData: reserveClassroomType = reactive({
   accountAndName: '卡拉米 22215150514',
   classroomNumber: '',
   dateAndTime: '',
-  reason: ''
+  reason: '',
+  location: '',
+  floor: ''
 })
 
 const paginationData: paginationClassroomType = reactive({
@@ -184,6 +186,8 @@ const reserveForm = (row: getClassroomType) => {
   dialogVisible.value = true;
   reserveData.classroomNumber = row.classroomNumber;
   reserveData.dateAndTime = row.date + " " + row.time;
+  reserveData.location = row.classroomBuilding
+  reserveData.floor = row.classroomFloor
 };
 
 watch(result, () => {
