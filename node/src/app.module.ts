@@ -10,6 +10,7 @@ import { SportsModule } from './sports/sports.module';
 import { FaultModule } from './fault/fault.module';
 import { NewsModule } from './news/news.module';
 import { RecruitmentModule } from './recruitment/recruitment.module';
+import { RecordsModule } from './records/records.module';
 
 @Module({
   imports: [UserModule, ClassroomModule, TypeOrmModule.forRoot({
@@ -24,7 +25,7 @@ import { RecruitmentModule } from './recruitment/recruitment.module';
     retryDelay: 500,
     retryAttempts: 10,
     autoLoadEntities: true,
-  }), LostFoundModule, SeatModule, SportsModule, FaultModule, NewsModule, RecruitmentModule],
+  }), LostFoundModule, SeatModule, SportsModule, FaultModule, NewsModule, RecruitmentModule, RecordsModule],
   controllers: [AppController],
   providers: [AppService],
 })
