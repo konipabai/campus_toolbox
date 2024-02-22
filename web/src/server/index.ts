@@ -6,6 +6,7 @@ import { getSportsType, postSportsType } from '../types/sports'
 import { getAccountFaultType, postFaultType, deleteFaultType } from '../types/fault'
 import { getNewsType } from '../types/news'
 import { findRecruitmentType, getRecruitmentType } from '../types/recruitment'
+import { updateClassroomRecordsType, updateSeatRecordsType, updateSportsRecordsType, getRecordsType, deleteRecordsType } from '../types/records'
 
 axios.defaults.baseURL = "/api"
 
@@ -42,3 +43,9 @@ export const getNews = (data: getNewsType) => axios.get('/news', { params: data 
 export const getRecruitment = (data: getRecruitmentType) => axios.get('/recruitment', { params: data }).then(res => res.data)
 
 export const postRecruitment = (data: findRecruitmentType) => axios.post('/recruitment', data).then(res => res.data)
+
+export const getRecords = (data: getRecordsType) => axios.get('/records', { params: data }).then(res => res.data)
+
+// export const updateRecords = (data: updateClassroomRecordsType | updateSeatRecordsType | updateSportsRecordsType) => axios.patch('/records', data).then(res => res.data)
+
+export const deleteRecords = (data: deleteRecordsType) => axios.delete('/records', { params: data }).then(res => res.data)
