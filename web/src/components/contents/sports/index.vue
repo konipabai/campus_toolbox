@@ -38,7 +38,7 @@
       </el-scrollbar>
     </div>
     <el-dialog v-model="dialogVisible" title="预约" width="480px" draggable center @close="resetData()">
-      <el-form label-width="85px" :model="reserveData">
+      <el-form label-width="95px" :model="reserveData" :rules="rules" ref="sportRef">
         <el-form-item label="预约场地">
           <el-input v-model="reserveData.typeAndCourt" disabled />
         </el-form-item>
@@ -60,12 +60,12 @@
               end-placeholder="结束时间" format="HH:mm" :clearable="false" />
           </el-config-provider>
         </el-form-item>
-        <el-form-item label="半场/全场" v-show="reserveData.ownership == 'true'">
+        <el-form-item label="半场/全场" v-show="reserveData.ownership == 'true'" prop="location">
           <el-select v-model="reserveData.location" placeholder="请选择半场/全场" clearable>
             <el-option v-for="(item, index) in ['全场', 'a半', 'b半']" :key="index" :value="item" />
           </el-select>
         </el-form-item>
-        <el-form-item label="允许加入" v-show="reserveData.ownership == 'true'">
+        <el-form-item label="允许加入" v-show="reserveData.ownership == 'true'" prop="collaborative">
           <el-select v-model="reserveData.collaborative" placeholder="是否允许陌生人加入" clearable>
             <el-option v-for="(item, index) in ['是', '否']" :key="index" :value="item" />
           </el-select>
@@ -76,13 +76,13 @@
       </el-form>
       <template #footer>
         <span v-if="reserveData.ownership == 'true'">
-          <el-button type="primary" @click="submitForm">
+          <el-button type="primary" @click="submitForm(sportRef)">
             确认
           </el-button>
           <el-button @click="dialogVisible = false">取消</el-button>
         </span>
         <span v-else>
-          <el-button type="primary" @click="submitForm">
+          <el-button type="primary" @click="submitForm(sportRef)">
             加入
           </el-button>
           <el-button @click="resetData">退出</el-button>
@@ -107,11 +107,13 @@ import { reserveSportsType, getSportsType, resultSportsType, postSportsType } fr
 
 import { getSports, postSports } from "../../../server"
 import moment from "moment";
-import { ElMessage, ElScrollbar, FormInstance } from "element-plus"
+import { ElMessage, ElScrollbar, FormInstance, FormRules } from "element-plus"
 
 const canvaRef: Ref<HTMLElement> = ref() as Ref<HTMLElement>
 const sportsRef: Ref<FormInstance | undefined> = ref()
 const topRef: Ref<typeof ElScrollbar | undefined> = ref();
+const sportRef: Ref<FormInstance | undefined> = ref()
+
 
 const scene: THREE.Scene = new THREE.Scene()
 const gltfLoader: GLTFLoader = new GLTFLoader()
@@ -340,42 +342,47 @@ const postData: postSportsType = reactive({
   number: 1,
   ownership: ''
 })
-const submitForm = async () => {
-  try {
-    postData.date = reserveData.dateAndTime.split('   ')[0]
-    postData.typeAndCourt = reserveData.typeAndCourt
-    postData.location = reserveData.location
-    postData.collaborative = reserveData.collaborative
-    postData.ownership = reserveData.ownership
-    if (reserveData.collaborative == '是') {
-      postData.number = reserveData.number
-    } else {
-      postData.number = 1
+const submitForm = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  formEl.validate(async (valid: boolean) => {
+    try {
+      if (valid) {
+        postData.date = reserveData.dateAndTime.split('   ')[0]
+        postData.typeAndCourt = reserveData.typeAndCourt
+        postData.location = reserveData.location
+        postData.collaborative = reserveData.collaborative
+        postData.ownership = reserveData.ownership
+        if (reserveData.collaborative == '是') {
+          postData.number = reserveData.number
+        } else {
+          postData.number = 1
+        }
+        if (reserveData.ownership == 'true') {
+          postData.time = reserveData.reserveTime
+        }
+        const data = await postSports(postData);
+        if (data == true) {
+          ElMessage({
+            message: reserveData.ownership == 'true' ? '预约成功' : '加入成功',
+            type: 'success'
+          })
+          dialogVisible.value = false
+          loading.value = true
+          await new Promise(resolve => setTimeout(resolve, 500));
+          loading.value = false
+          searchForm()
+        } else {
+          ElMessage({
+            message: '当前时间范围已有其他订单，请选择其他时间或从已被预约的订单中选择加入',
+            type: 'warning'
+          })
+        }
+      }
+    } catch (error) {
+      ElMessage.error('未知错误，请稍后再试')
+      console.log(error);
     }
-    if (reserveData.ownership == 'true') {
-      postData.time = reserveData.reserveTime
-    }
-    const data = await postSports(postData);
-    if (data == true) {
-      ElMessage({
-        message: reserveData.ownership == 'true' ? '预约成功' : '加入成功',
-        type: 'success'
-      })
-      dialogVisible.value = false
-      loading.value = true
-      await new Promise(resolve => setTimeout(resolve, 500));
-      loading.value = false
-      searchForm()
-    } else {
-      ElMessage({
-        message: '当前时间范围已有其他订单，请选择其他时间或从已被预约的订单中选择加入',
-        type: 'warning'
-      })
-    }
-  } catch (error) {
-    ElMessage.error('未知错误，请稍后再试')
-    console.log(error);
-  }
+  })
 }
 
 const joinOrder = (item: any) => {
@@ -409,6 +416,15 @@ const resetData = () => {
   })
   postData.id = 0
 }
+
+const rules: FormRules = reactive({
+  location: [
+    { required: true, message: '请选择半场/全场', trigger: 'change' }
+  ],
+  collaborative: [
+    { required: true, message: '请选择是否允许加入', trigger: 'change' }
+  ]
+})
 </script>
 
 <style lang="less" scoped>
