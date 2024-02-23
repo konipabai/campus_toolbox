@@ -11,6 +11,7 @@ import { FaultModule } from './fault/fault.module';
 import { NewsModule } from './news/news.module';
 import { RecruitmentModule } from './recruitment/recruitment.module';
 import { RecordsModule } from './records/records.module';
+import { AdministratorModule } from './administrator/administrator.module';
 
 @Module({
   imports: [UserModule, ClassroomModule, TypeOrmModule.forRoot({
@@ -25,7 +26,7 @@ import { RecordsModule } from './records/records.module';
     retryDelay: 500,
     retryAttempts: 10,
     autoLoadEntities: true,
-  }), LostFoundModule, SeatModule, SportsModule, FaultModule, NewsModule, RecruitmentModule, RecordsModule],
+  }), LostFoundModule, SeatModule, SportsModule, FaultModule, NewsModule, RecruitmentModule, RecordsModule, AdministratorModule],
   controllers: [AppController],
   providers: [AppService],
 })
