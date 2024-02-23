@@ -16,4 +16,7 @@ export class resultUser {
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     class: string;               // 班级
+
+    @Column({ type: 'varchar', length: 255, nullable: false })
+    administrator: string;       // 是否是管理员
 }

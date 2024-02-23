@@ -9,4 +9,5 @@ export interface DB_resultUserDto {
     name: string;
     class: string;
     password: string;
+    administrator: string;
 }
