@@ -49,6 +49,7 @@ export interface DB_resultSportsDto {
     collaborative: string;
     number: number;
     ownership: string;
+    valid: string;
 }
 
 // 后端处理时的临时合并数据

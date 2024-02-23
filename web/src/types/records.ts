@@ -40,6 +40,7 @@ export interface updateSportsRecordsType {
     collaborative: string;
     number: number;
     ownership: string;
+    valid: string;
     reservedType: string;
 }
 

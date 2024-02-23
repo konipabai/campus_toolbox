@@ -34,4 +34,7 @@ export class resultSport {
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     ownership: string;          // 是否是该订单发起者
+
+    @Column({ type: 'varchar', length: 255, nullable: false })
+    valid: string;              // 订单是否还有效
 }

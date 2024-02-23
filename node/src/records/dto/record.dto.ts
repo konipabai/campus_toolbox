@@ -50,6 +50,7 @@ export interface DB_resultSportsDto {
     collaborative: string;
     number: number;
     ownership: string;
+    valid: string;
 }
 
 // 前端更新传来的数据-预约教室
@@ -90,4 +91,5 @@ export interface FE_resultSportsDto {
     number: number;
     ownership: string;
     reservedType: string;
+    valid: string;
 }

@@ -45,7 +45,7 @@ export class RecordsService {
           order: {
             id: "DESC"
           }
-        }) 
+        })
         for (let i = 0; i < tempRecruitment.length; i++) {
           tempRecruitment[i].startTime = moment(tempRecruitment[i].startTime).format('HH:mm')
           tempRecruitment[i].endTime = moment(tempRecruitment[i].endTime).format('HH:mm')
@@ -84,6 +84,22 @@ export class RecordsService {
       } else if (params.reservedType == '预约图书馆座位记录') {
         await this.seatResult.delete(params.id)
       } else {
+        const tempRecruitment = await this.sportResult.findOne({
+          where: {
+            id: params.id
+          }
+        })
+        if (tempRecruitment.ownership == 'true') {
+          await this.sportResult.update({
+            date: tempRecruitment.date,
+            startTime: tempRecruitment.startTime,
+            endTime: tempRecruitment.endTime,
+            type: tempRecruitment.type,
+            court: tempRecruitment.court,
+            location: tempRecruitment.location,
+            collaborative: tempRecruitment.collaborative
+          }, { valid: 'false' })
+        }
         await this.sportResult.delete(params.id)
       }
       return true

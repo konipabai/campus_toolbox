@@ -42,7 +42,16 @@
           <el-table-column prop="seat" label="座位" min-width="2" :show-overflow-tooltip=true />
         </template>
         <template v-else-if="formFlag == '预约球场记录'">
-          <el-table-column prop="date" label="日期" min-width="2" :show-overflow-tooltip=true />
+          <el-table-column prop="date" label="&nbsp; 日期" min-width="2" :show-overflow-tooltip=true>
+            <template #default="scope">
+              <div style="display: flex; align-items: center">
+                <div
+                  :style="{ backgroundColor: scope.row.valid == 'true' ? '#76ae81' : '#F67D7D', width: '15px', 'height': '15px', borderRadius: '15px' }">
+                </div>
+                <span style="margin-left: 10px">{{ scope.row.date }}</span>
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column label="时间段" min-width="2">
             <template #default="props">
               {{ props.row.startTime }}-{{ props.row.endTime }}
@@ -61,7 +70,8 @@
                 </div>
                 <span style="margin-left: 10px">{{ scope.row.date }}</span>
               </div>
-            </template></el-table-column>
+            </template>
+          </el-table-column>
           <el-table-column prop="time" label="时间段" min-width="3" :show-overflow-tooltip=true />
           <el-table-column prop="location" label="地点" min-width="3" :show-overflow-tooltip=true />
           <el-table-column prop="floor" label="楼层" min-width="1" :show-overflow-tooltip=true />
@@ -84,7 +94,6 @@
       <el-scrollbar ref="topRef">
         <el-descriptions :column="1" border direction="vertical" class="records-drawer">
           <template v-if="formFlag == '预约图书馆座位记录'">
-
             <el-descriptions-item>
               <template #label>日期</template>
               {{ (showData as updateSeatRecordsType).date }}
@@ -138,6 +147,10 @@
             <el-descriptions-item>
               <template #label>订单所有权</template>
               {{ (showData as updateSportsRecordsType).ownership == 'true' ? '是' : '否' }}
+            </el-descriptions-item>
+            <el-descriptions-item>
+              <template #label>订单有效性</template>
+              {{ (showData as updateSportsRecordsType).valid == 'true' ? '有效' : '无效，该订单为随从订单，发起订单已被取消' }}
             </el-descriptions-item>
           </template>
           <template v-else>
