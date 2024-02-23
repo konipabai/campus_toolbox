@@ -1,6 +1,6 @@
 <template>
   <div>
-    home
+    管理招聘信息
   </div>
 </template>
 
@@ -9,6 +9,6 @@ import { ref, reactive } from 'vue'
 
 </script>
 
-<style lang="less" scoped>
+<style scoped>
 
 </style>

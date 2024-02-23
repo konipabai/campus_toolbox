@@ -1,70 +1,28 @@
-import { createRouter, createWebHistory, createWebHashHistory, createMemoryHistory, RouteRecordRaw, Router } from "vue-router";
+import { createRouter, createWebHistory, RouteRecordRaw, Router } from "vue-router";
 
 const routes: Array<RouteRecordRaw> = [
     {
-        path: '/home',
-        meta: {
-            msg: "首页",
-            father: "false"
-        },
-        component: () => import("../components/contents/home/index.vue")
-    },
-    {
         path: '/orders',
         meta: {
-            msg: "管理订单",
+            msg: "管理员菜单",
             father: "true"
         },
         children: [
             {
-                path: 'reservations',
+                path: 'reserve',
                 meta: {
-                    msg: "管理预约订单",
-                    father: "true"
+                    msg: "审批预约订单",
+                    father: "false"
                 },
-                children: [
-                    {
-                        path: 'approveOrders',
-                        meta: {
-                            msg: "审批预约订单",
-                            father: "false"
-                        },
-                        component: () => import("../components/contents/orders/reservations/approveOrders/index.vue")
-                    },
-                    {
-                        path: 'approvalRecords',
-                        meta: {
-                            msg: "审批记录",
-                            father: "false"
-                        },
-                        component: () => import("../components/contents/orders/reservations/approvalRecords/index.vue")
-                    }
-                ]
+                component: () => import("../components/contents/orders/reserve/index.vue")
             },
             {
-                path: 'maintenance',
+                path: 'fault',
                 meta: {
-                    msg: "管理报修订单",
-                    father: "true"
+                    msg: "审批报修订单",
+                    father: "false"
                 },
-                children: [
-                    {
-                        path: 'approveOrders',
-                        meta: {
-                            msg: "审批报修订单",
-                            father: "false"
-                        },
-                        component: () => import("../components/contents/orders/maintenance/approveOrders/index.vue")
-                    },
-                    {
-                        path: 'approvalRecords',
-                        meta: {
-                            msg: "审批记录",
-                            father: "false"
-                        },
-                        component: () => import("../components/contents/orders/maintenance/approvalRecords/index.vue")
-                    },
-                ]
+                component: () => import("../components/contents/orders/fault/index.vue")
             },
             {
                 path: 'lf',
@@ -74,6 +32,31 @@ const routes: Array<RouteRecordRaw> = [
                 },
                 component: () => import("../components/contents/orders/lf/index.vue")
             },
+            {
+                path: 'recruitment',
+                meta: {
+                    msg: "管理校园招聘",
+                    father: "true"
+                },
+                children: [
+                    {
+                        path: 'post',
+                        meta: {
+                            msg: "发布招聘信息",
+                            father: "false"
+                        },
+                        component: () => import("../components/contents/orders/recruitment/post/index.vue")
+                    },
+                    {
+                        path: 'edit',
+                        meta: {
+                            msg: "管理招聘信息",
+                            father: "false"
+                        },
+                        component: () => import("../components/contents/orders/recruitment/edit/index.vue")
+                    },
+                ]
+            }
         ]
     },
     {
@@ -147,26 +130,9 @@ const routes: Array<RouteRecordRaw> = [
         path: '/recruitment',
         meta: {
             msg: "校园招聘",
-            father: "true"
+            father: "false"
         },
-        children: [
-            {
-                path: 'view',
-                meta: {
-                    msg: "查看招聘信息",
-                    father: "false"
-                },
-                component: () => import("../components/contents/recruitment/view/index.vue")
-            },
-            {
-                path: 'edit',
-                meta: {
-                    msg: "发布招聘信息",
-                    father: "false"
-                },
-                component: () => import("../components/contents/recruitment/edit/index.vue")
-            },
-        ]
+        component: () => import("../components/contents/recruitment/index.vue")
     },
     {
         path: '/news',

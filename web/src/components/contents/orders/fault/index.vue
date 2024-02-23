@@ -1,6 +1,6 @@
 <template>
   <div>
-    Maintenance approvalRecords
+    审批故障报修订单
   </div>
 </template>
 

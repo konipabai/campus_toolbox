@@ -1,6 +1,6 @@
 <template>
   <div>
-    Reservations approvalRecords
+    审批预约订单
   </div>
 </template>
 

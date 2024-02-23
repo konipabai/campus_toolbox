@@ -87,9 +87,9 @@
 <script setup lang="ts">
 import { ref, reactive, Ref, ComputedRef, computed } from "vue";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
-import { getRecruitment } from "../../../../server";
+import { getRecruitment } from "../../../server";
 import { ElMessage, ElScrollbar, ElTable, FormInstance } from "element-plus";
-import type { findRecruitmentType, getRecruitmentType, paginationRecruitmentType } from "../../../../types/recruitment"
+import type { findRecruitmentType, getRecruitmentType, paginationRecruitmentType } from "../../../types/recruitment"
 
 const loading: Ref<boolean> = ref(false)
 const locale = zhCn;
