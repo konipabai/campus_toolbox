@@ -19,12 +19,26 @@ export class SportsService {
       var tempSports: DB_resultSportsDto[] = await this.sportsResult.find({
         where: {
           date: params.date,
-          type: params.type,
-          ownership: 'true'
+          type: params.type
         }
       })
+      for (let i = 0; i < tempSports.length; i++) {
+        if (tempSports[i].ownership == 'true') {
+          for (let j = i + 1; j < tempSports.length; j++) {
+            if (tempSports[i].date == tempSports[j].date &&
+              tempSports[i].startTime.toISOString() == tempSports[j].startTime.toISOString() &&
+              tempSports[i].endTime.toISOString() == tempSports[j].endTime.toISOString() &&
+              tempSports[i].type == tempSports[j].type &&
+              tempSports[i].court == tempSports[j].court &&
+              tempSports[i].location == tempSports[j].location &&
+              tempSports[i].collaborative == tempSports[j].collaborative) {
+                tempSports[i].number += tempSports[j].number
+            }
+          }
+        }
+      }
       tempSports = tempSports.filter((reserveItem) => {
-        return new Date(params.time[0]) < reserveItem.endTime && reserveItem.startTime < new Date(params.time[1])
+        return new Date(params.time[0]) < reserveItem.endTime && reserveItem.startTime < new Date(params.time[1]) && reserveItem.ownership == 'true'
       })
       findSportsData.map((sportsItem) => {
         sportsItem.date = params.date
@@ -79,9 +93,7 @@ export class SportsService {
         })
       } else {
         params.time[0] = moment(`${params.date}T${params.time[0]}`).toISOString()
-        params.time[1] = moment(`${params.date}T${params.time[1]}`).toISOString()        
-        const originNumber: number = (await this.sportsResult.findOne({ where: { id: params.id } })).number
-        await this.sportsResult.update(params.id, { number: originNumber + params.number })
+        params.time[1] = moment(`${params.date}T${params.time[1]}`).toISOString()
       }
       if (tempSports.length == 0) {
         await this.sportsResult.save({
@@ -94,7 +106,8 @@ export class SportsService {
           location: params.location,
           collaborative: params.collaborative,
           number: params.number,
-          ownership: params.ownership
+          ownership: params.ownership,
+          valid: 'true'
         })
         hasNoOverlap = true
       } else {
