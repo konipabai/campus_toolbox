@@ -80,6 +80,17 @@
           </el-descriptions-item>
         </el-descriptions>
       </el-scrollbar>
+      <template #footer v-if="roleData == '管理员'">
+        <span>
+          <el-popconfirm width="220" confirm-button-text="确定" cancel-button-text="取消" title="确定删除吗?"
+            @confirm="deleteForm()">
+            <template #reference>
+              <el-button type="danger">删除</el-button>
+            </template>
+          </el-popconfirm>
+          <el-button @click="drawer = false">返回</el-button>
+        </span>
+      </template>
     </el-drawer>
   </div>
 </template>
@@ -87,9 +98,10 @@
 <script setup lang="ts">
 import { ref, reactive, Ref, ComputedRef, computed } from "vue";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
-import { getRecruitment } from "../../../server";
+import { deleteOrder, getRecruitment } from "../../../server";
 import { ElMessage, ElScrollbar, ElTable, FormInstance } from "element-plus";
 import type { findRecruitmentType, getRecruitmentType, paginationRecruitmentType } from "../../../types/recruitment"
+import { accountStore } from "../../../store/accountStore";
 
 const loading: Ref<boolean> = ref(false)
 const locale = zhCn;
@@ -98,12 +110,15 @@ const result: Ref<findRecruitmentType[]> = ref([])
 const recruitmentRef: Ref<FormInstance | undefined> = ref()
 const tableTop: Ref<typeof ElTable | undefined> = ref();
 const topRef: Ref<typeof ElScrollbar | undefined> = ref();
+const accountData: string = accountStore().account
+const roleData: string = accountStore().role
 const searchData: getRecruitmentType = reactive({
   job: "",
   bottom: 0,
   top: 0
 });
 const showData: Ref<findRecruitmentType> = ref({
+  id: 0,
   name: '',
   hr: '',
   job: '',
@@ -147,6 +162,24 @@ const searchForm = async () => {
   }
 }
 searchForm()
+
+const deleteForm = async () => {
+  try {
+    const result: boolean = await deleteOrder({ account: accountData, id: showData.value.id, orderType: '招聘' })
+    if (result) {
+      ElMessage({
+        message: '删除完成',
+        type: 'success'
+      })
+      drawer.value = false
+      searchForm()
+    } else {
+      ElMessage.error('未知错误,请稍后再试')
+    }
+  } catch (error) {
+    ElMessage.error('未知错误,请稍后再试')
+  }
+}
 
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return

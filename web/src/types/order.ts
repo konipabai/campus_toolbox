@@ -25,6 +25,12 @@ export interface updateOrderLFType {
     orderType: string;
 }
 
+export interface deleteOrderRecruitmentType {
+    account: string;
+    id: number;
+    orderType: string;
+}
+
 export interface resultOrderClassroomType {
     id: number;
     account: string;
