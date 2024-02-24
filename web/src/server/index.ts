@@ -7,7 +7,7 @@ import { getAccountFaultType, postFaultType, deleteFaultType } from '../types/fa
 import { getNewsType } from '../types/news'
 import { findRecruitmentType, getRecruitmentType } from '../types/recruitment'
 import { updateClassroomRecordsType, updateSeatRecordsType, updateSportsRecordsType, getRecordsType, deleteRecordsType } from '../types/records'
-import { getOrderReserveType, updateOrderReserveType } from '../types/order'
+import { getOrderType, updateOrderClassroomType, updateOrderFaultType, updateOrderLFType } from '../types/order'
 
 axios.defaults.baseURL = "/api"
 
@@ -51,6 +51,6 @@ export const getRecords = (data: getRecordsType) => axios.get('/records', { para
 
 export const deleteRecords = (data: deleteRecordsType) => axios.delete('/records', { params: data }).then(res => res.data)
 
-export const getOrder = (data: getOrderReserveType) => axios.get('/administrator', { params: data }).then(res => res.data)
+export const getOrder = (data: getOrderType) => axios.get('/administrator', { params: data }).then(res => res.data)
 
-export const updateOrder = (data: updateOrderReserveType) => axios.patch('/administrator', data).then(res => res.data)
+export const updateOrder = (data: updateOrderClassroomType | updateOrderFaultType | updateOrderLFType) => axios.patch('/administrator', data).then(res => res.data)
