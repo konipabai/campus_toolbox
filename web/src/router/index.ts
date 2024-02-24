@@ -35,27 +35,10 @@ const routes: Array<RouteRecordRaw> = [
             {
                 path: 'recruitment',
                 meta: {
-                    msg: "管理校园招聘",
-                    father: "true"
+                    msg: "发布招聘信息",
+                    father: "false"
                 },
-                children: [
-                    {
-                        path: 'post',
-                        meta: {
-                            msg: "发布招聘信息",
-                            father: "false"
-                        },
-                        component: () => import("../components/contents/orders/recruitment/post/index.vue")
-                    },
-                    {
-                        path: 'edit',
-                        meta: {
-                            msg: "管理招聘信息",
-                            father: "false"
-                        },
-                        component: () => import("../components/contents/orders/recruitment/edit/index.vue")
-                    },
-                ]
+                component: () => import("../components/contents/orders/recruitment/index.vue")
             }
         ]
     },

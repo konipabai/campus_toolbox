@@ -23,11 +23,9 @@
         <el-menu-item index="1-3" @click="$router.push('/orders/lf')">
           <template #title><span>管理失物招领</span></template>
         </el-menu-item>
-        <el-sub-menu index="1-4">
-          <template #title><span>管理校园招聘</span></template>
-          <el-menu-item index="1-4-1" @click="$router.push('/orders/recruitment/post')"><span>发布招聘信息</span></el-menu-item>
-          <el-menu-item index="1-4-2" @click="$router.push('/orders/recruitment/edit')"><span>管理招聘信息</span></el-menu-item>
-        </el-sub-menu>
+        <el-menu-item index="1-4" @click="$router.push('/orders/recruitment')">
+          <template #title><span>发布招聘信息</span></template>
+        </el-menu-item>
       </el-sub-menu>
 
       <el-menu-item index="2" @click="$router.push('/classroom')">
@@ -109,11 +107,6 @@ const updateMenuSelection = (path: string) => {
       activeIndex.value = '1-3';
     } else if (path.includes('/recruitment')) {
       activeIndex.value = '1-4';
-      if (path.includes('/post')) {
-        activeIndex.value = '1-4-1';
-      } else if (path.includes('/edit')) {
-        activeIndex.value = '1-4-2';
-      }
     }
   } else if (path === '/classroom') {
     activeIndex.value = '2';

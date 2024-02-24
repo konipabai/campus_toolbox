@@ -54,9 +54,9 @@
 
 <script setup lang='ts'>
 import { ref, reactive, Ref, nextTick } from 'vue'
-import { findRecruitmentType } from '../../../../../types/recruitment';
+import { findRecruitmentType } from '../../../../types/recruitment';
 import { ElMessage, FormRules, type ElScrollbar, type FormInstance } from 'element-plus'
-import { postRecruitment } from "../../../../../server";
+import { postRecruitment } from "../../../../server";
 
 const bottomRef: Ref<typeof ElScrollbar | undefined> = ref();
 const innerRef: Ref<HTMLElement | undefined> = ref<HTMLElement>();
