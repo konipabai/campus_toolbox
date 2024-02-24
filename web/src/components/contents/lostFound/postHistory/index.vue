@@ -5,7 +5,7 @@
         <img src="../../../../assets/icon/sign.svg" class="lostFound-post-title-icon" />
         <div class="lostFound-post-title-text" v-if="!updateState && !overdueState">发布失物招领</div>
         <div class="lostFound-post-title-text" v-else-if="updateState && !overdueState">修改信息</div>
-        <div class="lostFound-post-title-text" v-else>查看信息(已逾期不可更改)</div>
+        <div class="lostFound-post-title-text" v-else>查看信息(已过期不可更改)</div>
       </div>
       <el-divider />
       <div>
@@ -79,7 +79,7 @@
           </div>
           <div class="lostFound-history-title-color-item">
             <div class="lostFound-history-title-color-overdue"></div>
-            <div>逾期</div>
+            <div>过期</div>
           </div>
         </div>
       </div>
@@ -100,7 +100,7 @@
         <el-table-column prop="description" label="描述" min-width="7" :show-overflow-tooltip=true />
         <el-table-column label="操作" min-width="5" :show-overflow-tooltip=true>
           <template #default="scope">
-            <el-button type="danger" v-if="scope.row.overdue == 'true'" @click="update(scope.row)">逾期</el-button>
+            <el-button type="danger" v-if="scope.row.overdue == 'true'" @click="update(scope.row)">过期</el-button>
             <el-button type="primary" v-else-if="scope.row.switch == 'on'" @click="update(scope.row)">修改</el-button>
             <el-button color="#76ADFF" v-else @click="update(scope.row)">修改</el-button>
           </template>
