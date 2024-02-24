@@ -5,9 +5,9 @@ import { getSeatType, postSeatType } from '../types/seat'
 import { getSportsType, postSportsType } from '../types/sports'
 import { getAccountFaultType, postFaultType, deleteFaultType } from '../types/fault'
 import { getNewsType } from '../types/news'
-import { findRecruitmentType, getRecruitmentType } from '../types/recruitment'
+import { getRecruitmentType } from '../types/recruitment'
 import { updateClassroomRecordsType, updateSeatRecordsType, updateSportsRecordsType, getRecordsType, deleteRecordsType } from '../types/records'
-import { deleteOrderRecruitmentType, getOrderType, updateOrderClassroomType, updateOrderFaultType, updateOrderLFType } from '../types/order'
+import { deleteOrderRecruitmentType, getOrderType, postOrderRecruitmentType, updateOrderClassroomType, updateOrderFaultType, updateOrderLFType } from '../types/order'
 
 axios.defaults.baseURL = "/api"
 
@@ -43,8 +43,6 @@ export const getNews = (data: getNewsType) => axios.get('/news', { params: data 
 
 export const getRecruitment = (data: getRecruitmentType) => axios.get('/recruitment', { params: data }).then(res => res.data)
 
-export const postRecruitment = (data: findRecruitmentType) => axios.post('/recruitment', data).then(res => res.data)
-
 export const getRecords = (data: getRecordsType) => axios.get('/records', { params: data }).then(res => res.data)
 
 // export const updateRecords = (data: updateClassroomRecordsType | updateSeatRecordsType | updateSportsRecordsType) => axios.patch('/records', data).then(res => res.data)
@@ -52,6 +50,8 @@ export const getRecords = (data: getRecordsType) => axios.get('/records', { para
 export const deleteRecords = (data: deleteRecordsType) => axios.delete('/records', { params: data }).then(res => res.data)
 
 export const getOrder = (data: getOrderType) => axios.get('/administrator', { params: data }).then(res => res.data)
+
+export const postOrder = (data: postOrderRecruitmentType) => axios.post('/administrator', data).then(res => res.data)
 
 export const updateOrder = (data: updateOrderClassroomType | updateOrderFaultType | updateOrderLFType) => axios.patch('/administrator', data).then(res => res.data)
 

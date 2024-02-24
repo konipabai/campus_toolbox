@@ -9,6 +9,20 @@ export interface FE_getAdministratorDto {
     orderType: string;
 }
 
+// 前端发布招聘传来的数据
+export interface FE_postRecruitmentAdministratorDto {
+    account: string;
+    name: string;
+    hr: string;
+    job: string;
+    description: string;
+    salary: number;
+    requirements: string[];
+    benefits: string;
+    contact: string;
+    location: string;
+}
+
 // 预约教室前端更新传来的数据
 export interface FE_updateClassroomAdministratorDto {
     account: string;

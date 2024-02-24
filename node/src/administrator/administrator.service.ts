@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DB_resultClassroomAdministratorDto, DB_resultFaultAdministratorDto, DB_resultLostFoundAdministratorDto, FE_deleteRecruitmentAdministratorDto, FE_getAdministratorDto, FE_updateClassroomAdministratorDto, FE_updateFaultAdministratorDto, FE_updateLFAdministratorDto } from './dto/administrator.dto';
+import { DB_resultClassroomAdministratorDto, DB_resultFaultAdministratorDto, DB_resultLostFoundAdministratorDto, FE_deleteRecruitmentAdministratorDto, FE_getAdministratorDto, FE_postRecruitmentAdministratorDto, FE_updateClassroomAdministratorDto, FE_updateFaultAdministratorDto, FE_updateLFAdministratorDto } from './dto/administrator.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { resultClassroom } from 'src/classroom/entities/classroom.entity';
@@ -8,6 +8,7 @@ import { DB_resultUserDto } from 'src/user/dto/user.dto';
 import { resultFault } from 'src/fault/entities/fault.entity';
 import { resultLostFound } from 'src/lostFound/entities/lostFound.entity';
 import { resultRecruitment } from 'src/recruitment/entities/recruitment.entity';
+import { DB_resultRecruitmentDto } from 'src/recruitment/dto/recruitment.dto';
 
 @Injectable()
 export class AdministratorService {
@@ -93,6 +94,48 @@ export class AdministratorService {
       console.log(error);
     }
     return findReserveData;
+  }
+
+  async postOrderAdministrator(params: FE_postRecruitmentAdministratorDto): Promise<boolean> {
+    try {
+      var tempAdministrator: DB_resultUserDto
+      tempAdministrator = await this.userResult.findOne({
+        where: {
+          account: params.account
+        }
+      })
+      if (tempAdministrator.administrator == 'true') {
+        if (params.description == '') {
+          params.description = '无'
+        }
+        if (params.benefits == '') {
+          params.benefits = '无'
+        }
+        var tempRequirements: string = ''
+        params.requirements.map((item) => {
+          tempRequirements += item + "||"
+        })
+        tempRequirements = tempRequirements.slice(0, tempRequirements.length - 2)
+        var postRecruitmentData: DB_resultRecruitmentDto = {
+          name: params.name,
+          hr: params.hr,
+          job: params.job,
+          description: params.description,
+          salary: params.salary,
+          requirements: tempRequirements,
+          benefits: params.benefits,
+          contact: params.contact,
+          location: params.location
+        }
+        await this.recruitmentResult.save(postRecruitmentData)
+        return true
+      } else {
+        return false
+      }
+    } catch (error) {
+      console.log(error);
+      return false
+    }
   }
 
   async updateOrderAdministrator(params: FE_updateClassroomAdministratorDto | FE_updateFaultAdministratorDto | FE_updateLFAdministratorDto): Promise<boolean> {

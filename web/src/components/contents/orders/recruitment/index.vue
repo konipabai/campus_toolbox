@@ -54,14 +54,15 @@
 
 <script setup lang='ts'>
 import { ref, reactive, Ref, nextTick } from 'vue'
-import { findRecruitmentType } from '../../../../types/recruitment';
 import { ElMessage, FormRules, type ElScrollbar, type FormInstance } from 'element-plus'
-import { postRecruitment } from "../../../../server";
+import { postOrder } from "../../../../server";
+import { postOrderRecruitmentType } from '../../../../types/order';
 
 const bottomRef: Ref<typeof ElScrollbar | undefined> = ref();
 const innerRef: Ref<HTMLElement | undefined> = ref<HTMLElement>();
 const recruitmentRef: Ref<FormInstance | undefined> = ref()
-const postData: findRecruitmentType = reactive({
+const postData: postOrderRecruitmentType = reactive({
+  account: '22215150514',
   name: '',
   hr: '',
   job: '',
@@ -123,7 +124,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
     formEl.validate(async (valid: boolean) => {
       try {
         if (valid) {
-          const result: boolean = await postRecruitment(postData)
+          const result: boolean = await postOrder(postData)
           if (result) {
             ElMessage({
               message: '发布成功',

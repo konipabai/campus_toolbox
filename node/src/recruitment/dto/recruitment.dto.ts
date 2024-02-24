@@ -37,16 +37,3 @@ export interface FE_getRecruitmentDto {
     bottom: number;
     top: number;
 }
-
-// 前端查询传来的数据
-export interface FE_postRecruitmentDto {
-    name: string;
-    hr: string;
-    job: string;
-    description: string;
-    salary: number;
-    requirements: string[];
-    benefits: string;
-    contact: string;
-    location: string;
-}

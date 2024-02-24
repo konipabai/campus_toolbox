@@ -3,6 +3,19 @@ export interface getOrderType {
     orderType: string;
 }
 
+export interface postOrderRecruitmentType {
+    account: string;
+    name: string;
+    hr: string;
+    job: string;
+    description: string;
+    salary: number;
+    requirements: string[];
+    benefits: string;
+    contact: string;
+    location: string;
+}
+
 export interface updateOrderClassroomType {
     account: string;
     id: number;
