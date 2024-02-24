@@ -9,7 +9,7 @@
           </div>
         </template>
         <el-table-column prop="date" label="日期" min-width="4" :show-overflow-tooltip=true />
-        <el-table-column prop="time" label="时间段" min-width="6" :show-overflow-tooltip=true />
+        <el-table-column prop="time" label="时间段" min-width="7" :show-overflow-tooltip=true />
         <el-table-column prop="location" label="地点" min-width="5" :show-overflow-tooltip=true />
         <el-table-column prop="floor" label="楼层" min-width="3" :show-overflow-tooltip=true />
         <el-table-column prop="classroomNumber" label="教室号" min-width="3" :show-overflow-tooltip=true />
@@ -49,18 +49,19 @@ import { ref, reactive, Ref, ComputedRef, computed } from "vue";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import { getOrder, updateOrder } from "../../../../server";
 import { ElMessage, ElTable } from "element-plus";
-import type { updateOrderReserveType, resultOrderReserveType, paginationOrderReserveType } from "../../../../types/order"
+import type { updateOrderClassroomType, resultOrderClassroomType, paginationOrderType } from "../../../../types/order"
 
 const loading: Ref<boolean> = ref(false)
 const locale = zhCn;
-const result: Ref<resultOrderReserveType[]> = ref([])
+const result: Ref<resultOrderClassroomType[]> = ref([])
 const tableTop: Ref<typeof ElTable | undefined> = ref();
 const dialogVisible: Ref<boolean> = ref(false)
-const searchData: updateOrderReserveType = reactive({
+const searchData: updateOrderClassroomType = reactive({
   account: "22215150514",
   id: 0,
   state: '',
-  reasonRefusal: ''
+  reasonRefusal: '',
+  orderType: '预约'
 });
 
 const openDialog = (item: any) => {
@@ -115,8 +116,8 @@ const searchForm = async () => {
   try {
     dialogVisible.value = false
     loading.value = true
-    await new Promise(resolve => setTimeout(resolve, 500));
-    const data = await getOrder({ account: searchData.account });
+    await new Promise(resolve => setTimeout(resolve, 100));
+    const data = await getOrder({ account: searchData.account, orderType: searchData.orderType });
     loading.value = false
     result.value = data;
   } catch (error) {
@@ -126,7 +127,7 @@ const searchForm = async () => {
 }
 searchForm()
 
-const paginationData: paginationOrderReserveType = reactive({
+const paginationData: paginationOrderType = reactive({
   currentPage: 1,
   pageSize: 15
 })
@@ -137,7 +138,7 @@ const CurrentChange = () => {
   }
 }
 
-const paginatedData: ComputedRef<resultOrderReserveType[]> = computed(() => {
+const paginatedData: ComputedRef<resultOrderClassroomType[]> = computed(() => {
   const startIndex = (paginationData.currentPage - 1) * paginationData.pageSize;
   const endIndex = startIndex + paginationData.pageSize;
   return result.value.slice(startIndex, endIndex);
