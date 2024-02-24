@@ -34,6 +34,13 @@ export interface FE_updateLFAdministratorDto {
     orderType: string;
 }
 
+// 招聘信息前端删除传来的数据
+export interface FE_deleteRecruitmentAdministratorDto {
+    account: string;
+    id: number;
+    orderType: string;
+}
+
 // 预约教室数据库里的数据，name,class为后端处理后需要
 export interface DB_resultClassroomAdministratorDto {
     id: number;
