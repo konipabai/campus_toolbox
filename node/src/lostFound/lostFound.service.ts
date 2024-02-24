@@ -27,7 +27,8 @@ export class LostFoundService {
       } else {
         tempLostFound = await this.lostFoundResult.find({
           where: {
-            switch: 'on'
+            switch: 'on',
+            overdue: 'false'
           }
         })
       }
