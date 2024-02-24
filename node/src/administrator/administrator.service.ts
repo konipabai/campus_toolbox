@@ -1,41 +1,91 @@
 import { Injectable } from '@nestjs/common';
-import { DB_resultClassroomAdministratorDto, FE_getAdministratorDto, FE_updateAdministratorDto } from './dto/administrator.dto';
+import { DB_resultClassroomAdministratorDto, DB_resultFaultAdministratorDto, DB_resultLostFoundAdministratorDto, FE_getAdministratorDto, FE_updateClassroomAdministratorDto, FE_updateFaultAdministratorDto, FE_updateLFAdministratorDto } from './dto/administrator.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { resultClassroom } from 'src/classroom/entities/classroom.entity';
 import { resultUser } from 'src/user/entities/user.entity';
 import { DB_resultUserDto } from 'src/user/dto/user.dto';
+import { resultFault } from 'src/fault/entities/fault.entity';
+import { resultLostFound } from 'src/lostFound/entities/lostFound.entity';
 
 @Injectable()
 export class AdministratorService {
   constructor(
     @InjectRepository(resultClassroom) private readonly classroomResult: Repository<resultClassroom>,
-    @InjectRepository(resultUser) private readonly resultUser: Repository<resultUser>,
+    @InjectRepository(resultFault) private readonly faultResult: Repository<resultFault>,
+    @InjectRepository(resultLostFound) private readonly LostFoundResult: Repository<resultLostFound>,
+    @InjectRepository(resultUser) private readonly userResult: Repository<resultUser>,
   ) { }
 
-  async getReserveAdministrator(params: FE_getAdministratorDto): Promise<DB_resultClassroomAdministratorDto[]> {
-    var findReserveData: DB_resultClassroomAdministratorDto[] = []
+  async getOrderAdministrator(params: FE_getAdministratorDto): Promise<DB_resultClassroomAdministratorDto[] | DB_resultFaultAdministratorDto[] | DB_resultLostFoundAdministratorDto[]> {
+    var findReserveData: DB_resultClassroomAdministratorDto[] | DB_resultFaultAdministratorDto[] | DB_resultLostFoundAdministratorDto[] = []
     try {
       var tempAdministrator: DB_resultUserDto
-      tempAdministrator = await this.resultUser.findOne({
+      tempAdministrator = await this.userResult.findOne({
         where: {
           account: params.account
         }
       })
       if (tempAdministrator.administrator == 'true') {
-        var tempReserve: DB_resultClassroomAdministratorDto[] = []
-        tempReserve = await this.classroomResult.find({
-          where: {
-            state: 'false',
-            reasonRefusal: ''
-          }
-        })
-        tempReserve = tempReserve.map((item: DB_resultClassroomAdministratorDto) => {
-          item.name = tempAdministrator.name
-          item.class = tempAdministrator.class
-          return item
-        })
-        findReserveData = tempReserve
+        if (params.orderType == '预约') {
+          var tempReserve: DB_resultClassroomAdministratorDto[] = []
+          tempReserve = await this.classroomResult.createQueryBuilder('classroom')
+            .innerJoin('resultUser', 'user', 'user.account = classroom.account')
+            .select([
+              'classroom.id AS id',
+              'classroom.account AS account',
+              'classroom.reason AS reason',
+              'DATE_FORMAT(classroom.date, "%Y-%m-%d") AS date',
+              'classroom.time AS time',
+              'classroom.location AS location',
+              'classroom.floor AS floor',
+              'classroom.classroomNumber AS classroomNumber',
+              'classroom.state AS state',
+              'classroom.reasonRefusal AS reasonRefusal',
+              'user.name AS name',
+              'user.class AS class',
+            ]).where({ state: 'false', reasonRefusal: '' }).getRawMany()
+          findReserveData = tempReserve
+        } else if (params.orderType == '报修') {
+          var tempFault: DB_resultFaultAdministratorDto[] = []
+          tempFault = await this.faultResult.createQueryBuilder('fault')
+          .innerJoin('resultUser', 'user', 'user.account = fault.account')
+          .select([
+            'fault.id AS id',
+            'fault.account AS account',
+            'fault.item AS item',
+            'fault.location AS location',
+            'fault.number AS number',
+            'fault.contact AS contact',
+            'fault.description AS description',
+            'DATE_FORMAT(fault.date, "%Y-%m-%d") AS date',
+            'user.name AS name',
+            'user.class AS class',
+          ]).where({ state: 'false' }).getRawMany()
+          findReserveData = tempFault
+        } else if (params.orderType == '失物招领') {
+          var tempLF: DB_resultLostFoundAdministratorDto[] = []
+          tempLF = await this.LostFoundResult.createQueryBuilder('LostFound')
+          .innerJoin('resultUser', 'user', 'user.account = LostFound.account')
+          .select([
+            'LostFound.id AS id',
+            'LostFound.account AS account',
+            'LostFound.state AS state',
+            'LostFound.item AS item',
+            'LostFound.brand AS brand',
+            'LostFound.location AS location',
+            'LostFound.description AS description',
+            'LostFound.contact AS contact',
+            'DATE_FORMAT(LostFound.date, "%Y-%m-%d") AS date',
+            'LostFound.switch AS switch',
+            'LostFound.overdue AS overdue',
+            'user.name AS name',
+            'user.class AS class',
+          ]).where({ overdue: 'false' }).getRawMany()
+          findReserveData = tempLF
+        } else {
+
+        }
       }
     } catch (error) {
       console.log(error);
@@ -43,20 +93,29 @@ export class AdministratorService {
     return findReserveData;
   }
 
-  async updateReserveAdministrator(params: FE_updateAdministratorDto): Promise<boolean> {
+  async updateOrderAdministrator(params: FE_updateClassroomAdministratorDto | FE_updateFaultAdministratorDto | FE_updateLFAdministratorDto): Promise<boolean> {
     try {
       var tempAdministrator: DB_resultUserDto
-      tempAdministrator = await this.resultUser.findOne({
+      tempAdministrator = await this.userResult.findOne({
         where: {
           account: params.account
         }
       })
       if (tempAdministrator.administrator == 'true') {
-        if (params.state == 'true') {
-          await this.classroomResult.update(params.id, { state: params.state })
+        if (params.orderType == '预约') {
+          if ((params as FE_updateClassroomAdministratorDto).state == 'true') {
+            await this.classroomResult.update(params.id, { state: (params as FE_updateClassroomAdministratorDto).state })
+          } else {
+            await this.classroomResult.update(params.id, { reasonRefusal: (params as FE_updateClassroomAdministratorDto).reasonRefusal })
+          }
+        } else if (params.orderType == '报修') {
+          await this.faultResult.update(params.id, { state: (params as FE_updateFaultAdministratorDto).state })
+        } else if (params.orderType == '失物招领') {
+          await this.LostFoundResult.update(params.id, { overdue: (params as FE_updateLFAdministratorDto).overdue })
         } else {
-          await this.classroomResult.update(params.id, { reasonRefusal: params.reasonRefusal })
+
         }
+
         return true
       } else {
         return false
