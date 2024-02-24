@@ -1,4 +1,5 @@
 export interface findRecruitmentType {
+    id: number;
     name: string;
     hr: string;
     job: string;

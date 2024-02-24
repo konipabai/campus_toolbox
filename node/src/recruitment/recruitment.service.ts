@@ -27,6 +27,7 @@ export class RecruitmentService {
       var tempRecruitment: DB_resultRecruitmentDto[] = await this.recruitmentResult.find()
       tempRecruitment.map(item => {
         findRecruitmentData.push({
+          id: item.id,
           name: item.name,
           hr: item.hr,
           job: item.job,

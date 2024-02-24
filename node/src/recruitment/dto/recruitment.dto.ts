@@ -5,6 +5,7 @@
 
 // 后端处理之后的数据
 export interface BE_filterRecruitmentDto {
+    id: number;
     name: string;
     hr: string;
     job: string;
