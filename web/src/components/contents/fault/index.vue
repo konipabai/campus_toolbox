@@ -13,8 +13,8 @@
           <el-form-item label="物品" prop="item">
             <el-input v-model="postData.item" class="fault-post-item" placeholder="请输入物品名称 (1-15字)" maxlength="15" />
           </el-form-item>
-          <el-form-item label="楼名" prop="location">
-            <el-input v-model="postData.location" class="fault-post-item" placeholder="请输入楼名 (1-15字)" maxlength="15" />
+          <el-form-item label="地点" prop="location">
+            <el-input v-model="postData.location" class="fault-post-item" placeholder="请输入地点 (1-15字)" maxlength="15" />
           </el-form-item>
           <el-form-item label="房间号" prop="number">
             <el-input v-model="postData.number" class="fault-post-item" placeholder="请输入房间号 (1-15字)" maxlength="15" />
@@ -70,7 +70,7 @@
         </template>
         <el-table-column prop="date" label="日期" min-width="4" :show-overflow-tooltip=true />
         <el-table-column prop="item" label="物品" min-width="4" :show-overflow-tooltip=true />
-        <el-table-column prop="location" label="楼名" min-width="4" :show-overflow-tooltip=true />
+        <el-table-column prop="location" label="地点" min-width="4" :show-overflow-tooltip=true />
         <el-table-column prop="number" label="房间号" min-width="4" :show-overflow-tooltip=true />
         <el-table-column prop="contact" label="联系方式" min-width="5" :show-overflow-tooltip=true />
         <el-table-column label="操作" min-width="3" :show-overflow-tooltip=true>
@@ -207,7 +207,7 @@ const rules: FormRules = reactive({
     { required: true, message: '请输入物品名称', trigger: 'blur' }
   ],
   location: [
-    { required: true, message: '请输入楼名', trigger: 'blur' }
+    { required: true, message: '请输入地点', trigger: 'blur' }
   ],
   number: [
     { required: true, message: '请输入房间号', trigger: 'blur' }

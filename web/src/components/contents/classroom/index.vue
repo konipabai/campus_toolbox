@@ -5,7 +5,7 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="地点" prop="building" class="classroom-head-search">
-              <el-select v-model="searchData.building" placeholder="请选择楼名" clearable>
+              <el-select v-model="searchData.building" placeholder="请选择地点" clearable>
                 <template #prefix>
                   <el-icon>
                     <MapLocation />

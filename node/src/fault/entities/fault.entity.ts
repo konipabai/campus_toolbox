@@ -12,7 +12,7 @@ export class resultFault {
     item: string;                // 物品
 
     @Column({ type: 'varchar', length: 255, nullable: false })
-    location: string;            // 楼名
+    location: string;            // 地点
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     number: string;              // 房间号
