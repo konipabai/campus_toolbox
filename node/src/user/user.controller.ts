@@ -1,12 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { UserService } from './user.service';
+import { FE_getUserDto } from './dto/user.dto';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  getUser(@Param('account') account: string) {
-    return this.userService.findOne(account);
+  getUser(@Query() params: FE_getUserDto) {
+    return this.userService.getUser(params);
   }
 }

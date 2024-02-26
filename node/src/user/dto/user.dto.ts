@@ -11,3 +11,17 @@ export interface DB_resultUserDto {
     password: string;
     administrator: string;
 }
+
+// 前端登录传来的数据
+export interface FE_getUserDto {
+    account: string;
+    password: string;
+}
+
+// 后端筛选出来的数据
+export interface BE_filterUserDto {
+    account: string;
+    name: string;
+    class: string;
+    administrator: string;
+}
