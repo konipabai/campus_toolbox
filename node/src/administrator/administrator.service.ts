@@ -86,8 +86,6 @@ export class AdministratorService {
               'user.class AS class',
             ]).where({ overdue: 'false' }).getRawMany()
           findReserveData = tempLF
-        } else {
-
         }
       }
     } catch (error) {
