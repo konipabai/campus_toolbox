@@ -80,7 +80,7 @@
           </el-descriptions-item>
         </el-descriptions>
       </el-scrollbar>
-      <template #footer v-if="roleData == '管理员'">
+      <template #footer v-if="roleData == 'true'">
         <span>
           <el-popconfirm width="220" confirm-button-text="确定" cancel-button-text="取消" title="确定删除吗?"
             @confirm="deleteForm()">
