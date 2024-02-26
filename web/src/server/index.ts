@@ -8,6 +8,7 @@ import { getNewsType } from '../types/news'
 import { getRecruitmentType } from '../types/recruitment'
 import { updateClassroomRecordsType, updateSeatRecordsType, updateSportsRecordsType, getRecordsType, deleteRecordsType } from '../types/records'
 import { deleteOrderRecruitmentType, getOrderType, postOrderRecruitmentType, updateOrderClassroomType, updateOrderFaultType, updateOrderLFType } from '../types/order'
+import { getLoginType } from '../types/login'
 
 axios.defaults.baseURL = "/api"
 
@@ -56,3 +57,5 @@ export const postOrder = (data: postOrderRecruitmentType) => axios.post('/admini
 export const updateOrder = (data: updateOrderClassroomType | updateOrderFaultType | updateOrderLFType) => axios.patch('/administrator', data).then(res => res.data)
 
 export const deleteOrder = (data: deleteOrderRecruitmentType) => axios.delete('/administrator', { params: data }).then(res => res.data)
+
+export const getLogin = (data: getLoginType) => axios.get('/user', { params: data }).then(res => res.data)

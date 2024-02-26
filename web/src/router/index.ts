@@ -2,6 +2,14 @@ import { createRouter, createWebHistory, RouteRecordRaw, Router } from "vue-rout
 
 const routes: Array<RouteRecordRaw> = [
     {
+        path: '/',
+        meta: {
+            msg: "登录",
+            father: "false"
+        },
+        component: () => import("../components/contents/login/index.vue")
+    },
+    {
         path: '/orders',
         meta: {
             msg: "管理员菜单",
