@@ -50,6 +50,7 @@ import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import { getOrder, updateOrder } from "../../../../server";
 import { ElMessage, ElTable } from "element-plus";
 import type { updateOrderClassroomType, resultOrderClassroomType, paginationOrderType } from "../../../../types/order"
+import { accountStore } from "../../../../store/accountStore";
 
 const loading: Ref<boolean> = ref(false)
 const locale = zhCn;
@@ -57,7 +58,7 @@ const result: Ref<resultOrderClassroomType[]> = ref([])
 const tableTop: Ref<typeof ElTable | undefined> = ref();
 const dialogVisible: Ref<boolean> = ref(false)
 const searchData: updateOrderClassroomType = reactive({
-  account: "22215150514",
+  account: accountStore().account,
   id: 0,
   state: '',
   reasonRefusal: '',

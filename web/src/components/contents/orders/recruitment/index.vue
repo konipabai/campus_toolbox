@@ -57,12 +57,13 @@ import { ref, reactive, Ref, nextTick } from 'vue'
 import { ElMessage, FormRules, type ElScrollbar, type FormInstance } from 'element-plus'
 import { postOrder } from "../../../../server";
 import { postOrderRecruitmentType } from '../../../../types/order';
+import { accountStore } from '../../../../store/accountStore';
 
 const bottomRef: Ref<typeof ElScrollbar | undefined> = ref();
 const innerRef: Ref<HTMLElement | undefined> = ref<HTMLElement>();
 const recruitmentRef: Ref<FormInstance | undefined> = ref()
 const postData: postOrderRecruitmentType = reactive({
-  account: '22215150514',
+  account: accountStore().account,
   name: '',
   hr: '',
   job: '',

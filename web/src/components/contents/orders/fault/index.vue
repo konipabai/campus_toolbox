@@ -38,13 +38,14 @@ import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import { getOrder, updateOrder } from "../../../../server";
 import { ElMessage, ElTable } from "element-plus";
 import type { updateOrderFaultType, resultOrderFaultType, paginationOrderType } from "../../../../types/order"
+import { accountStore } from "../../../../store/accountStore";
 
 const loading: Ref<boolean> = ref(false)
 const locale = zhCn;
 const result: Ref<resultOrderFaultType[]> = ref([])
 const tableTop: Ref<typeof ElTable | undefined> = ref();
 const searchData: updateOrderFaultType = reactive({
-  account: "22215150514",
+  account: accountStore().account,
   id: 0,
   state: '',
   orderType: '报修'
