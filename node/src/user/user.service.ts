@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { resultUser } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { BE_filterUserDto, DB_resultUserDto, FE_getUserDto } from './dto/user.dto';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class UserService {
@@ -10,13 +11,14 @@ export class UserService {
     @InjectRepository(resultUser) private readonly userResult: Repository<resultUser>
   ) { }
 
-  async getUser(params: FE_getUserDto): Promise<BE_filterUserDto> {
+  async getUser(params: FE_getUserDto): Promise<{ findUserData: BE_filterUserDto; token: string; }> {
     var findUserData: BE_filterUserDto = {
       account: '',
       name: '',
       class: '',
       administrator: ''
     }
+    let token: string = ''
     try {
       var tempUser: DB_resultUserDto
       tempUser = await this.userResult.findOne({
@@ -31,6 +33,13 @@ export class UserService {
           class: tempUser.class,
           administrator: tempUser.administrator
         }
+        token = jwt.sign({
+          account: findUserData.account,
+          name: findUserData.name,
+          class: findUserData.class,
+          administrator: findUserData.administrator,
+          flag: 'powered by konipabai'
+        }, 'test');
       } else {
         findUserData = {
           account: '',
@@ -38,6 +47,7 @@ export class UserService {
           class: '',
           administrator: ''
         }
+        token = '';
       }
     } catch (error) {
       findUserData = {
@@ -46,8 +56,9 @@ export class UserService {
         class: '',
         administrator: ''
       }
+      token = '';
       console.log(error);
     }
-    return findUserData;
+    return { findUserData, token };
   }
 }

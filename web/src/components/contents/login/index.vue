@@ -32,6 +32,8 @@ import { FormRules, FormInstance, ElMessage } from 'element-plus'
 import { getLoginType } from '../../../types/login'
 import { getLogin } from '../../../server'
 import router from '../../../router';
+import { accountStore } from "../../../store/accountStore";
+import axios from 'axios'
 
 const loginRef: Ref<FormInstance | undefined> = ref()
 const loading: Ref<boolean> = ref(false)
@@ -63,10 +65,13 @@ const searchForm = async (formEl: FormInstance | undefined) => {
         await new Promise(resolve => setTimeout(resolve, 200));
         const data = await getLogin(postData);
         loading.value = false
-        if (data.account != '' && data.name != '' && data.class != '' && data.administrator != '') {
-          localStorage.setItem('userData', JSON.stringify(data));
+        if (data.findUserData.account != '' && data.findUserData.name != '' && data.findUserData.class != '' && data.findUserData.administrator != '') {
+          localStorage.setItem('userData', JSON.stringify(data.findUserData));
+          localStorage.setItem('token', JSON.stringify(data.token));
+          accountStore().resetState();
+          axios.defaults.headers.common['token'] = JSON.parse(localStorage.getItem('token') || '{}')
           ElMessage({
-            message: '欢迎你，' + data.name,
+            message: '欢迎你，' + data.findUserData.name,
             type: 'success'
           })
           router.push('/classroom')
