@@ -3,7 +3,7 @@
 // 前端:   FE = frontend
 // 后端:   BE = backend
 
-// 前端查询失物招领传来的数据
+// 前端获取新闻传来的数据
 export interface FE_getNewsDto {
     url: string;
     detail: string;
