@@ -130,6 +130,7 @@ import moment from "moment";
 import { getSeat, postSeat } from "../../../server";
 import { ElMessage, FormInstance } from "element-plus";
 import type { findSeatType, postSeatType, getSeatType } from "../../../types/seat"
+import { accountStore } from "../../../store/accountStore";
 
 const loading: Ref<boolean> = ref(false)
 const locale = zhCn;
@@ -176,7 +177,7 @@ const floorData: { value: string }[] = [
 ];
 
 const postData: postSeatType = reactive({
-  account: "22215150514",
+  account: accountStore().account,
   date: "",
   time: [new Date(2023, 1, 1, 0, 0), new Date(2023, 1, 1, 23, 59)] as [Date, Date],
   floor: "",
