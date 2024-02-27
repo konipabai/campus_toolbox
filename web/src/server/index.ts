@@ -20,9 +20,9 @@ export const getLostFound = (data?: getAccountLostFoundType) => axios.get('/lost
 
 export const postLostFound = (data: postLostFoundType) => axios.post('/lostFound', data).then(res => res.data)
 
-export const updateLostFound = (data: postLostFoundType) => axios.patch(`/lostFound/${data.id}`, data).then(res => res.data)
+export const updateLostFound = (data: postLostFoundType) => axios.patch('/lostFound', data).then(res => res.data)
 
-export const deleteLostFound = (data: deleteLostFoundType) => axios.delete(`/lostFound/${data.id}`).then(res => res.data)
+export const deleteLostFound = (data: deleteLostFoundType) => axios.delete('/lostFound', { params: data }).then(res => res.data)
 
 export const getSeat = (data: getSeatType) => axios.get('/seat', { params: data }).then(res => res.data)
 

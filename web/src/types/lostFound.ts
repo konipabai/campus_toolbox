@@ -28,6 +28,7 @@ export interface postLostFoundType {
 
 export interface deleteLostFoundType {
     id: number,
+    account: string
 }
 
 export interface getAccountLostFoundType {

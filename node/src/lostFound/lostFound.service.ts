@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as moment from 'moment-timezone';
 import { Repository } from 'typeorm';
-import { BE_filterLostFoundDto, DB_resultLostFoundDto, FE_postLostFoundDto, FE_getLostFoundDto } from './dto/lostFound.dto';
+import { BE_filterLostFoundDto, DB_resultLostFoundDto, FE_postLostFoundDto, FE_getLostFoundDto, FE_deleteLostFoundDto } from './dto/lostFound.dto';
 import { resultLostFound } from './entities/lostFound.entity';
 
 @Injectable()
@@ -71,28 +71,45 @@ export class LostFoundService {
     }
   }
 
-  async updateLostFound(id: number, params: FE_postLostFoundDto): Promise<boolean> {
-    params.date = moment(params.date).tz('Asia/Shanghai').format('YYYY-MM-DD');
-    if (params.brand == '') {
-      params.brand = '无/暂不清楚'
-    }
-    if (params.description == '') {
-      params.description = '无'
-    }
-    delete params.id;
+  async updateLostFound(params: FE_postLostFoundDto): Promise<boolean> {
     try {
-      await this.lostFoundResult.update(id, params)
-      return true
+      var tempLostFound: DB_resultLostFoundDto = await this.lostFoundResult.findOne({
+        where: {
+          id: params.id
+        }
+      })
+      if (tempLostFound.account == params.account) {
+        params.date = moment(params.date).tz('Asia/Shanghai').format('YYYY-MM-DD');
+        if (params.brand == '') {
+          params.brand = '无/暂不清楚'
+        }
+        if (params.description == '') {
+          params.description = '无'
+        }
+        await this.lostFoundResult.update(params.id, params)
+        return true
+      } else {
+        return false
+      }
     } catch (error) {
       console.log(error);
       return false
     }
   }
 
-  async deleteLostFound(id: number): Promise<boolean> {
+  async deleteLostFound(params: FE_deleteLostFoundDto): Promise<boolean> {
     try {
-      await this.lostFoundResult.delete(id)
-      return true
+      var tempLostFound: DB_resultLostFoundDto = await this.lostFoundResult.findOne({
+        where: {
+          id: params.id
+        }
+      })
+      if (tempLostFound.account == params.account) {
+        await this.lostFoundResult.delete(params.id)
+        return true
+      } else {
+        return false
+      }
     } catch (error) {
       console.log(error);
       return false

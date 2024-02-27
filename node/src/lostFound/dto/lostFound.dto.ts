@@ -49,6 +49,12 @@ export interface FE_postLostFoundDto {
     overdue?: string;
 }
 
+// 前端删除失物招领传来的数据
+export interface FE_deleteLostFoundDto {
+    id: number;
+    account: string;
+}
+
 // 前端查询失物招领传来的数据
 export interface FE_getLostFoundDto {
     account: string;

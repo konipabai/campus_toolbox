@@ -122,6 +122,7 @@ import { ElMessage, FormInstance, FormRules, ElTable } from 'element-plus'
 import type { getLostFoundType, postLostFoundType } from '../../../../types/lostFound'
 import { deleteLostFound, getLostFound, postLostFound, updateLostFound } from '../../../../server'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
+import { accountStore } from "../../../../store/accountStore";
 
 const locale = zhCn
 const lostFoundRef: Ref<FormInstance | undefined> = ref()
@@ -132,7 +133,7 @@ const overdueState: Ref<boolean> = ref(false)
 const loading: Ref<boolean> = ref(false)
 const postData: postLostFoundType = reactive({
   id: 0,
-  account: '22215150514',
+  account: accountStore().account,
   item: '',
   state: '',
   brand: '',
@@ -179,7 +180,7 @@ const returnForm = () => {
 
 const deleteForm = async () => {
   try {
-    const result: boolean = await deleteLostFound({ id: postData.id })
+    const result: boolean = await deleteLostFound({ id: postData.id, account: postData.account })
     if (result) {
       ElMessage({
         message: '删除完成',
@@ -257,14 +258,10 @@ const rules: FormRules = reactive({
 const getFormData = async () => {
   try {
     const lostFoundData: getLostFoundType[] = await getLostFound({ account: postData.account })
-    if (lostFoundData.length != 0) {
-      loading.value = true
-      await new Promise(resolve => setTimeout(resolve, 500));
-      loading.value = false
-      resultData.value = lostFoundData
-    } else {
-      ElMessage.error('未知错误,请稍后再试')
-    }
+    loading.value = true
+    await new Promise(resolve => setTimeout(resolve, 500));
+    loading.value = false
+    resultData.value = lostFoundData
   } catch (error) {
     ElMessage.error('未知错误,请稍后再试')
   }
