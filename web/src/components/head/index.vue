@@ -22,7 +22,8 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item v-for="(items, index) in (item.children as any)" @click="dropDown(item, items)" :key="index">
+                  <el-dropdown-item v-for="(items, index) in (item.children as any)" @click="dropDown(item, items)"
+                    :key="index">
                     {{ items.meta.msg }}
                   </el-dropdown-item>
                 </el-dropdown-menu>
@@ -48,14 +49,16 @@
             class="head-box-span-2-img head-box-span-2-all" />
         </el-tooltip>
       </template>
-      <span class="head-box-span-2-all">
-        <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
-        <span class="head-box-span-2-text">卡拉米</span>
+      <span class="head-box-span-2-name">
+        <el-popconfirm width="100" confirm-button-text="确定" cancel-button-text="取消" title="退出账号" @confirm="logout()">
+          <template #reference>
+            <div class="head-box-span-2-div">
+              <el-avatar :src="profilePhoto" />
+              <span class="head-box-span-2-div-text">卡拉米</span>
+            </div>
+          </template>
+        </el-popconfirm>
       </span>
-      <img src="../../assets/icon/setting.svg" class="head-box-span-2-img head-box-span-2-all" @click="drawer = true" />
-      <el-drawer v-model="drawer" title="系统设置">
-        先随便放点东西占占位置
-      </el-drawer>
     </span>
   </div>
 </template>
@@ -65,6 +68,7 @@ import { Fold, Expand, ArrowRight, ArrowDown } from "@element-plus/icons-vue";
 import { menuControlStore } from "../../store/menuControlStore";
 import router from "../../router";
 import { onMounted, ref } from "vue";
+import profilePhoto from '../../assets/image/profilePhoto.png'
 
 const menuControl = menuControlStore();
 const menuChang = () => {
@@ -94,6 +98,11 @@ const changeFullScreen = () => {
 const updateFullScreenState = () => {
   const isFullscreen = document.fullscreenElement !== null;
   fullScreen.value = isFullscreen;
+};
+
+const logout = () => {
+  router.push('/')
+  localStorage.clear()
 };
 
 onMounted(() => {
@@ -171,13 +180,35 @@ const drawer = ref(false)
       }
     }
 
+    &-name {
+      height: var(--element-height-full);
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      margin-right: 30px;
+
+      &:hover {
+        background-color: var(--button-hover-color);
+      }
+
+      &:active {
+        background-color: var(--button-active-color);
+      }
+    }
+
     &-img {
       height: var(--element-height-full);
       width: 25px;
     }
 
-    &-text {
-      padding-left: 10px;
+    &-div {
+      display: flex;
+      align-items: center;
+
+      &-text {
+        padding-top: 5px;
+        padding-left: 5px;
+      }
     }
   }
 }
