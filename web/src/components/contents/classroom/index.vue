@@ -117,6 +117,7 @@ import { Timer, MapLocation, OfficeBuilding } from '@element-plus/icons-vue'
 import { postClassroom, getClassroom } from "../../../server/index";
 import type { getClassroomType, searchClassroomType, reserveClassroomType, paginationClassroomType } from "../../../types/classroom"
 import { ElMessage, FormInstance, ElTable } from 'element-plus';
+import { accountStore } from "../../../store/accountStore";
 
 const locale = zhCn
 const result: Ref<getClassroomType[]> = ref([])
@@ -134,7 +135,7 @@ const searchData: searchClassroomType = reactive({
 })
 
 const reserveData: reserveClassroomType = reactive({
-  accountAndName: '卡拉米 22215150514',
+  accountAndName: accountStore().name + ' ' + accountStore().account,
   classroomNumber: '',
   dateAndTime: '',
   reason: '',
