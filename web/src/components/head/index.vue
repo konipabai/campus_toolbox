@@ -54,7 +54,7 @@
           <template #reference>
             <div class="head-box-span-2-div">
               <el-avatar :src="profilePhoto" />
-              <span class="head-box-span-2-div-text">卡拉米</span>
+              <span class="head-box-span-2-div-text">{{ nameData}}</span>
             </div>
           </template>
         </el-popconfirm>
@@ -67,9 +67,11 @@
 import { Fold, Expand, ArrowRight, ArrowDown } from "@element-plus/icons-vue";
 import { menuControlStore } from "../../store/menuControlStore";
 import router from "../../router";
-import { onMounted, ref } from "vue";
+import { Ref, onMounted, ref } from "vue";
 import profilePhoto from '../../assets/image/profilePhoto.png'
+import { accountStore } from "../../store/accountStore";
 
+const nameData: string = accountStore().name
 const menuControl = menuControlStore();
 const menuChang = () => {
   menuControl.changeState();
@@ -84,7 +86,7 @@ const dropDown = (item: any, items: any) => {
   }
 }
 
-const fullScreen = ref(false)
+const fullScreen: Ref<boolean> = ref(false)
 const changeFullScreen = () => {
   const isFullscreen = document.fullscreenElement !== null;
   fullScreen.value = !isFullscreen;
