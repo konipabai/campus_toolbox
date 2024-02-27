@@ -28,6 +28,12 @@ export interface FE_postFaultDto {
     state?: string;
 }
 
+// 前端删除失物招领传来的数据
+export interface FE_deleteFaultDto {
+    id: number;
+    account: string;
+}
+
 // 前端查询失物招领传来的数据
 export interface FE_getFaultDto {
     account: string;

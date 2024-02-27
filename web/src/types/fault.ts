@@ -22,6 +22,7 @@ export interface postFaultType {
 
 export interface deleteFaultType {
     id: number,
+    account: string
 }
 
 export interface getAccountFaultType {

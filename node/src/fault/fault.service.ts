@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as moment from 'moment-timezone';
 import { Repository } from 'typeorm';
-import { DB_resultFaultDto, FE_postFaultDto, FE_getFaultDto } from './dto/fault.dto';
+import { DB_resultFaultDto, FE_postFaultDto, FE_getFaultDto, FE_deleteFaultDto } from './dto/fault.dto';
 import { resultFault } from './entities/fault.entity';
 
 @Injectable()
@@ -43,24 +43,41 @@ export class FaultService {
     }
   }
 
-  async updateFault(id: number, params: FE_postFaultDto): Promise<boolean> {
-    if (params.description == '') {
-      params.description = '无'
-    }
-    delete params.id;
+  async updateFault(params: FE_postFaultDto): Promise<boolean> {
     try {
-      await this.faultResult.update(id, params)
-      return true
+      var faultData: DB_resultFaultDto = await this.faultResult.findOne({
+        where: {
+          id: params.id
+        }
+      })
+      if (faultData.account == params.account) {
+        if (params.description == '') {
+          params.description = '无'
+        }
+        await this.faultResult.update(params.id, params)
+        return true
+      } else {
+        return false
+      }
     } catch (error) {
       console.log(error);
       return false
     }
   }
 
-  async deleteFault(id: number): Promise<boolean> {
+  async deleteFault(params: FE_deleteFaultDto): Promise<boolean> {
     try {
-      await this.faultResult.delete(id)
-      return true
+      var faultData: DB_resultFaultDto = await this.faultResult.findOne({
+        where: {
+          id: params.id
+        }
+      })
+      if (faultData.account == params.account) {
+        await this.faultResult.delete(params.id)
+        return true
+      } else {
+        return false
+      }
     } catch (error) {
       console.log(error);
       return false

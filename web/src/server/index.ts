@@ -36,9 +36,9 @@ export const getFault = (data: getAccountFaultType) => axios.get('/fault', { par
 
 export const postFault = (data: postFaultType) => axios.post('/fault', data).then(res => res.data)
 
-export const updateFault = (data: postFaultType) => axios.patch(`/fault/${data.id}`, data).then(res => res.data)
+export const updateFault = (data: postFaultType) => axios.patch('/fault', data).then(res => res.data)
 
-export const deleteFault = (data: deleteFaultType) => axios.delete(`/fault/${data.id}`).then(res => res.data)
+export const deleteFault = (data: deleteFaultType) => axios.delete('/fault', { params: data }).then(res => res.data)
 
 export const getNews = (data: getNewsType) => axios.get('/news', { params: data }).then(res => res.data)
 

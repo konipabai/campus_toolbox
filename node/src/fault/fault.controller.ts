@@ -1,28 +1,37 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseIntPipe, Headers } from '@nestjs/common';
 import { FaultService } from './fault.service';
-import { FE_postFaultDto, FE_getFaultDto } from './dto/fault.dto';
+import { FE_postFaultDto, FE_getFaultDto, FE_deleteFaultDto } from './dto/fault.dto';
+import * as jwt from 'jsonwebtoken';
 
 @Controller('fault')
 export class FaultController {
   constructor(private readonly faultService: FaultService) { }
 
   @Get()
-  getfault(@Query() params: FE_getFaultDto) {
+  getFault(@Headers() headers: any, @Query() params: FE_getFaultDto) {
+    const tokenData = jwt.verify(headers.token as string, 'test');
+    params.account = (tokenData as jwt.JwtPayload).account
     return this.faultService.getFault(params);
   }
 
   @Post()
-  postfault(@Body() FE_postfaultDto: FE_postFaultDto) {
-    return this.faultService.postFault(FE_postfaultDto);
+  postFault(@Headers() headers: any, @Body() params: FE_postFaultDto) {
+    const tokenData = jwt.verify(headers.token as string, 'test');
+    params.account = (tokenData as jwt.JwtPayload).account
+    return this.faultService.postFault(params);
   }
 
-  @Patch(':id')
-  updatefault(@Param('id', ParseIntPipe) id: number, @Body() FE_updatefaultDto: FE_postFaultDto) {
-    return this.faultService.updateFault(id, FE_updatefaultDto);
+  @Patch()
+  updateFault(@Headers() headers: any, @Body() params: FE_postFaultDto) {
+    const tokenData = jwt.verify(headers.token as string, 'test');
+    params.account = (tokenData as jwt.JwtPayload).account
+    return this.faultService.updateFault(params);
   }
 
-  @Delete(':id')
-  deletefault(@Param('id', ParseIntPipe) id: number) {
-    return this.faultService.deleteFault(id);
+  @Delete()
+  deleteFault(@Headers() headers: any, @Query() params: FE_deleteFaultDto) {
+    const tokenData = jwt.verify(headers.token as string, 'test');
+    params.account = (tokenData as jwt.JwtPayload).account
+    return this.faultService.deleteFault(params);
   }
 }

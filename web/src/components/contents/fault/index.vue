@@ -96,6 +96,7 @@ import { ElMessage, FormInstance, FormRules, ElTable } from 'element-plus'
 import type { getFaultType, postFaultType } from '../../../types/fault'
 import { deleteFault, getFault, postFault, updateFault } from '../../../server'
 import zhCn from 'element-plus/lib/locale/lang/zh-cn'
+import { accountStore } from "../../../store/accountStore";
 
 const locale = zhCn
 const faultRef: Ref<FormInstance | undefined> = ref()
@@ -106,7 +107,7 @@ const orderState: Ref<boolean> = ref(false)
 const loading: Ref<boolean> = ref(false)
 const postData: postFaultType = reactive({
   id: 0,
-  account: '22215150514',
+  account: accountStore().account,
   item: '',
   location: '',
   number: '',
@@ -149,7 +150,7 @@ const returnForm = () => {
 
 const deleteForm = async () => {
   try {
-    const result: boolean = await deleteFault({ id: postData.id })
+    const result: boolean = await deleteFault({ id: postData.id, account: postData.account })
     if (result) {
       ElMessage({
         message: '删除完成',
@@ -220,14 +221,10 @@ const rules: FormRules = reactive({
 const getFormData = async () => {
   try {
     const faultData: getFaultType[] = await getFault({ account: postData.account })
-    if (faultData.length != 0) {
-      loading.value = true
-      await new Promise(resolve => setTimeout(resolve, 500));
-      loading.value = false
-      resultData.value = faultData
-    } else {
-      ElMessage.error('未知错误,请稍后再试')
-    }
+    loading.value = true
+    await new Promise(resolve => setTimeout(resolve, 500));
+    loading.value = false
+    resultData.value = faultData
   } catch (error) {
     ElMessage.error('未知错误,请稍后再试')
   }
