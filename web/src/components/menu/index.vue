@@ -9,7 +9,7 @@
         </template>
       </el-menu-item>
 
-      <el-sub-menu index="1">
+      <el-sub-menu index="1" v-if="roleData == 'true'">
         <template #title>
           <img src="../../assets/icon/approval.svg" class="el-menu-vertical-all-icon" />
           <span>管理员菜单</span>
@@ -83,13 +83,15 @@
 import { menuControlStore } from "../../store/menuControlStore";
 import { watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import { accountStore } from "../../store/accountStore";
 
+const roleData: string = accountStore().role
 const menuControl = menuControlStore()
 const menuChang = () => {
   menuControl.changeState()
 }
 
-const activeIndex = ref('0');
+const activeIndex = ref('2');
 const route = useRoute();
 
 watch(
@@ -160,6 +162,8 @@ const updateMenuSelection = (path: string) => {
   }
 
   &-0 {
+    margin-bottom: 10px;
+
     &-icon {
       width: 35px;
       height: 35px;
