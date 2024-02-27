@@ -52,7 +52,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="时间段" min-width="2">
+          <el-table-column label="时间段" min-width="2" :show-overflow-tooltip=true>
             <template #default="props">
               {{ props.row.startTime }}-{{ props.row.endTime }}
             </template>

@@ -65,12 +65,12 @@
             <span>暂无数据</span>
           </div>
         </template>
-        <el-table-column prop="classroomBuilding" label="地点" min-width="2" />
-        <el-table-column prop="classroomFloor" label="楼层" min-width="2" />
-        <el-table-column prop="classroomNumber" label="教室号" min-width="2" />
-        <el-table-column prop="date" label="日期" min-width="2" />
-        <el-table-column prop="time" label="时间段" min-width="2" />
-        <el-table-column min-width="1" label="操作">
+        <el-table-column prop="classroomBuilding" label="地点" min-width="2" :show-overflow-tooltip=true />
+        <el-table-column prop="classroomFloor" label="楼层" min-width="2" :show-overflow-tooltip=true />
+        <el-table-column prop="classroomNumber" label="教室号" min-width="2" :show-overflow-tooltip=true />
+        <el-table-column prop="date" label="日期" min-width="2" :show-overflow-tooltip=true />
+        <el-table-column prop="time" label="时间段" min-width="2" :show-overflow-tooltip=true />
+        <el-table-column min-width="1" label="操作" :show-overflow-tooltip=true>
           <template #default="scope">
             <el-button type="primary" @click="reserveForm(scope.row)">预约</el-button>
           </template>
