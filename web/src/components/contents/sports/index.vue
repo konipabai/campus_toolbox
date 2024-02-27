@@ -108,6 +108,7 @@ import { reserveSportsType, getSportsType, resultSportsType, postSportsType } fr
 import { getSports, postSports } from "../../../server"
 import moment from "moment";
 import { ElMessage, ElScrollbar, FormInstance, FormRules } from "element-plus"
+import { accountStore } from "../../../store/accountStore"
 
 const canvaRef: Ref<HTMLElement> = ref() as Ref<HTMLElement>
 const sportsRef: Ref<FormInstance | undefined> = ref()
@@ -333,7 +334,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
 }
 const postData: postSportsType = reactive({
   id: 0,
-  account: '22215150514',
+  account: accountStore().account,
   date: new Date(),
   time: [new Date(), new Date()],
   typeAndCourt: "",

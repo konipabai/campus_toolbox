@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, Headers } from '@nestjs/common';
 import { SportsService } from './sports.service';
 import { FE_getSportsDto, FE_postSportsDto } from './dto/sports.dto';
+import * as jwt from 'jsonwebtoken';
 
 @Controller('sports')
 export class SportsController {
@@ -12,7 +13,9 @@ export class SportsController {
   }
 
   @Post()
-  postSports(@Body() params: FE_postSportsDto) {
+  postSports(@Headers() headers: any, @Body() params: FE_postSportsDto) {
+    const tokenData = jwt.verify(headers.token as string, 'test');
+    params.account = (tokenData as jwt.JwtPayload).account
     return this.sportsService.postSports(params);
   }
 }
