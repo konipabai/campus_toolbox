@@ -212,7 +212,7 @@ import { deleteRecords, getRecords } from "../../../server";
 import { ElMessage, ElScrollbar, ElTable, FormInstance } from "element-plus";
 import type { getRecordsType, updateClassroomRecordsType, updateSeatRecordsType, updateSportsRecordsType, deleteRecordsType, paginationRecordsType } from "../../../types/records"
 import { Aim } from '@element-plus/icons-vue'
-
+import { accountStore } from "../../../store/accountStore";
 
 const loading: Ref<boolean> = ref(false)
 const locale = zhCn;
@@ -223,7 +223,7 @@ const tableTop: Ref<typeof ElTable | undefined> = ref();
 const topRef: Ref<typeof ElScrollbar | undefined> = ref();
 const formFlag: Ref<string> = ref('')
 const searchData: getRecordsType = reactive({
-  account: "22215150514",
+  account: accountStore().account,
   reservedType: ""
 });
 const showData: Ref<updateClassroomRecordsType | updateSeatRecordsType | updateSportsRecordsType | {}> = ref({})
@@ -243,6 +243,7 @@ const closeDrawer = () => {
 const deleteOrder = async () => {
   try {
     const result: boolean = await deleteRecords({
+      account: (showData.value as (updateClassroomRecordsType | updateSeatRecordsType | updateSportsRecordsType)).account,
       id: (showData.value as (updateClassroomRecordsType | updateSeatRecordsType | updateSportsRecordsType)).id,
       reservedType: formFlag.value
     })
@@ -270,15 +271,8 @@ const searchForm = async () => {
     await new Promise(resolve => setTimeout(resolve, 500));
     const data = await getRecords(searchData);
     loading.value = false
-    if (data.length != 0) {
-      formFlag.value = searchData.reservedType
-      result.value = data;
-    } else {
-      ElMessage({
-        message: '未找到对应数据，请先去创建预约订单',
-        type: 'warning'
-      })
-    }
+    formFlag.value = searchData.reservedType
+    result.value = data;
   } catch (error) {
     ElMessage.error('未知错误，请稍后再试')
     console.log(error);

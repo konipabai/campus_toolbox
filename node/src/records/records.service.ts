@@ -79,30 +79,60 @@ export class RecordsService {
 
   async deleteRecords(params: FE_deleteRecordsDto): Promise<boolean> {
     try {
+      var tempRecruitment: DB_resultClassroomDto | DB_resultSeatDto | DB_resultSportsDto
       if (params.reservedType == '预约教室记录') {
-        await this.classroomResult.delete(params.id)
-      } else if (params.reservedType == '预约图书馆座位记录') {
-        await this.seatResult.delete(params.id)
-      } else {
-        const tempRecruitment = await this.sportResult.findOne({
+        tempRecruitment = await this.classroomResult.findOne({
           where: {
             id: params.id
           }
         })
-        if (tempRecruitment.ownership == 'true') {
-          await this.sportResult.update({
-            date: tempRecruitment.date,
-            startTime: tempRecruitment.startTime,
-            endTime: tempRecruitment.endTime,
-            type: tempRecruitment.type,
-            court: tempRecruitment.court,
-            location: tempRecruitment.location,
-            collaborative: tempRecruitment.collaborative
-          }, { valid: 'false' })
+        if (tempRecruitment.account == params.account) {
+          await this.classroomResult.delete(params.id)
+          return true
+        } else {
+          return false
         }
-        await this.sportResult.delete(params.id)
+      } else if (params.reservedType == '预约图书馆座位记录') {
+        tempRecruitment = await this.seatResult.findOne({
+          where: {
+            id: params.id
+          }
+        })
+        if (tempRecruitment.account == params.account) {
+          await this.seatResult.delete(params.id)
+          return true
+        } else {
+          return false
+        }
+      } else {
+        tempRecruitment = await this.sportResult.findOne({
+          where: {
+            id: params.id
+          }
+        })
+        if (tempRecruitment.account == params.account) {
+          const tempRecruitment = await this.sportResult.findOne({
+            where: {
+              id: params.id
+            }
+          })
+          if (tempRecruitment.ownership == 'true') {
+            await this.sportResult.update({
+              date: tempRecruitment.date,
+              startTime: tempRecruitment.startTime,
+              endTime: tempRecruitment.endTime,
+              type: tempRecruitment.type,
+              court: tempRecruitment.court,
+              location: tempRecruitment.location,
+              collaborative: tempRecruitment.collaborative
+            }, { valid: 'false' })
+          }
+          await this.sportResult.delete(params.id)
+          return true
+        } else {
+          return false
+        }
       }
-      return true
     } catch (error) {
       console.log(error);
       return false

@@ -12,6 +12,7 @@ export interface FE_getRecordsDto {
 // 前端删除传来的数据
 export interface FE_deleteRecordsDto {
     id: number;
+    account: string;
     reservedType: string;
 }
 

@@ -46,6 +46,7 @@ export interface updateSportsRecordsType {
 
 export interface deleteRecordsType {
     id: number;
+    account: string;
     reservedType: string;
 }
 
