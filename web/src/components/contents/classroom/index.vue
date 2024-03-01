@@ -325,6 +325,10 @@ const timeData = [
 
     &-table {
       height: calc(100vh - 300px);
+
+      :deep(.el-popper.is-dark) {
+        color: var(--w-text-color) !important;
+      }
     }
 
     &-pagination {
