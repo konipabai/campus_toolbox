@@ -34,6 +34,7 @@ import { getLogin } from '../../../server'
 import router from '../../../router';
 import { accountStore } from "../../../store/accountStore";
 import axios from 'axios'
+import { MD5 } from 'crypto-js'
 
 const loginRef: Ref<FormInstance | undefined> = ref()
 const loading: Ref<boolean> = ref(false)
@@ -63,7 +64,7 @@ const searchForm = async (formEl: FormInstance | undefined) => {
       if (valid) {
         loading.value = true
         await new Promise(resolve => setTimeout(resolve, 200));
-        const data = await getLogin(postData);
+        const data = await getLogin({ account: postData.account, password: MD5(postData.password).toString() });
         loading.value = false
         if (data.findUserData.account != '' && data.findUserData.name != '' && data.findUserData.class != '' && data.findUserData.administrator != '') {
           localStorage.setItem('userData', JSON.stringify(data.findUserData));
