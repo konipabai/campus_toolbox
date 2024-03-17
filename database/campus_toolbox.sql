@@ -11,7 +11,7 @@
  Target Server Version : 50523
  File Encoding         : 65001
 
- Date: 28/02/2024 01:27:03
+ Date: 18/03/2024 00:09:43
 */
 
 SET NAMES utf8mb4;
@@ -33,7 +33,7 @@ CREATE TABLE `result_classroom`  (
   `floor` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `reasonRefusal` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of result_classroom
@@ -46,7 +46,6 @@ INSERT INTO `result_classroom` VALUES (6, '22215150515', '这tm怎么还是一�
 INSERT INTO `result_classroom` VALUES (8, '22215150514', '哈哈哈', '第5节 14:00-14:45', 'D104', 'false', '2023-12-18', 'DELPHI 教学楼', '一楼', '教室已被预约');
 INSERT INTO `result_classroom` VALUES (9, '22215150514', '234234', '第4节 11:15-12:00', 'B201', 'true', '2023-07-31', 'BASIC 教学楼', '二楼', '');
 INSERT INTO `result_classroom` VALUES (10, '22215150514', '234234', '第4节 11:15-12:00', 'B201', 'true', '2023-12-18', 'BASIC 教学楼', '二楼', '');
-INSERT INTO `result_classroom` VALUES (12, '22215150514', '哈哈说的话', '第2节 9:20-10:05', 'A202', 'true', '2024-02-22', 'ALGOL 教学楼', '二楼', '');
 INSERT INTO `result_classroom` VALUES (13, '22215150514', 'sdaf23123', '第2节 9:20-10:05', 'C202', 'true', '2024-02-22', 'C++ 教学楼', '二楼', '');
 INSERT INTO `result_classroom` VALUES (21, '22215150514', '飞洒地方的方式', '第1节 8:30-9:15', 'A101', 'false', '2024-02-24', 'ALGOL 教学楼', '一楼', '第三方山东');
 INSERT INTO `result_classroom` VALUES (22, '22215150514', '开班会', '第1节 8:30-9:15', 'A101', 'false', '2024-02-24', 'ALGOL 教学楼', '一楼', '');
@@ -68,7 +67,7 @@ CREATE TABLE `result_fault`  (
   `date` date NOT NULL,
   `state` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of result_fault
@@ -76,7 +75,6 @@ CREATE TABLE `result_fault`  (
 INSERT INTO `result_fault` VALUES (1, '22215150514', '椅子', '26栋', '459', '12312312333', '椅子靠背坏了，需要换新', '2024-02-05', 'true');
 INSERT INTO `result_fault` VALUES (2, '22215150514', '花洒', '26栋', '459', '4234243423442342434234', '无', '2024-02-05', 'true');
 INSERT INTO `result_fault` VALUES (3, '22215150513', '门把手', '24栋', '151', '53464523', '门把手松了', '2024-02-07', 'true');
-INSERT INTO `result_fault` VALUES (4, '22215150514', '凳子', '26栋', '459', '1243251231', '椅子靠背坏了，需要换新', '2024-02-07', 'true');
 INSERT INTO `result_fault` VALUES (5, '22215150514', '空调', 'ALGOL教学楼', 'A302', '1903458435', '空调漏水', '2024-02-24', 'true');
 INSERT INTO `result_fault` VALUES (6, '22215150515', '门把手', '宿舍楼24栋', '503', '195824739', '无', '2024-02-24', 'true');
 INSERT INTO `result_fault` VALUES (7, '22215150514', '桌子', '宿舍楼25栋', '323', '12178436234', '宿舍一号桌子坏了', '2024-02-24', 'false');
@@ -98,7 +96,7 @@ CREATE TABLE `result_lost_found`  (
   `overdue` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `date` date NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 149 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 148 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of result_lost_found
@@ -144,7 +142,7 @@ CREATE TABLE `result_recruitment`  (
   `benefits` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `location` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of result_recruitment
@@ -152,7 +150,7 @@ CREATE TABLE `result_recruitment`  (
 INSERT INTO `result_recruitment` VALUES (1, '广州xx电子商务有限公司', '高先生', 3000, '广州xx电子商务有限公司是一家以IT软件技术支持+电商为主营业务的国家高新技术企业、广州市高新技术企业。', '13763468284', 'java开发工程师', '负责公司软件项目的日常运维,基础模块开发||公司产品的测试,文档整理||全日制本科以上,计算机相关专业||有适当的抗压能力,能积极配合公司安排', '双休，全勤奖，零食下午茶，带薪年假，年终奖，五险一金，加班补助，节日福利，朝九晚五', '广州天河区盛大国际(东北门)盛大国际三楼xxx室');
 INSERT INTO `result_recruitment` VALUES (2, '广州xx科技有限公司', '陈女士', 4000, '广州xx科技有限公司经营范围：通信设备销售;广播电视传输设备销售;光通信设备销售;电子专用设备销售;电子专用材料销售;网络与信息安全软件开发;软件外包服务;人工智能应用软件开发;计算机软硬件及外围设备制造;软件开发;', '18394572365', 'python工程师', '限广东地区，远程办公，配合开发过程中的python代码编写，熟悉TouchDesigner者优先，可独立梳理架构，独立完成简单后端开发。', '双休，全勤奖，零食下午茶，带薪年假，年终奖，五险一金，加班补助，节日福利', '广州番禺区奥园养生广场xxx');
 INSERT INTO `result_recruitment` VALUES (3, '广州xx电子商务有限公司', '帕先生', 5000, '广州xx电子商务有限公司是一家以IT软件技术支持+电商为主营业务的国家高新技术企业、广州市高新技术企业。', '13763468284', 'java工程师', '负责公司软件项目的日常运维,基础模块开发||公司产品的测试,文档整理||全日制本科以上,计算机相关专业||有适当的抗压能力,能积极配合公司安排', '全勤奖，零食下午茶，带薪年假，年终奖，五险一金，加班补助，节日福利，朝九晚五', '广州天河区盛大国际(东北门)盛大国际三楼xxx室');
-INSERT INTO `result_recruitment` VALUES (4, '广州xx科技有限公司', '王女士', 6000, '广州xx科技有限公司经营范围：通信设备销售;广播电视传输设备销售;光通信设备销售;电子专用设备销售;电子专用材料销售;网络与信息安全软件开发;软件外包服务;人工智能应用软件开发;计算机软硬件及外围设备制造;软件开发;', '18394572365', 'python工程师', '限广东地区，远程办公，配合开发过程中的python代码编写，熟悉TouchDesigner者优先，可独立梳理架构，独立完成简单后端开发。', '全勤奖，零食下午茶，带薪年假，年终奖，五险一金，加班补助，节日福利', '广州番禺区奥园养生广场xxx');
+INSERT INTO `result_recruitment` VALUES (4, '广州xx电子商务有限公司', '王女士', 6000, '广州xx科技有限公司经营范围：通信设备销售;广播电视传输设备销售;光通信设备销售;电子专用设备销售;电子专用材料销售;网络与信息安全软件开发;软件外包服务;人工智能应用软件开发;计算机软硬件及外围设备制造;软件开发;', '15444574565', 'python后端工程师', '限广东地区，远程办公，配合开发过程中的python代码编写，熟悉TouchDesigner者优先，可独立梳理架构，独立完成简单后端开发。', '全勤奖，零食下午茶，带薪年假，年终奖，五险一金，加班补助，节日福利', '广州天河区盛大国际(东北门)盛大国际三楼xxx室');
 INSERT INTO `result_recruitment` VALUES (5, '广州xx电子商务有限公司', '帕先生', 5000, '广州xx电子商务有限公司是一家以IT软件技术支持+电商为主营业务的国家高新技术企业、广州市高新技术企业。', '13763468284', 'java工程师', '负责公司软件项目的日常运维,基础模块开发||公司产品的测试,文档整理||全日制本科以上,计算机相关专业||有适当的抗压能力,能积极配合公司安排', '双休，全勤奖，零食下午茶，带薪年假，年终奖，五险一金，加班补助，节日福利，朝九晚五', '广州天河区盛大国际(东北门)盛大国际三楼xxx室');
 INSERT INTO `result_recruitment` VALUES (6, '广州xx电子商务有限公司', '帕先生', 5000, '广州xx电子商务有限公司是一家以IT软件技术支持+电商为主营业务的国家高新技术企业、广州市高新技术企业。', '13763468284', 'java工程师', '负责公司软件项目的日常运维,基础模块开发||公司产品的测试,文档整理||全日制本科以上,计算机相关专业||有适当的抗压能力,能积极配合公司安排', '全勤奖，零食下午茶，带薪年假，年终奖，五险一金，加班补助，节日福利，朝九晚五', '广州天河区盛大国际(东北门)盛大国际三楼xxx室');
 INSERT INTO `result_recruitment` VALUES (7, '广州xx电子商务有限公司', '帕先生', 5000, '广州xx电子商务有限公司是一家以IT软件技术支持+电商为主营业务的国家高新技术企业、广州市高新技术企业。', '13763468284', 'java工程师', '负责公司软件项目的日常运维,基础模块开发||公司产品的测试,文档整理||全日制本科以上,计算机相关专业||有适当的抗压能力,能积极配合公司安排', '双休，全勤奖，零食下午茶，带薪年假，年终奖，五险一金，加班补助，节日福利', '广州天河区盛大国际(东北门)盛大国际三楼xxx室');
@@ -165,8 +163,6 @@ INSERT INTO `result_recruitment` VALUES (13, '广州xx电子商务有限公司',
 INSERT INTO `result_recruitment` VALUES (14, '广州xx电子商务有限公司', '帕先生', 5000, '广州xx电子商务有限公司是一家以IT软件技术支持+电商为主营业务的国家高新技术企业、广州市高新技术企业。', '13763468284', 'java工程师', '负责公司软件项目的日常运维,基础模块开发||公司产品的测试,文档整理||全日制本科以上,计算机相关专业||有适当的抗压能力,能积极配合公司安排', '双休，全勤奖，零食下午茶，带薪年假，年终奖，五险一金，加班补助，节日福利', '广州天河区盛大国际(东北门)盛大国际三楼xxx室');
 INSERT INTO `result_recruitment` VALUES (15, '广州xx电子商务有限公司', '帕先生', 5000, '广州xx电子商务有限公司是一家以IT软件技术支持+电商为主营业务的国家高新技术企业、广州市高新技术企业。', '13763468284', 'java工程师', '负责公司软件项目的日常运维,基础模块开发||公司产品的测试,文档整理||全日制本科以上,计算机相关专业||有适当的抗压能力,能积极配合公司安排', '全勤奖，零食下午茶，带薪年假，年终奖，五险一金，加班补助，节日福利，朝九晚五', '广州天河区盛大国际(东北门)盛大国际三楼xxx室');
 INSERT INTO `result_recruitment` VALUES (16, '广州xx电子商务有限公司', '帕先生', 5000, '广州xx电子商务有限公司是一家以IT软件技术支持+电商为主营业务的国家高新技术企业、广州市高新技术企业。', '13763468284', 'java工程师', '负责公司软件项目的日常运维,基础模块开发||公司产品的测试,文档整理||全日制本科以上,计算机相关专业||有适当的抗压能力,能积极配合公司安排', '双休，全勤奖，零食下午茶，带薪年假，年终奖，五险一金，加班补助，节日福利，朝九晚五', '广州天河区盛大国际(东北门)盛大国际三楼xxx室');
-INSERT INTO `result_recruitment` VALUES (24, '山东xxx公司', '吴先生', 3462, '山东xxx公司是以xxx为xxx，xxxxxxxxxxxxxxx', '156345345', '会计', '熟悉使用word，excel||听从上级指挥，懂得变通', '朝九晚五，双休', '山东xx县xx路xx号楼');
-INSERT INTO `result_recruitment` VALUES (25, '广西xx公司', '帕白', 4000, '广西xx公司是xxxxxxxxxxxxxxxxx', '1269430673', '后端工程师', '熟练使用java，mysql||掌握git的使用', '朝九晚五', '广西xx县xx路');
 
 -- ----------------------------
 -- Table structure for result_seat
@@ -181,7 +177,7 @@ CREATE TABLE `result_seat`  (
   `seat` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `date` date NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 483 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 484 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of result_seat
@@ -527,6 +523,7 @@ INSERT INTO `result_seat` VALUES (479, '22215150514', '一楼', 'C13', '00:38-00
 INSERT INTO `result_seat` VALUES (480, '22215150514', '一楼', 'C13', '00:38-00:39', '2座', '2023-08-27');
 INSERT INTO `result_seat` VALUES (481, '22215150514', '一楼', 'C13', '00:38-00:39', '3座', '2023-08-27');
 INSERT INTO `result_seat` VALUES (482, '22215150514', '一楼', 'C13', '00:38-00:39', '4座', '2023-08-27');
+INSERT INTO `result_seat` VALUES (483, '22215150514', '一楼', 'A11', '00:00-23:59', '1座', '2024-03-06');
 
 -- ----------------------------
 -- Table structure for result_sport
@@ -546,7 +543,7 @@ CREATE TABLE `result_sport`  (
   `ownership` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `valid` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 48 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 53 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of result_sport
@@ -565,6 +562,11 @@ INSERT INTO `result_sport` VALUES (44, '22215150513', '2024-02-27', '2024-02-27 
 INSERT INTO `result_sport` VALUES (45, '22215150514', '2024-02-28', '2024-02-28 12:00:00', '2024-02-28 14:00:00', '足球场', 'A', 'a半', '是', 5, 'true', 'true');
 INSERT INTO `result_sport` VALUES (46, '22215150514', '2024-02-28', '2024-02-28 19:00:00', '2024-02-28 21:00:00', '足球场', 'A', 'b半', '是', 3, 'true', 'true');
 INSERT INTO `result_sport` VALUES (47, '22215150514', '2024-02-28', '2024-02-28 20:00:00', '2024-02-28 22:00:00', '足球场', 'A', 'a半', '否', 1, 'true', 'true');
+INSERT INTO `result_sport` VALUES (48, '22215150514', '2024-03-02', '2024-03-02 09:00:00', '2024-03-02 12:00:00', '篮球场', 'A', '全场', '是', 6, 'true', 'true');
+INSERT INTO `result_sport` VALUES (49, '22215150514', '2024-03-02', '2024-03-02 19:00:00', '2024-03-02 21:00:00', '篮球场', 'A', '全场', '否', 1, 'true', 'true');
+INSERT INTO `result_sport` VALUES (50, '22215150514', '2024-03-02', '2024-03-02 12:00:00', '2024-03-02 13:00:00', '篮球场', 'A', 'a半', '否', 1, 'true', 'true');
+INSERT INTO `result_sport` VALUES (51, '22215150514', '2024-03-02', '2024-03-02 12:00:00', '2024-03-02 14:30:00', '篮球场', 'A', 'b半', '否', 1, 'true', 'true');
+INSERT INTO `result_sport` VALUES (52, '22215150514', '2024-03-02', '2024-03-02 13:30:00', '2024-03-02 18:20:00', '篮球场', 'A', 'a半', '是', 10, 'true', 'true');
 
 -- ----------------------------
 -- Table structure for result_user
@@ -583,9 +585,9 @@ CREATE TABLE `result_user`  (
 -- ----------------------------
 -- Records of result_user
 -- ----------------------------
-INSERT INTO `result_user` VALUES (1, '22215150513', '小明', '20商务英语3班', 'qwe', 'false');
-INSERT INTO `result_user` VALUES (2, '22215150514', '小白', '22软工5班', 'qwe', 'true');
-INSERT INTO `result_user` VALUES (3, '22215150515', '小王', '22大数据1班', 'qwe', 'false');
-INSERT INTO `result_user` VALUES (5, '22215150516', '小飞', '21网络工程2班', 'qwe', 'false');
+INSERT INTO `result_user` VALUES (1, '22215150513', '小明', '20商务英语3班', '76d80224611fc919a5d54f0ff9fba446', 'false');
+INSERT INTO `result_user` VALUES (2, '22215150514', '小白', '22软工5班', '76d80224611fc919a5d54f0ff9fba446', 'true');
+INSERT INTO `result_user` VALUES (3, '22215150515', '小王', '22大数据1班', '7815696ecbf1c96e6894b779456d330e', 'false');
+INSERT INTO `result_user` VALUES (5, '22215150516', '小飞', '21网络工程2班', '5fa72358f0b4fb4f2c5d7de8c9a41846', 'false');
 
 SET FOREIGN_KEY_CHECKS = 1;
