@@ -2,7 +2,7 @@
   <el-scrollbar>
     <el-menu :default-active="activeIndex" class="el-menu-vertical" background-color="var(--bg-color)"
       :unique-opened="true" :collapse="menuControl.isCollapse">
-      <el-menu-item index="0" @click="menuChang()" class="el-menu-vertical-0">
+      <el-menu-item index="0" class="el-menu-vertical-0">
         <img src="../../assets/icon/logo.svg" class="el-menu-vertical-0-icon" />
         <template #title>
           <span class="el-menu-vertical-0-title">校园百宝箱</span>
@@ -87,9 +87,6 @@ import { accountStore } from "../../store/accountStore";
 
 const roleData: string = accountStore().role
 const menuControl = menuControlStore()
-const menuChang = () => {
-  menuControl.changeState()
-}
 
 const activeIndex = ref('2');
 const route = useRoute();
